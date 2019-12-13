@@ -1,0 +1,490 @@
+{% extends 'base.html' %}
+
+{% block style %}
+.section {
+  background-color: #091C31
+}
+
+h4, h5, h6, p {
+color: #CDE0F5;
+}
+
+{% endblock %}
+
+{% block content %}
+<div class="container mt-2">
+  <div class="row">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ url_for('home') }}">HOME</a></li>
+          <li class="breadcrumb-item active" aria-current="page">SEATS SELECTION</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <div class="section section-movie-info" style="padding:5px;">
+    <div class="row">
+      <div class="col-2">
+        <img src="{{ url_for('static', filename='images/movie details/Poster-Frozen-V3.jpg') }}" alt="" width="75%">
+      </div>
+      <div class="col-9 align-self-center ml-4">
+        <div class="row">
+          <div class="col-1">
+            <img src="{{ url_for('static', filename='svgs/PG.svg') }}" alt="" width="100%">
+          </div>
+          <div class="col-5">
+            <h4>Frozen 2</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <h5>Saw Lido Theatre Hall 6</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <h5>SUN 17 NOV 2019</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <h5>5:30 PM</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="section section-1-seats" style="padding:5px;">
+    <div class="row ml-2">
+      <div class="col-1">
+        <img src="{{ url_for('static', filename='number icons/one.svg') }}" alt="">
+      </div>
+      <div class="col-2">
+        <h4>Choosing Seats</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="seat-layout">
+          <div class="row d-flex justify-content-center">
+            <div class="col-10">
+              <div class="row screen">
+                <div class="col text-center">
+                  <img src="{{ url_for('static', filename='images/seats/screen-no-text.png') }}" alt="">
+                  <p>Screen</p>
+                </div>
+              </div>
+              <div class="row seats">
+                <div class="col">
+                  <div class="row row-1">
+                    <div class="col">
+                      <h4>A</h4>
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                  </div>
+                  <div class="row row-2">
+                    <div class="col">
+                      <h4>B</h4>
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                  </div>
+                  <div class="row row-3">
+                    <div class="col">
+                      <h4>C</h4>
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                  </div>
+                  <div class="row row-4">
+                    <div class="col">
+                      <h4>D</h4>
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                  </div>
+                  <div class="row row-5">
+                    <div class="col">
+                      <h4>E</h4>
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                  </div>
+                  <div class="row row-6">
+                    <div class="col">
+                      <h4>F</h4>
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                    <div class="col">
+                      <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt=""
+                        class="available-seats"  onclick=" selectSeat(this)"
+                         >
+                    </div>
+                  </div>
+                  <div class="row row-num">
+                    <div class="col"></div>
+                    <div class="col">
+                      <h4>1</h4>
+                    </div>
+                    <div class="col">
+                      <h4>2</h4>
+                    </div>
+                    <div class="col">
+                      <h4>3</h4>
+                    </div>
+                    <div class="col">
+                      <h4>4</h4>
+                    </div>
+                    <div class="col">
+                      <h4>5</h4>
+                    </div>
+                    <div class="col">
+                      <h4>6</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row d-flex justify-content-center mt-2">
+            <div class="col-11" style="border: 1px #007bc4 solid; border-bottom-style:none;">
+              <div class="row">
+                <div class="col">
+                  <h4>Legend</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <img src="{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}" alt="">
+                  <p class="mt-1">Available Seats</p>
+                </div>
+                <div class="col">
+                  <img src="{{ url_for('static', filename='images/seats/seat-curr-select.png') }}" alt="">
+                  <p class="mt-1">Selected Seats</p>
+                </div>
+                <div class="col">
+                  <img src="{{ url_for('static', filename='images/seats/seat-curr-hold.png') }}" alt="">
+                  <p class="mt-1">On Hold</p>
+                </div>
+                <div class="col">
+                  <img src="{{ url_for('static', filename='images/seats/seat-curr-unavail.png') }}" alt="">
+                  <p class="mt-1">Unavailable Seats</p>
+                </div>
+                <div class="col">
+                  <img src="{{ url_for('static', filename='images/seats/seat-curr-wheelchair-avail.png') }}" alt="">
+                  <p class="mt-1">Wheelchair Seats</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row d-flex justify-content-center">
+            <div class="col-11" style="border: 1px #007bc4 solid; border-top-style:none;">
+              <div class="row">
+                <div class="col-1 mr-auto">
+                  <h5>Type</h5>
+                </div>
+                <div class="col-2">
+                  <h5>Quantity</h5>
+                </div>
+                <div class="col-2">
+                  <h5>Amount</h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4 mr-auto">
+                  <h6>Seats: E4, E5, E6, E7</h6>
+                  <h6>Adult ($13.00)</h6>
+                </div>
+                <div class="col-2">
+                  <h6>4</h6>
+                </div>
+                <div class="col-2">
+                  <h6>$52.00</h6>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-2 mr-auto">
+                  <h5>Total</h5>
+                </div>
+                <div class="col-2">
+                  <h5>$52.00</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-11">
+              <div class="row">
+                <div class="col">
+                </div>
+                <div class="col-1">
+                  <button type="button" class="btn btn-primary">Reset</button>
+                </div>
+                <div class="col-1">
+                  <button type="button" class="btn btn-secondary">Confirm</button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="section section-2-promotion" style="padding:5px;">
+    <div class="row ml-2">
+      <div class="col-1">
+        <img src="{{ url_for('static', filename='number icons/two.svg') }}" alt="">
+      </div>
+      <div class="col-2">
+        <h4>Promotions</h4>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="section section-3-payment" style="padding:5px;">
+    <div class="row ml-2">
+      <div class="col-1">
+        <img src="{{ url_for('static', filename='number icons/three.svg') }}" alt="">
+      </div>
+      <div class="col-2">
+        <h4>Payment</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2 mr-auto">
+      </div>
+      <div class="col-2">
+        <h5>Grand total:</h5>
+      </div>
+      <div class="col-2">
+        <h5>$52.00<h5>
+      </div>
+    </div>
+    <form action="" class="getting-personal-information"></form>
+    <!-- personal information -->
+    <div class="row">
+      <div class="col-10 mx-auto">        
+          <h5>Personal</h5>
+          <div class="form-group">            
+            <input type="text" class="form-control" id="fullName" placeholder="Full Name">
+          </div>
+          <div class="form-group">            
+            <input type="email" class="form-control" id="email" placeholder="Email">
+          </div>
+          <div class="form-group">            
+            <input type="tel" pattern=".{10}" class="form-control" id="contactNumber" placeholder="Contact Number">
+          </div>        
+      </div>
+    </div>
+    <!-- credit card payment -->
+    <div class="row justify-content-center">
+      <div class="col-5">
+        <h5>Credit Card Payment</h5>
+        <!-- credit card image -->
+        <img src="{{ url_for('static', filename='VISA-Card.png') }}" alt="" width="100%">
+      </div>
+      <div class="col-5 align-self-center">
+        <div class="form-group">
+          <input class='form-control' id="nameOnCard" placeholder="Name on Card">
+        </div>
+        <div class="form-group">
+          <input autocomplete='off' class='form-control' id="card-number" type='text' placeholder="Card Number">
+        </div>
+        <div class="form-group">
+          <input type="month" class="form-control" id="expiry-date" placeholder="Expiry Date (MM/YYYY)">
+        </div>
+        <div class="form-group">
+          <input autocomplete='off' class='form-control' id="card-cvc" placeholder='CVC' type='text'>
+        </div>
+        <button class='form-control btn btn-primary submit-button' type='submit'>Pay »</button>
+      </div>
+    </div>
+  </form>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+  function selectSeat(img) {        
+    if (img.src == "http://localhost:5000/static/images/seats/seat-curr-select.png") {
+      img.src = "{{ url_for('static', filename='images/seats/seat-curr-avail.png') }}";            
+    }
+    else {
+      img.src = "{{ url_for('static', filename='images/seats/seat-curr-select.png') }}"            
+    }
+  }
+
+ 
+</script>
+{% endblock %}

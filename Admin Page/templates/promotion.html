@@ -1,0 +1,190 @@
+  {% extends "baseAdmin.html" %}
+  
+  <!-- Content Wrapper. Contains page content -->
+  {% block content %}
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Promotion</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Promotion & Events</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+
+          <div class="ml-auto">
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addPromoModal">
+              Add Promotion
+            </button>
+            <button type="submit" class="btn btn-danger" onclick="deleteMovie()">Delete</button>
+          </div>
+        </div>
+        <div class="row">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <td>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input">
+                  </div>
+                </td>
+                <th scope="col">Promotion Name</th>
+                <th scope="col">Discount</th>
+                <th scope="col">Valid Period</th>
+                <th scope="col">Apply to</th>
+                <th scope="col">Method</th>
+                <th scope="col">Usage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input">
+                  </div>
+                </td>
+                <th scope="row">Student Promotion</th>
+                <td>$6 on Tuesday & Thursday at all SAW Theatre. $7 on Monday, Wednesday & Friday at all SAW Theatre.
+                </td>
+                <td>20/11/19 - 27/11/19</td>
+                <td>Students</td>
+                <td>Flash Student Card</td>
+                <td>One Time</td>
+                <td>
+                  <button type="button" class="btn btn-primary" data-toggle="modal"
+                    data-target="#editPromotionDetails1Modal">
+                    Modify Promotion
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rent Movie Modal -->
+    <div class="modal fade" id="addPromoModal" tabindex="-1" role="dialog" aria-labelledby="addPromoModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addPromoModalLabel">Add Promotion</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="PromoName">Promotion Name</label>
+                <input type="text" class="form-control" id="PromoName">
+              </div>
+              <div class="form-group">
+                <label for="PromoDiscount">Discount</label>
+                <input type="text" class="form-control" id="PromoDiscount">
+              </div>
+              <div class="form-group row">
+                <div class="col">
+                  <label for="startDate">Start Date</label>
+                  <input type="date" id="startDate" class="form-control">
+                </div>
+                <div class="col">
+                  <label for="endDate">End Date</label>
+                  <input type="date" id="endDate" class="form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="PromoCondition">Apply to</label>
+                <input type="text" class="form-control" id="PromoCondition">
+              </div>
+              <div class="form-group">
+                <label for="PromoMethod">Method</label>
+                <input type="text" class="form-control" id="PromoMethod">
+              </div>
+              <div class="form-group">
+                <label for="PromoUsage">Usage</label>
+                <input type="text" class="form-control" id="PromoUsage">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="addMovie()">Add Promotion</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- edit Promotion Details 1 Modal -->
+    <div class="modal fade" id="editPromotionDetails1Modal" tabindex="-1" role="dialog"
+      aria-labelledby="editPromotionDetails1ModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editPromotionDetails1ModalLabel">Edit Rent Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="PromoName">Promotion Name</label>
+                <input type="text" class="form-control" id="PromoName">
+              </div>
+              <div class="form-group">
+                <label for="PromoDiscount">Discount</label>
+                <input type="text" class="form-control" id="PromoDiscount">
+              </div>
+              <div class="form-group row">
+                <div class="col">
+                  <label for="startDate">Start Date</label>
+                  <input type="date" id="startDate" class="form-control">
+                </div>
+                <div class="col">
+                  <label for="endDate">End Date</label>
+                  <input type="date" id="endDate" class="form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="PromoCondition">Apply to</label>
+                <input type="text" class="form-control" id="PromoCondition">
+              </div>
+              <div class="form-group">
+                <label for="PromoMethod">Method</label>
+                <input type="text" class="form-control" id="PromoMethod">
+              </div>
+              <div class="form-group">
+                <label for="PromoUsage">Usage</label>
+                <input type="text" class="form-control" id="PromoUsage">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="editShowTime()">Save Edits</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+      <i class="fas fa-chevron-up"></i>
+    </a>
+  </div>
+  {% endblock %}
+  <!-- /.content-wrapper -->

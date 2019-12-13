@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+
+{% block style %}
+  .table {
+        display: table;
+      }
+
+      .table-row {
+        display: table-row;
+      }
+
+      .table-cell {
+        display: table-cell;
+        padding: 10px;
+        max-width: 400px;
+      }
+
+      .table-caption {
+        display: table-caption;
+      }
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-2">
+      <div class="row">
+        <div class="col">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{ url_for('home') }}">HOME</a></li>
+              <li class="breadcrumb-item"><a href="{{ url_for('movieslist') }}">MOVIES LIST</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Joker NC16</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-3">
+          <img src="{{ url_for('static', filename='images/movie details/Poster-Joker-V1.jpg') }}" alt="" width="270">
+        </div>
+        <div class="col-7 align-self-center ml-3">
+          <div class="row mb-2">
+            <div class="col">
+              <h4>Joker NC16</h4>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-3">
+              <span>RUNNING TIME</span>
+              <br>
+              <span>1 hr 43 mins</span>
+            </div>
+            <div class="col-3">
+              <span>RATING</span>
+              <br>
+              <img src="{{ url_for('static', filename='svgs/NC16.svg') }}" alt="" width="60px" height="60px;">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <a class="btn btn-primary" href="{{ url_for('bookmovie') }}" role="button">Book</a>
+            </div>
+            <div class="col-3">              
+              <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#logInModal">
+                  Rent
+                </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h3>Trailer</h3>        
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/t433PEQGErc?autoplay=1&mute=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-8">
+          <div class="table">
+            <div class="table-row">
+              <div class="table-cell">
+                <h4>SYNOPSIS</h4>
+              </div>
+              <div class="table-cell">
+                <p>A failed stand-up comedian is driven insane and becomes a psychopathic murderer.</p>
+              </div>
+            </div>
+            <div class="table-row">
+              <div class="table-cell">
+                <h4>MAIN CAST</h4>
+              </div>
+              <div class="table-cell">
+                <p>Joaquin Phoenix, Robert De Niro, Zazie Beetz, Bill Camp, Frances Conroy, Brett Cullen, Glenn Fleshler, Douglas Hodge, Marc Maron, Josh Pais, Shea Whigham</p>
+              </div>
+            </div>
+            <div class="table-row">
+              <div class="table-cell">
+                <h4>SUBTITLES</h4>
+              </div>
+              <div class="table-cell">
+                <p>With Chinese Subtitles</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="table">
+            <div class="row">
+              <div class="table-cell">
+                <h4>DIRECTOR</h4>
+              </div>
+              <div class="table-cell">
+                <p>Todd Phillips</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="table-cell">
+                <h4>GENRE</h4>
+              </div>
+              <div class="table-cell">
+                <p>Action, Adventure, Drama</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="table-cell">
+                <h4>LANGUAGE</h4>
+              </div>
+              <div class="table-cell">
+                <p>English</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="table-cell">
+                <h4>RELEASE DATE</h4>
+              </div>
+              <div class="table-cell">
+                <p>Thu, 3 Oct</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Login Modal -->
+    <div class="modal" id="logInModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+        
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Log In</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form action="">
+              <div class="form-group">
+                  <label for="username">Username</label>
+                  <input type="text" class="form-control" id="username">
+              </div>
+              <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password">
+              </div>
+              <div class="forgot-password">                
+                <p class="text-right"><a href="#" class=".text-muted">Forgot Password?</a></p>
+              </div>
+              <button type="submit" class="btn btn-primary">Log in</button>            
+            </form>
+          </div>
+          
+          <!-- Modal footer -->
+          <div class="modal-footer justify-content-center">
+            <div>
+              <small>Do not have an account?</small>
+              <br>
+              <small><a href="#" class=".text-muted" data-toggle="modal" data-target="#registerModal">Sign Up</a></small>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+          
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Register</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+              <form action="">
+                <div class="form-group">
+                  <label for="firstName">First Name</label>
+                  <input type="text" class="form-control" id="firstName">
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Last Name</label>
+                  <input type="text" class="form-control" id="lastName">
+                </div>
+                <div class="form-group">
+                  <label for="gender">Gender</label>
+                  <select class="form-control" id="gender">
+                    <option>Select</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="dateOfBirth">Date Of Birth</label>
+                  <input type="date" class="form-control" id="dateOfBirth">
+                </div>
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input type="text" class="form-control" id="username">
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" class="form-control" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password">
+                </div>
+                <div class="forgot-password">                
+                  <p class="text-right"><a href="#" class=".text-muted">Forgot Password?</a></p>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>            
+              </form>
+            </div>
+            
+            <!-- Modal footer -->
+            <div class="modal-footer justify-content-center">
+              <div>
+                <small>Already have an account?</small>
+                <br>
+                <small><a href="#" class=".text-muted" data-toggle="modal" data-target="#logInModal">Log In</a></small>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

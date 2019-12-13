@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% block style %}
+.nav-num, .quick-filter {
+border: solid #007bc4 2.5px;
+background-color: #041c2c;
+color: white;
+padding: 10px 20px;
+cursor: pointer;
+border-radius: 2.5px;
+}
+
+.nav-num:hover {
+color: white;
+background-color: #007bc4;
+}
+
+.quick-filter:hover {
+color: white;
+background-color: #007bc4;
+}
+
+.content {
+position: relative;
+width: 90%;
+max-width: 400px;
+margin: auto;
+overflow: hidden;
+}
+
+.content .content-overlay {
+background: rgba(0,0,0,0.7);
+position: absolute;
+height: 99%;
+width: 100%;
+left: 0;
+top: 0;
+bottom: 0;
+right: 0;
+opacity: 0;
+-webkit-transition: all 0.4s ease-in-out 0s;
+-moz-transition: all 0.4s ease-in-out 0s;
+transition: all 0.4s ease-in-out 0s;
+}
+
+.content:hover .content-overlay{
+opacity: 1;
+}
+
+.content-image{
+width: 100%;
+}
+
+.content-details {
+position: absolute;
+text-align: center;
+padding-left: 1em;
+padding-right: 1em;
+width: 100%;
+top: 50%;
+left: 50%;
+opacity: 0;
+-webkit-transform: translate(-50%, -50%);
+-moz-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+-webkit-transition: all 0.3s ease-in-out 0s;
+-moz-transition: all 0.3s ease-in-out 0s;
+transition: all 0.3s ease-in-out 0s;
+}
+
+.content:hover .content-details{
+top: 50%;
+left: 50%;
+opacity: 1;
+}
+
+.fadeIn-bottom{
+top: 80%;
+}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row mt-2">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ url_for('home') }}">HOME</a></li>
+          <li class="breadcrumb-item active" aria-current="page">MOVIES LIST</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="genreFilter">Genre</label>
+        </div>
+        <select class="custom-select" id="genreFilter">
+          <option selected>All</option>
+          <option value="Action">Action</option>
+          <option value="Adventure">Adventure</option>
+          <option value="Comedy">Comedy</option>
+        </select>
+
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2 d-flex justify-content-center">
+    <div class="col-10 d-flex justify-content-around">
+      <div class="quick-filter">
+        <h5>Most Watched</h5>
+      </div>
+      <div class="quick-filter">
+        <h5>Release Date</h5>
+      </div>
+      <div class="quick-filter">
+        <h5>Recently Added</h5>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3 movie-row-1">
+    <div class="col-2 movie1">
+      <div class="content">
+        <a href="{{ url_for('frozenmoviedetails') }}">
+          <div class="content-overlay"></div>
+          <img class="content-image"
+            src="{{ url_for('static', filename='images/movie details/Poster-Frozen-V3.jpg') }}">
+          <div class="content-details fadeIn-bottom">
+            <h3 class="content-title">Frozen 2</h3>
+            <p class="content-text">This is a short description</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-2 movie2">
+      <div class="content">
+        <a href="{{ url_for('jokermoviedetails') }}">
+          <div class="content-overlay"></div>
+          <img class="content-image" src="{{ url_for('static', filename='images/movie details/Poster-Joker-V1.jpg') }}">
+          <div class="content-details fadeIn-bottom">
+            <h3 class="content-title">Joker</h3>
+            <p class="content-text">This is a short description</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-2 movie2">
+        <div class="content">
+          <!-- <a href="{{ url_for('jokermoviedetails') }}"> -->
+            <div class="content-overlay"></div>
+            <img class="content-image" src="{{ url_for('static', filename='images/interstellar.jpg') }}" height="100%">
+            <div class="content-details fadeIn-bottom">
+              <h3 class="content-title">Interstellar</h3>
+              <p class="content-text">This is a short description</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col-2 movie2">
+          <div class="content">
+            <!-- <a href="{{ url_for('jokermoviedetails') }}"> -->
+              <div class="content-overlay"></div>
+              <img class="content-image" src="{{ url_for('static', filename='images/doraCover.jpg') }}" height="100%">
+              <div class="content-details fadeIn-bottom">
+                <h3 class="content-title">Dora</h3>
+                <p class="content-text">This is a short description</p>
+              </div>
+            </a>
+          </div>
+        </div>
+  </div>
+  <div class="row mt-3 d-flex justify-content-center">
+    <div class="col-5 d-flex justify-content-around">
+      <div class="nav-num">
+        <h6>Prev</h6>
+      </div>
+      <div class="nav-num">
+        <h6>1</h6>
+      </div>
+      <div class="nav-num">
+        <h6>2</h6>
+      </div>
+      <div class="nav-num">
+        <h6>3</h6>
+      </div>
+      <div class="nav-num">
+        <h6>Next</h6>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- letter filter -->
+
+
+{% endblock %}

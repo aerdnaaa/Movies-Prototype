@@ -1,0 +1,345 @@
+{% extends "baseAdmin.html" %}
+<!-- Content Wrapper. Contains page content -->
+{% block content %}
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Booking</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Booking</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        
+        <div class="ml-auto">            
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addMovieModal">
+            Add Show Timing
+          </button>
+          <button type="submit" class="btn btn-danger" onclick="deleteMovie()">Delete</button>
+        </div>
+      </div>
+      <div class="row">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <td>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input">                    
+                  </div>
+                </td>
+              <th scope="col">No.</th>
+              <th scope="col">Theatre Name</th>
+              <th scope="col">Movie Title</th>
+              <th scope="col">Show Period</th>
+              <th scope="col">TimeSlots</th>                
+              <th scope="col">Halls</th>                
+              <th scope="col">Modify</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input">                    
+                  </div>
+                </td>
+              <th scope="row">1</th>
+              <td>Saw Theatres Lido</td>
+              <td>Frozen II</td>
+              <td>15 Nov 2019 - 21 Nov 2019</td>
+              <td>9 a.m. - 12 p.m.</td>
+              <td>6</td>                
+              <td>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editMovieShowTime1Modal">
+                    Modify Showtime
+                  </button>           
+              </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input">                    
+                    </div>
+                  </td>
+                <th scope="row">2</th>
+                <td>Saw Theatres Lido</td>
+                <td>Frozen II</td>
+                <td>15 Nov 2019 - 21 Nov 2019</td>
+                <td>12 p.m. - 3 p.m.</td>
+                <td>6</td>                
+                <td>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editMovieShowTime1Modal">
+                      Modify Showtime
+                    </button>           
+                </td>
+              </tr>
+              <tr>
+                  <td>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input">                    
+                      </div>
+                    </td>
+                  <th scope="row">3</th>
+                  <td>Saw Theatres Lido</td>
+                  <td>Frozen II</td>
+                  <td>15 Nov 2019 - 21 Nov 2019</td>
+                  <td>6 p.m. - 9 p.m.</td>
+                  <td>6</td>                
+                  <td>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editMovieShowTime1Modal">
+                        Modify Showtime
+                      </button>           
+                  </td>
+                </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Add Movie Showtime Modal -->
+  <div class="modal fade" id="addMovieModal" tabindex="-1" role="dialog" aria-labelledby="addMovieModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addMovieModalLabel">Add Show Timing</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+                <label for="threateName">Theatre Name</label>                  
+                <select class="custom-select" id="threateName">
+                    <option value=""></option>                  
+                    <option value="1">Jem</option>
+                    <option value="2">Saw Tower</option>                      
+                  </select>
+            </div>
+            <div class="form-group">
+              <label for="movieTitle">Movie Title</label>
+              <select class="custom-select" id="movieTitle">   
+                  <option value=""></option>                 
+                  <option value="1">Joker</option>
+                  <option value="2">Frozen</option>                    
+              </select>
+            </div>
+            <div class="form-group row">                
+              <div class="col">
+                  <label for="startDate">Start Date</label>
+                  <input type="date" id="startDate" class="form-control">
+              </div>                                
+              <div class="col">
+                  <label for="endDate">End Date</label>
+                  <input type="date" id="endDate" class="form-control">
+              </div>                
+            </div>
+            <div class="form-group">
+                <label for="movieTimeSlot">TimeSlots</label>
+                <select class="custom-select" id="movieTimeSlot"> 
+                    <option value=""></option>                     
+                    <option value="9 a.m. - 12 p.m.">9 a.m. - 12 p.m.</option>
+                    <option value="12 p.m. - 3 p.m.">12 p.m. - 3 p.m.</option>
+                    <option value="3 p.m. - 6 p.m.">3 p.m. - 6 p.m.</option>
+                    <option value="6 p.m. - 9 p.m.">6 p.m. - 9 p.m.</option>
+                    <option value="9 p.m. - 12 a.m.">9 p.m. - 12 a.m.</option>
+                    <option value="12 a.m. - 3 a.m.">12 a.m. - 3 a.m.</option>
+                </select>
+              </div>
+            <div class="form-group">
+                <label for="hallNumber">Hall Number</label>
+                <select class="custom-select" id="hallNumber"> 
+                    <option value=""></option>               
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="addMovie()" >Add Theatre</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- edit Movie Show Time 1 Modal -->
+  <div class="modal fade" id="editMovieShowTime1Modal" tabindex="-1" role="dialog" aria-labelledby="editMovieShowTime1Modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editMovieShowTime1Modal">Edit Showtime</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <label for="threateName">Theatre Name</label>                  
+                    <select class="custom-select" id="threateName">
+                        <option value=""></option>                  
+                        <option value="1">Jem</option>
+                        <option value="2">Saw Tower</option>                      
+                      </select>
+                </div>
+                <div class="form-group">
+                  <label for="movieTitle">Movie Title</label>
+                  <select class="custom-select" id="movieTitle">   
+                      <option value=""></option>                 
+                      <option value="1">Joker</option>
+                      <option value="2">Frozen</option>                    
+                  </select>
+                </div>
+                <div class="form-group row">                
+                  <div class="col">
+                      <label for="startDate">Start Date</label>
+                      <input type="date" id="startDate" class="form-control">
+                  </div>                                
+                  <div class="col">
+                      <label for="endDate">End Date</label>
+                      <input type="date" id="endDate" class="form-control">
+                  </div>                
+                </div>
+                <div class="form-group">
+                    <label for="movieTimeSlot">TimeSlots</label>
+                    <select class="custom-select" id="movieTimeSlot"> 
+                        <option value=""></option>                     
+                        <option value="9 a.m. - 12 p.m.">9 a.m. - 12 p.m.</option>
+                        <option value="12 p.m. - 3 p.m.">12 p.m. - 3 p.m.</option>
+                        <option value="3 p.m. - 6 p.m.">3 p.m. - 6 p.m.</option>
+                        <option value="6 p.m. - 9 p.m.">6 p.m. - 9 p.m.</option>
+                        <option value="9 p.m. - 12 a.m.">9 p.m. - 12 a.m.</option>
+                        <option value="12 a.m. - 3 a.m.">12 a.m. - 3 a.m.</option>
+                    </select>
+                  </div>
+                <div class="form-group">
+                    <label for="hallNumber">Hall Number</label>
+                    <select class="custom-select" id="hallNumber"> 
+                        <option value=""></option>               
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                    </select>
+                </div>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="editShowTime()" >Save Edits</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- edit Movie Show Time 2 Modal -->
+  <div class="modal fade" id="editMovieShowTime2Modal" tabindex="-1" role="dialog" aria-labelledby="editMovieShowTime2Modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editMovieShowTime2Modal">Edit Showtime</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="form-group">
+                    <label for="threateName">Theatre Name</label>                  
+                    <select class="custom-select" id="threateName">
+                        <option value=""></option>                  
+                        <option value="1">Jem</option>
+                        <option value="2">Saw Tower</option>                      
+                      </select>
+                </div>
+                <div class="form-group">
+                  <label for="movieTitle">Movie Title</label>
+                  <select class="custom-select" id="movieTitle">   
+                      <option value=""></option>                 
+                      <option value="1">Joker</option>
+                      <option value="2">Frozen</option>                    
+                  </select>
+                </div>
+                <div class="form-group row">                
+                  <div class="col">
+                      <label for="startDate">Start Date</label>
+                      <input type="date" id="startDate" class="form-control">
+                  </div>                                
+                  <div class="col">
+                      <label for="endDate">End Date</label>
+                      <input type="date" id="endDate" class="form-control">
+                  </div>                
+                </div>
+                <div class="form-group">
+                    <label for="movieTimeSlot">TimeSlots</label>
+                    <select class="custom-select" id="movieTimeSlot"> 
+                        <option value=""></option>                     
+                        <option value="9 a.m. - 12 p.m.">9 a.m. - 12 p.m.</option>
+                        <option value="12 p.m. - 3 p.m.">12 p.m. - 3 p.m.</option>
+                        <option value="3 p.m. - 6 p.m.">3 p.m. - 6 p.m.</option>
+                        <option value="6 p.m. - 9 p.m.">6 p.m. - 9 p.m.</option>
+                        <option value="9 p.m. - 12 a.m.">9 p.m. - 12 a.m.</option>
+                        <option value="12 a.m. - 3 a.m.">12 a.m. - 3 a.m.</option>
+                    </select>
+                  </div>
+                <div class="form-group">
+                    <label for="hallNumber">Hall Number</label>
+                    <select class="custom-select" id="hallNumber"> 
+                        <option value=""></option>               
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                    </select>
+                </div>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="editShowTime()" >Save Edits</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </a>
+</div>
+{% endblock %}
+<!-- /.content-wrapper -->
+

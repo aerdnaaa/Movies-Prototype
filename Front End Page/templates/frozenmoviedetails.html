@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+{% block style %}
+  .table {
+        display: table;
+      }
+
+      .table-row {
+        display: table-row;
+      }
+
+      .table-cell {
+        display: table-cell;
+        padding: 10px;
+        max-width: 400px;
+      }
+
+      .table-caption {
+        display: table-caption;
+      }
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-2">
+      <div class="row">
+        <div class="col">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{ url_for('home') }}">HOME</a></li>
+              <li class="breadcrumb-item"><a href="{{ url_for('movieslist') }}">MOVIES LIST</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Disney's Frozen 2</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-3">
+          <img src="{{ url_for('static', filename='images/movie details/Poster-Frozen-V3.jpg') }}" alt="">
+        </div>
+        <div class="col-7 align-self-center ml-3">
+          <div class="row mb-2">
+            <div class="col">
+              <h4>Disney's Frozen 2 (冰雪奇缘 2)</h4>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-3">
+              <span>RUNNING TIME</span>
+              <br>
+              <span>1 hr 49 mins</span>
+            </div>
+            <div class="col-3">
+              <span>RATING</span>
+              <br>
+              <img src="{{ url_for('static', filename='svgs/PG.svg') }}" alt="" width="60px" height="60px;">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <a class="btn btn-primary" href="{{ url_for('bookmovie') }}" role="button">Book</a>
+            </div>
+            <div class="col-3">
+              <a class="btn btn-secondary" href="#" role="button" data-toggle="modal" data-target="#paymentModal">Rent</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h3>Trailer</h3>
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/bwzLiQZDw2I?autoplay=1&mute=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-8">
+          <div class="table">
+            <div class="table-row">
+              <div class="table-cell">
+                <h4>SYNOPSIS</h4>
+              </div>
+              <div class="table-cell">
+                <p>Anna, Elsa, Kristoff, Olaf and Sven leave Arendelle to travel to an ancient, autumn-bound forest of an enchanted land. They set out to find the origin of Elsa's powers in order to save their kingdom.</p>
+              </div>
+            </div>
+            <div class="table-row">
+              <div class="table-cell">
+                <h4>MAIN CAST</h4>
+              </div>
+              <div class="table-cell">
+                <p>Idina Menzel, Kristen Bell, Jonathan Groff, Josh Gad</p>
+              </div>
+            </div>
+            <div class="table-row">
+              <div class="table-cell">
+                <h4>SUBTITLES</h4>
+              </div>
+              <div class="table-cell">
+                <p>With Chinese Subtitles</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="table">
+            <div class="row">
+              <div class="table-cell">
+                <h4>DIRECTOR</h4>
+              </div>
+              <div class="table-cell">
+                <p>Chris Buck, Jennifer Lee</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="table-cell">
+                <h4>GENRE</h4>
+              </div>
+              <div class="table-cell">
+                <p>Action, Adventure, Comedy, Family</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="table-cell">
+                <h4>LANGUAGE</h4>
+              </div>
+              <div class="table-cell">
+                <p>English</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="table-cell">
+                <h4>RELEASE DATE</h4>
+              </div>
+              <div class="table-cell">
+                <p>Thu, 21 Nov</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Modal -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+          
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Payment</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-5">
+                  <h5>Rented Movie</h5>                  
+                </div>
+                <div class="col-3 ml-auto">
+                  <h5>Total Cost</h5>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-5">
+                  <h6>Frozen II</h6>          
+                </div>
+                <div class="col-3 ml-auto">
+                  <h6>SGD 7.00</h6>
+                </div>
+              </div>
+              <form action="">
+                <div class="form-group">
+                  <label for="nameOnCard">Name of card</label>
+                  <input type="text" class="form-control" id="nameOnCard">
+                </div>
+                <div class="form-group">
+                  <label for="cardNumber">Card Number</label>
+                  <input type="number" class="form-control" id="cardNumber">
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-6">
+                    <label for="expirationDate">Expiration Date</label>
+                    <input type="month" class="form-control" id="expirationDate">
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="securityCode">CVV</label>
+                    <input type="number" class="form-control" id="securityCode">
+                  </div>
+                </div>               
+                <button type="submit" class="btn btn-lg btn-primary btn-block submit-button">Pay »</button>            
+              </form>
+            </div>
+            
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+    </div>
+{% endblock %}

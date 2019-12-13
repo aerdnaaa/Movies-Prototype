@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% from "includes/_formhelper.html" import render_field %}
+<div class="container">
+<br>
+<h1 class=" text-dark text-center  p-2">Login
+</h1>
+<hr class="new1" width="35%">
+<form class="col-lg-4 offset-lg-4 text-center p-2">
+  <div class="form-row my-1">
+    <div class="col-lg-6 offset-lg-3">
+      {{ render_field(form.username, class="form-control") }}
+    </div>
+    <div class="col-lg-6 offset-lg-3">
+      {{ render_field(form.password, class="form-control") }}
+    </div>
+  </div>
+      <div class="form-row">
+            <input type="submit" value="Login" class="btn btn-dark  py-2 my-4 col-lg-2 offset-lg-5">
+    </div>
+</form>
+<hr class="new1" width="35%">
+</div>
+{% endblock %}

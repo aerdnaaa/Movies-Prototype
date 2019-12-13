@@ -1,0 +1,340 @@
+{% extends "baseAdmin.html" %}
+
+  <!-- Content Wrapper. Contains page content -->
+  {% block content %}
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Rent</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Rent</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            
+            <div class="ml-auto">            
+              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addMovieModal">
+                Add Rent Movie
+              </button>
+              <button type="submit" class="btn btn-danger" onclick="deleteMovie()">Delete</button>
+            </div>
+          </div>
+          <div class="row">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <td>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input">                    
+                      </div>
+                    </td>
+                  <th scope="col">No.</th>
+                  <th scope="col">Users</th>
+                  <th scope="col">Movie Title</th>
+                  <th scope="col">Rent Period</th>
+                  <th scope="col">Price</th>                               
+                  <th scope="col">Modify</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input">                    
+                      </div>
+                    </td>
+                  <th scope="row">1</th>
+                  <td></td>
+                  <td>Joker</td>
+                  <td>20/11/19 - 27/11/19</td>
+                  <td>$13</td>              
+                  <td>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editRentDetails1Modal">
+                          Modify Rent Details
+                        </button>           
+                  </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-check">
+                          <input type="checkbox" class="form-check-input">                    
+                        </div>
+                      </td>
+
+                <th scope="row">2</th>
+                  <td></td>
+                  <td>Frozen II</td>
+                  <td>21/11/19 - 28/11/19</td>
+                  <td>$10</td>
+                  <td>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editRentDetails2Modal">
+                          Modify Rent Details
+                        </button>                        
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input">                    
+                      </div>
+                    </td>
+                    
+              <th scope="row">3</th>
+                <td></td>
+                <td>Dora and the lost city of gold</td>
+                <td>21/11/19 - 28/11/19</td>
+                <td>$7</td>
+                <td>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editRentDetails3Modal">
+                        Modify Rent Details
+                      </button>                        
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input">                    
+                    </div>
+                  </td>
+                  
+            <th scope="row">4</th>
+              <td></td>
+              <td>Interstellar</td>
+              <td>21/11/19 - 28/11/19</td>
+              <td>$7</td>
+              <td>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editRentDetails4Modal">
+                      Modify Rent Details
+                    </button>                        
+              </td>
+            </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+  
+      <!-- Rent Movie Modal -->
+      <div class="modal fade" id="addMovieModal" tabindex="-1" role="dialog" aria-labelledby="addMovieModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addMovieModalLabel">Add Rent Movie</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="movieTitle">Movie Title</label>
+                  <select class="custom-select" id="movieTitle">   
+                      <option value=""></option>                 
+                      <option value="1">Joker</option>
+                      <option value="2">Frozen</option>
+                                          
+                  </select>
+                </div>
+                <div class="form-group row">                
+                  <div class="col">
+                      <label for="startDate">Start Date</label>
+                      <input type="date" id="startDate" class="form-control">
+                  </div>                                
+                  <div class="col">
+                      <label for="endDate">End Date</label>
+                      <input type="date" id="endDate" class="form-control">
+                  </div>                
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" onclick="addMovie()" >Add Theatre</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- edit Rent Details 1 Modal -->
+      <div class="modal fade" id="editRentDetails1Modal" tabindex="-1" role="dialog" aria-labelledby="editRentDetails1Modal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editRentDetails1Modal">Edit Rent Details</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                      <label for="movieTitle">Movie Title</label>
+                      <select class="custom-select" id="movieTitle">   
+                          <option value=""></option>                 
+                          <option value="1">Joker</option>
+                          <option value="2">Frozen</option>                    
+                      </select>
+                    </div>
+                    <div class="form-group row">                
+                      <div class="col">
+                          <label for="startDate">Start Date</label>
+                          <input type="date" id="startDate" class="form-control">
+                      </div>                                
+                      <div class="col">
+                          <label for="endDate">End Date</label>
+                          <input type="date" id="endDate" class="form-control">
+                      </div>                
+                    </div>
+                  </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" onclick="editShowTime()" >Save Edits</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- edit Rent Movie Details 2 Modal -->
+      <div class="modal fade" id="editRentDetails2Modal" tabindex="-1" role="dialog" aria-labelledby="editRentDetails2Modal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editRentDetails2Modal">Edit Showtime</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                      <label for="movieTitle">Movie Title</label>
+                      <select class="custom-select" id="movieTitle">   
+                          <option value=""></option>                 
+                          <option value="1">Joker</option>
+                          <option value="2">Frozen</option>                    
+                      </select>
+                    </div>
+                    <div class="form-group row">                
+                      <div class="col">
+                          <label for="startDate">Start Date</label>
+                          <input type="date" id="startDate" class="form-control">
+                      </div>                                
+                      <div class="col">
+                          <label for="endDate">End Date</label>
+                          <input type="date" id="endDate" class="form-control">
+                      </div>                
+                    </div>
+                  </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" onclick="editShowTime()" >Save Edits</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- edit Rent Movie Details 3 Modal -->
+      <div class="modal fade" id="editRentDetails3Modal" tabindex="-1" role="dialog" aria-labelledby="editRentDetails3Modal" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="editRentDetails3Modal">Edit Showtime</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <form>
+                      <div class="form-group">
+                        <label for="movieTitle">Movie Title</label>
+                        <select class="custom-select" id="movieTitle">   
+                            <option value=""></option>                 
+                            <option value="1">Joker</option>
+                            <option value="2">Frozen</option>                    
+                        </select>
+                      </div>
+                      <div class="form-group row">                
+                        <div class="col">
+                            <label for="startDate">Start Date</label>
+                            <input type="date" id="startDate" class="form-control">
+                        </div>                                
+                        <div class="col">
+                            <label for="endDate">End Date</label>
+                            <input type="date" id="endDate" class="form-control">
+                        </div>                
+                      </div>
+                    </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="editShowTime()" >Save Edits</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <!-- edit Rent Movie Details 4 Modal -->
+      <div class="modal fade" id="editRentDetails4Modal" tabindex="-1" role="dialog" aria-labelledby="editRentDetails4Modal" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="editRentDetails4Modal">Edit Showtime</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <form>
+                      <div class="form-group">
+                        <label for="movieTitle">Movie Title</label>
+                        <select class="custom-select" id="movieTitle">   
+                            <option value=""></option>                 
+                            <option value="1">Joker</option>
+                            <option value="2">Frozen</option>                    
+                        </select>
+                      </div>
+                      <div class="form-group row">                
+                        <div class="col">
+                            <label for="startDate">Start Date</label>
+                            <input type="date" id="startDate" class="form-control">
+                        </div>                                
+                        <div class="col">
+                            <label for="endDate">End Date</label>
+                            <input type="date" id="endDate" class="form-control">
+                        </div>                
+                      </div>
+                    </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="editShowTime()" >Save Edits</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+      <i class="fas fa-chevron-up"></i>
+    </a>
+  </div>
+  {% endblock %}
+  <!-- /.content-wrapper -->
+
+  

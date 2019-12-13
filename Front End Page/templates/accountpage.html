@@ -1,0 +1,325 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+        <div class="container position-relative" id="content">
+            <div class="row h-100">
+                <aside class="col-md-3 bg-light" id="left">
+                    <div class="mt-5 mb-3 sticky-top" id="side">
+                        <img src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcS9DZMGYOlTA4P5mUIaV4lVxJbDEWgQgXhTeH26Wfjn9YW1wDx5cw" alt="..." class="rounded-circle">
+                        <div class="display-4">Test User</div>
+                        <ul class="nav flex-md-column flex-row justify-content-between" id="sidenav">
+                            <!-- Side bar -->
+                            <li class="nav-item"><a href="#CD" class="nav-link active text-dark">Contact Details</a></li>
+                            <li class="nav-item collapsed active" data-toggle="collapse" data-target="#movies"> 
+                                <a href="#movies" class="nav-link text-dark">My Movies</a>
+                            </li>
+                                <ul class="sub-menu collapse" id="movies">
+                                        <li class="nav-item"><a href="#RML" class="nav-link">Rented Movies Library</a></li>
+                                        <li class="nav-item"><a href="#WL" class="nav-link">Watchlist</a></li>
+                                        <li class="nav-item"><a href="#PW" class="nav-link">Previously Watched</a></li>
+                                </ul>
+                            <li class="nav-item collapsed active" data-toggle="collapse" data-target="#billing">
+                                <a href="#billing" class="nav-link text-dark">Billing</a>
+                            </li>
+                                <ul class="sub-menu collapse" id="billing">
+                                        <li class="nav-item"><a href="#PH" class="nav-link">Payment History</a></li>
+                                        <li class="nav-item"><a href="#PM" class="nav-link">Payment Methods</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item"><a href="#sec5" class="nav-link text-dark">Road Map</a></li>
+                        </ul>
+                    </div>
+                </aside>
+                <main class="col py-5">
+                    <div class="row position-relative">
+                        <div class="col">
+                            <div class="tab-content py-3 position-relative">
+                                <!-- Content -->
+                                <div class="tab-pane active position-relative" id="tab1" role="tabpanel">
+                                    <h1 class="mb-3">Account Information</h1>
+                                    <hr class="new1">
+                                    <div class="anchor" id="CD"></div>
+                                    <h3>Contact Details</h3>
+                                    <div class="pl-4">
+                                        <div class="row">
+                                            <div class="col-lg-3 ">
+                                                    <h6>First Name</h6>
+                                                    <p>Shaun</p>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                    <h6>Last Name</h6>
+                                                    <p>Harris</p>
+                                            </div>
+                                        </div>
+                                        <h6>Gender</h6>
+                                        <p>Male</p>
+                                        <h6>Date of Birth</h6>
+                                        <p>20/02/1990</p>
+                                        <div class="row">
+                                             <div class="col-lg-3 ">
+                                                <h6>Username</h6>
+                                                <p>Test User</p>                                                   
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <h6>Email Address</h6>
+                                                <p>ShaunHarris@gmail.com</p>                                                      
+                                            </div>
+                                        </div>        
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <button type="button" class="btn btn-secondary btn-sm">Update Contact Details</button>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <button type="button" class="btn btn-secondary btn-sm">Change Password</button>
+                                            </div>
+                                            <div class="col-lg-">
+                                                <button type="button" class="btn btn-secondary btn-sm">Change Display Picture</button>
+                                            </div>
+                                        </div>                                       
+                                    </div>
+                                    <hr class="new1">
+
+
+                                    <div class="anchor" id="Movies"></div>
+                                    <h3>My Movies</h3>
+                                    <div class="pl-4">
+                                            <div class="anchor" id="RML"></div>
+                                            <table class="table table-striped table-light">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="row" colspan="5" class="table-primary"><h5>Rented Movies Library</h5></th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Runtime</th>
+                                                        <th scope="col">Genre</th>
+                                                        <th scope="col">Date added</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr >
+                                                        <th scope="row">1</th>
+                                                        <td>Joker</td>
+                                                        <td>2 hours 2 minutes</td>
+                                                        <td>Drama/Thriller</td>
+                                                        <td>20 November 2019</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">2</th>
+                                                        <td>Inception</td>
+                                                        <td>2 hours 28 minutes</td>
+                                                        <td>Sci-Fi/Thriller</td>
+                                                        <td>20 November 2019</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">3</th>
+                                                        <td>Interstellar</td>
+                                                        <td>2 hours 49 minutes</td>
+                                                        <td>Drama/Mystery</td>
+                                                        <td>20 November 2019</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row" colspan="5"><button type="button" class="btn btn-sm btn-block">View more...</button></th>
+                                                    </tr>                                                                                                                                                                  
+                                                </tbody>
+                                            </table>
+
+                                    
+                                            <div class="anchor" id="WL"></div>
+                                            <table class="table table-striped table-light">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="row" colspan="5" class="table-primary"><h5>Watchlist</h5></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">Name</th>
+                                                            <th scope="col">Runtime</th>
+                                                            <th scope="col">Genre</th>
+                                                            <th scope="col">Date added</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr >
+                                                            <th scope="row">1</th>
+                                                            <td>Joker</td>
+                                                            <td>2 hours 2 minutes</td>
+                                                            <td>Drama/Thriller</td>
+                                                            <td>20 November 2019</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">2</th>
+                                                            <td>Inception</td>
+                                                            <td>2 hours 28 minutes</td>
+                                                            <td>Sci-Fi/Thriller</td>
+                                                            <td>20 November 2019</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td>Interstellar</td>
+                                                            <td>2 hours 49 minutes</td>
+                                                            <td>Drama/Mystery</td>
+                                                            <td>20 November 2019</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row" colspan="5"><button type="button" class="btn btn-sm btn-block">View more...</button></th>
+                                                        </tr>                                                                                                             
+                                                    </tbody>
+                                                </table>
+
+                                            <div class="anchor" id="PW"></div>
+                                            <table class="table table-striped table-light">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="row" colspan="5" class="table-primary"><h5>Previously Watched</h5></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">Name</th>
+                                                            <th scope="col">Runtime</th>
+                                                            <th scope="col">Genre</th>
+                                                            <th scope="col">Date Watched</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr >
+                                                            <th scope="row">1</th>
+                                                            <td>Joker</td>
+                                                            <td>2 hours 2 minutes</td>
+                                                            <td>Drama/Thriller</td>
+                                                            <td>20 November 2019</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">2</th>
+                                                            <td>Inception</td>
+                                                            <td>2 hours 28 minutes</td>
+                                                            <td>Sci-Fi/Thriller</td>
+                                                            <td>20 November 2019</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td>Interstellar</td>
+                                                            <td>2 hours 49 minutes</td>
+                                                            <td>Drama/Mystery</td>
+                                                            <td>20 November 2019</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row" colspan="5"><button type="button" class="btn btn-sm btn-block">View more...</button></th>
+                                                        </tr>                                                                                                                                                                      
+                                                    </tbody>
+                                                </table>
+                                    </div>
+                                    <hr class="new1">
+
+                                    <div class="anchor" id="billing"></div>
+                                    <h3>Billing Information</h3>
+                                    <div class="pl-4">
+                                            <div class="anchor" id="PH"></div>
+                                            <table class="table table-striped table-light">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="row" colspan="5" class="table-primary"><h5>Payment History</h5></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">Name</th>
+                                                            <th scope="col">Price</th>
+                                                            <th scope="col">Method of Payment</th>
+                                                            <th scope="col">Date Purchased</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr >
+                                                            <th scope="row">1</th>
+                                                            <td>Joker</td>
+                                                            <td>$x</td>
+                                                            <td>Credit Card</td>
+                                                            <td>20 November 2019</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">2</th>
+                                                            <td>Inception</td>
+                                                            <td>$x</td>
+                                                            <td>Credit Card</td>
+                                                            <td>20 November 2019</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td>Interstellar</td>
+                                                            <td>$x</td>
+                                                            <td>Credit Card</td>
+                                                            <td>20 November 2019</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row" colspan="5"><button type="button" class="btn btn-sm btn-block">View more...</button></th>
+                                                        </tr>                                                                                                                                                                  
+                                                    </tbody>
+                                                </table>
+
+                                            <div class="anchor" id="PM">
+                                                <h5 class="text-left mt-1">Payment Methods</h5>
+                                                <hr width="100%">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <!-- place card logo next to the visa ending thing -->
+                                                        <!-- maybe just make this a table? idk lol -->
+                                                        <h5>Visa ending in 1234</h5>
+                                                        <p class="text-muted">Expires Jan 2030</p>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <button type="button" class="btn btn-secondary btn-lg">Edit</button>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <h5>Visa ending in 1231</h5>
+                                                        <p class="text-muted">Expires Jan 2020</p>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                         <button type="button" class="btn btn-secondary btn-lg">Edit</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="new1">
+                                    
+                                    <div class="anchor" id="RoadMap"></div>
+                                    <h5>Road Map</h5>
+                                    Road Map goes here
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock%}
+
+
+<!-- Account page problems
+1) It looks like shit LMAO
+    - There is no set color scheme for the website
+    - nor any set design template so the webpages i wrote in html is very different design wise from the rest
+    - The webpages dont seem to have a set "format"
+    - Very basic layout with no animations 
+    - The positions of the elements feel like they are all over the place , i havent quite figured out the grid system in bootstrap so ye lol 
+2)None of the buttons work , just a display of where they will be
+3)Tables
+    -View more.. button doesnt work and i dont know how i would want to display the rest of the list 
+        -Pop up? or just extend 
+    -The table i put in the accout page is manually inputted , i didnt get the data for the table from a database . So all data entries are static
+    -Was thinking maybe i can make each row in the table clickable and it will drop down to provide a quick overview of the selected movie in the "My Movies" section but 
+    i dont know how to do this and im running out of time 
+4)Billing information
+    -I think i shd probably turn the payment methods into a table 
+    -Insert icon for card to the left of the payment method name so Visa logo would be displayed to the left of "Visa ending in..."
+
+5)Road Map
+    -I dont even know how to display this to be honest
+
+-->
