@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from Forms import CreateUserForm, loginform
+# from Forms import CreateUserForm, loginform
 
 app = Flask(__name__)
 
@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template("home.html", title="Home")
+    return render_template("home.html", title="Home", carousel_list=[0,1,2,3,4])
 
 
 # list of movies
