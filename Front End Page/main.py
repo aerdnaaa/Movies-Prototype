@@ -7,7 +7,8 @@ app = Flask(__name__)
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template("home.html", title="Home", carousel_list=[0,1,2,3,4])
+    # carousel list will be created from Admin
+    return render_template("home.html", title="Home", carousel_list=["carousel1.jpeg","carousel2.jpeg","carousel3.jpeg"])
 
 
 # list of movies
@@ -58,7 +59,16 @@ def accountpage():
 
 @app.route("/promotions")
 def promotion():
-    return render_template("promotion.html", title="Promotions")
+    # promotion_list needs a list in a list. Outer list for rows, inner list for promotions in 1 row
+    return render_template("promotion.html", title="Promotions", promotion_list=[{'frozen':'frozen.jpg', 'student':'student.jpg'}])
+
+@app.route("/promotion/<name_of_promo>")
+def promotionDetail(name_of_promo):
+    dictionary_of_promos = {"frozen":{'title':"DISNEY'S FROZEN 2 POPCORN COMBO",'Terms and Conditions':['Not valid with other offers, privileges, promotions or voucher redemptions.','Not valid for group/corporate bookings.'], 'image':'frozen.jpg'},
+        "student":{'title':"STUDENT PRIVILEGES",'Terms and Conditions':['Not valid with other offers, privileges, promotions or voucher redemptions.','Not valid for group/corporate bookings.'], 'image':'student.jpg'}
+    }
+    promo = dictionary_of_promos[name_of_promo]
+    return render_template("promotionDetail.html", promo=promo)
 
 @app.route("/frozenpromo")
 def frozenpromo():

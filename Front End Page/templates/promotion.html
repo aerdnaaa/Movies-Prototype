@@ -21,18 +21,17 @@
       <h2>Promotions</h2>
     </div>
   </div>
-  <div class="row mt-3 movie-row-1">
-    <div class="col-2 movie1">
-      <a href="{{ url_for('frozenpromo') }}">
-        <img src="{{ url_for('static', filename='images/promotions_frozen.jpg') }}" width="100%">
-      </a>
+  {% for dict in promotion_list %}
+    <div class="row mt-3 promo-row-{{ loop.index }}">
+      {% for key in dict %}
+        <div class="col-2 promo-{{ loop.index }}">
+          <a href="{{ url_for('promotionDetail', name_of_promo=key) }}">
+            <img src="{{ url_for('static', filename='images/promotion/' + dict[key]) }}" width="100%">
+          </a>
+        </div>
+      {% endfor %}      
     </div>
-    <div class="col-2 movie2">
-      <a href="{{ url_for('studentpromo') }}">
-        <img src="{{ url_for('static', filename='images/promotions_student.jpg') }}" width="100%">
-      </a>
-    </div>
-  </div>
+  {% endfor %}
 </div>
 
 </div>
