@@ -1,6 +1,9 @@
 from flask import Flask, render_template
+from Forms import CreateMovieTheatreForm
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = "73892748739"
 
 @app.route("/")
 @app.route("/home")
@@ -36,9 +39,12 @@ def calendar():
 def mailbox():
     return render_template("mailbox.html", title="Mailbox")
 
-@app.route("/movieTheatre")
+@app.route("/movieTheatre", methods=["GET","POST"])
 def movieTheatre():
-    return render_template("movie theatre.html", title="Movie Theatre")
+    form = CreateMovieTheatreForm()
+    if form.validate_on_submit():
+        print("jesus is coming")
+    return render_template("movie theatre.html", title="Movie Theatre", form=form)
 
 @app.route("/movies")
 def movies():

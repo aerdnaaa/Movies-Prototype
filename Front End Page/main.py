@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Markup
 # from Forms import CreateUserForm, loginform
 from Promotion import Promotion
 
@@ -65,8 +65,8 @@ def promotion():
 
 @app.route("/promotion/<name_of_promo>")
 def promotionDetail(name_of_promo):
-    frozenPromotion = Promotion("DISNEY'S FROZEN 2 POPCORN COMBO","promotion/frozen.jpg","""<em>Brrr... Are you ready for the magic of winter?</em><b>Follow Elsa and Anna into the unknown with your snowflake Crystal Dome Cups and Tin Tubs!</b>""",['Not valid with other offers, privileges, promotions or voucher redemptions.','Not valid for group/corporate bookings.'])
-    studentPromotion = Promotion("STUDENT PRIVILEGES","promotion/student.jpg","Not Available",['Not valid with other offers, privileges, promotions or voucher redemptions.','Not valid for group/corporate bookings.'])
+    frozenPromotion = Promotion("DISNEY'S FROZEN 2 POPCORN COMBO","promotion/frozen.jpg",Markup("""<em>Brrr... Are you ready for the magic of winter?</em><br><b>Follow Elsa and Anna into the unknown with your snowflake Crystal Dome Cups and Tin Tubs!</b>"""),['Not valid with other offers, privileges, promotions or voucher redemptions.','Not valid for group/corporate bookings.'])
+    studentPromotion = Promotion("STUDENT PRIVILEGES","promotion/student.jpg",Markup("""<table class="table"><tbody><tr><td>$6</td><td>Tue, Thurs</td><td>At all SAW Theatre</td></tr><tr><td>$7</td><td>Mon, Wed, Fri</td><td>At all SAW Theatre</td></tr></tbody></table>"""),['Not valid with other offers, privileges, promotions or voucher redemptions.','Not valid for group/corporate bookings.'])
     dictionary_of_promos = {"frozen":frozenPromotion,"student":studentPromotion}
     promo = dictionary_of_promos[name_of_promo]
     return render_template("promotionDetail.html", promo=promo, title=name_of_promo.capitalize() + " Promo")

@@ -104,26 +104,34 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <form>
+      <form method="POST" action="">
+        {{ form.csrf_token }}
+      <div class="modal-body">    
           <div class="form-group">
-              <label for="theatreName">Theatre Name</label>
-              <input type="text" class="form-control" id="theatreName">
+              <!-- <label for="theatreName">Theatre Name</label>
+              <input type="text" class="form-control" id="theatreName"> -->
+              {{ form.theatre_name.label(class="form-control-label") }}
+              {{ form.theatre_name(class="form-control form-control-lg") }}
           </div>
           <div class="form-group">
-            <label for="theatreImage">Theatre Image</label>
-            <input type="file" class="form-control-file" id="theatreImage">
+            <!-- <label for="theatreImage">Theatre Image</label>
+            <input type="file" class="form-control-file" id="theatreImage"> -->
+            {{ form.theatre_address.label(class="form-control-label") }}
+            {{ form.theatre_address(class="form-control form-control-lg") }}
           </div>
           <div class="form-group">
-              <label for="hallNumber">No. of Hall(s)</label>
-              <input type="number" class="form-control" id="hallNumber" min="1" max="5">
+              <!-- <label for="hallNumber">No. of Hall(s)</label>
+              <input type="number" class="form-control" id="hallNumber" > -->
+              {{ form.theatre_halls.label(class="form-control-label") }}
+              {{ form.theatre_halls(class="form-control form-control-lg",min="1",max="5") }}
           </div>
-        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeAddMovieModal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="addMovieTheatre()" >Add Theatre</button>
+        <!-- <button type="button" class="btn btn-primary" onclick="addMovieTheatre()" >Add Theatre</button> -->
+        {{ form.submit(class="btn btn-primary") }}
       </div>
+    </form>
     </div>
   </div>
 </div>

@@ -27,7 +27,7 @@
           <li class="nav-item has-treeview menu-open">
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link active">
+                <a href="{{ url_for('home') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Admin Dashboard</p>
                 </a>
@@ -35,7 +35,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
+            <a href="{{ url_for('movieTheatre') }}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Movie Theatres
@@ -44,7 +44,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/Page2.html" class="nav-link">
+            <a href="{{ url_for('movies') }}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Movies
@@ -53,7 +53,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/Page3.html" class="nav-link">
+            <a href="{{ url_for('rent') }}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Rent
@@ -62,7 +62,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/Page4.html" class="nav-link">
+            <a href="{{ url_for('booking') }}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Booking
@@ -71,7 +71,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/Page5.html" class="nav-link">
+            <a href="{{ url_for('promotion') }}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Promotion & Events
@@ -80,7 +80,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/calendar.html" class="nav-link">
+            <a href="{{ url_for('calendar') }}" class="nav-link">
               <i class="nav-icon far fa-calendar-alt"></i>
               <p>
                 Calendar
@@ -98,19 +98,19 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/mailbox/mailbox.html" class="nav-link">
+                <a href="{{ url_for('mailbox') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Inbox</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/mailbox/compose.html" class="nav-link">
+                <a href="{{ url_for('composeMail') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Compose</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/mailbox/read-mail.html" class="nav-link">
+                <a href="{{ url_for('readMail') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Read</p>
                 </a>
