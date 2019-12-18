@@ -12,22 +12,24 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ url_for('home') }}">HOME</a></li>
                     <li class="breadcrumb-item" aria-current="page"><a href="{{ url_for('promotion') }}">PROMOTIONS</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ promo.title }}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ promo.get_title() }}</li>
                 </ol>
             </nav>
         </div>
     </div>
     <div class="row">
         <div class="col-5">
-            <img src="{{ url_for('static', filename='images/promotion/' + promo.image) }}" alt="" width="100%">
+            <img src="{{ url_for('static', filename='images/' + promo.get_promotion_image()) }}" alt="" width="100%">
         </div>
         <div class="col-7">
-            <h2>{{ promo.title }}</h2>
-            <em>Brrr... Are you ready for the magic of winter?</em>
-            <b>Follow Elsa and Anna into the unknown with your snowflake Crystal Dome Cups and Tin Tubs!</b>
+            <h2>{{ promo.get_title() }}</h2>
+            <body>
+                {{ promo.get_description() }}    
+            </body>
+            
             <p>Terms and Conditions</p>
             <ul>
-                {% for condition in promo["Terms and Conditions"] %}
+                {% for condition in promo.get_terms_and_conditions() %}
                     <li>{{ condition }}</li>
                 <!-- <li>Not valid with other offers, privileges, promotions or voucher redemptions.</li>
                 <li>Not valid for group/corporate bookings.</li>

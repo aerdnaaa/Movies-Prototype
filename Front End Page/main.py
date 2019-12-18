@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 # from Forms import CreateUserForm, loginform
+from Promotion import Promotion
 
 app = Flask(__name__)
 
@@ -38,7 +39,7 @@ def bookmovieseats():
 
 @app.route("/rentmovie")
 def rentmovie():
-    return render_template("rentmovie.html", title="Rent Movie")
+    return render_template("rentmovie.html", title="Rent Movie", genreList = ["Action","Adventure","Comedy","Horror"], rentMovieList=[[]])
 
 @app.route("/login")
 def login():
@@ -64,19 +65,11 @@ def promotion():
 
 @app.route("/promotion/<name_of_promo>")
 def promotionDetail(name_of_promo):
-    dictionary_of_promos = {"frozen":{'title':"DISNEY'S FROZEN 2 POPCORN COMBO",'Terms and Conditions':['Not valid with other offers, privileges, promotions or voucher redemptions.','Not valid for group/corporate bookings.'], 'image':'frozen.jpg'},
-        "student":{'title':"STUDENT PRIVILEGES",'Terms and Conditions':['Not valid with other offers, privileges, promotions or voucher redemptions.','Not valid for group/corporate bookings.'], 'image':'student.jpg'}
-    }
+    frozenPromotion = Promotion("DISNEY'S FROZEN 2 POPCORN COMBO","promotion/frozen.jpg","""<em>Brrr... Are you ready for the magic of winter?</em><b>Follow Elsa and Anna into the unknown with your snowflake Crystal Dome Cups and Tin Tubs!</b>""",['Not valid with other offers, privileges, promotions or voucher redemptions.','Not valid for group/corporate bookings.'])
+    studentPromotion = Promotion("STUDENT PRIVILEGES","promotion/student.jpg","Not Available",['Not valid with other offers, privileges, promotions or voucher redemptions.','Not valid for group/corporate bookings.'])
+    dictionary_of_promos = {"frozen":frozenPromotion,"student":studentPromotion}
     promo = dictionary_of_promos[name_of_promo]
-    return render_template("promotionDetail.html", promo=promo)
-
-@app.route("/frozenpromo")
-def frozenpromo():
-    return render_template("promotionfrozendetails.html", title="Frozen Promo")
-
-@app.route("/studentpromo")
-def studentpromo():
-    return render_template("promotionstudentdetails.html", title="Frozen Promo")
+    return render_template("promotionDetail.html", promo=promo, title=name_of_promo.capitalize() + " Promo")
 
 if __name__ == "__main__":
     app.run(debug=True)

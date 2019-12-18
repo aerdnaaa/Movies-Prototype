@@ -99,15 +99,16 @@ top: 80%;
         </div>
         <select class="custom-select" id="genreFilter">
           <option selected>All</option>
-          <option value="Action">Action</option>
-          <option value="Adventure">Adventure</option>
-          <option value="Comedy">Comedy</option>
+          <!-- Add genre list -->
+          {% for genre in genreList %}
+            <option value="{{ genre }}">{{ genre }}</option>
+          {% endfor %}
         </select>
-
       </div>
     </div>
   </div>
-  <div class="row mt-2 d-flex justify-content-center">
+  <!-- might not need this filter yet -->
+  <!-- <div class="row mt-2 d-flex justify-content-center">
     <div class="col-10 d-flex justify-content-around">
       <div class="quick-filter">
         <h5>Most Watched</h5>
@@ -119,7 +120,7 @@ top: 80%;
         <h5>Recently Added</h5>
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="row mt-3 movie-row-1">
     <div class="col-2 movie1">
       <div class="content">
