@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, Markup, redirect, url_for
-from Forms import CreateMovieTheatreForm, CreatePromotion
+from Forms import CreateMovieTheatreForm, CreatePromotion, CreateContactUsForm
 from classes import Promotion
 import shelve, os, secrets
 
@@ -95,6 +95,11 @@ def promotionDetail(name_of_promo):
     Promotion_dict = db["promotion"]
     promo = Promotion_dict[name_of_promo]
     return render_template("User/promotionDetail.html", promo=promo, title=name_of_promo.capitalize() + " Promo")
+
+@app.route("/contactUs")
+def contactUs():
+    form = CreateContactUsForm()
+    return render_template("User/contactUs.html", title="Contact Us", form=form)
 
 # admin routes
 @app.route("/admin")

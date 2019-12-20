@@ -34,7 +34,8 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, validators, SubmitField, IntegerField, TextAreaField, DateField, SelectField
-from wtforms.validators import DataRequired, Length
+from wtforms.fields.html5 import EmailField
+from wtforms.validators import DataRequired, Length, Email
 from flask_wtf.file import FileField, FileAllowed
 
 class CreateMovieTheatreForm(FlaskForm):
@@ -44,7 +45,7 @@ class CreateMovieTheatreForm(FlaskForm):
     submit = SubmitField('Add Theatre')
 
 class CreatePromotion(FlaskForm):
-    promotion_title = StringField(label='Promotion Title', validators=[DataRequired(), Length(min=5,max=30)])
+    promotion_title = StringField(label='Promotion Title', validators=[DataRequired(), Length(min=5, max=30)])
     promotion_description = TextAreaField(label='Promotion Description', validators=[DataRequired()])
     promotion_terms_and_condition = TextAreaField(label='Promotion Terms and Condition', validators=[DataRequired()])
     promotion_valid_start_date = StringField(label='Promotion Start Date', validators=[DataRequired()])
@@ -53,3 +54,10 @@ class CreatePromotion(FlaskForm):
     promotion_image = FileField(label='Promotion Image', validators=[FileAllowed(['jpg','png','jpeg'])])
     submit = SubmitField("Add Promotion")
 
+class CreateContactUsForm(FlaskForm):
+    salutation = SelectField("Salutation", validators=[DataRequired()], choices=[("Mr","Mr"),("Mrs","Mrs"),("Ms","Ms"),("Dr","Dr")], default="Mr")
+    first_name = StringField("First Name", validators=[DataRequired()])
+    last_name = StringField("Last Name", validators=[DataRequired()])
+    email = EmailField("Email", validators=[DataRequired(),Email()])
+    message = TextAreaField("Your message", validators=[DataRequired(), Length(min=10, max=2000)])
+    submit = SubmitField("Send Message")
