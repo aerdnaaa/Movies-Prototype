@@ -1,0 +1,65 @@
+.table {
+    display: table;
+  }
+  
+  .movies_ct {
+    display: table-row;
+  }
+  
+  .info, .block-img {
+    display: table-cell;
+    padding-left: 20px;
+    vertical-align: top;
+  }
+  
+  
+  .block-img {
+    padding: 0px;
+    img {
+        width: 166px;
+      }
+  }
+  
+  .duration {
+    font-size: 14px;
+  }
+  
+  .guidance-svg > img {
+    height: 30px;
+    width: auto;
+  }
+  
+  .showtimes-block {
+    background: #e6e6e6;
+    border-radius: 4px;
+    color: #161616;
+    display: inline-flex;
+    flex-wrap: wrap;
+    float: left;
+    font-size: 14px;
+    height: 50px;
+    margin-bottom: 4px;
+    margin-right: 4px;
+    position: relative;
+    text-align: center;
+    width: 80px;
+  }
+  
+  .showtimes-block > a {
+    color: initial;
+    margin-top: 0.6em !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100%;
+    padding: 0px;
+  }
+  
+  /* card item */
+  .item {
+    background-color: #add8e6;
+  }
+  
+  .customPrevBtn, .customNextBtn {
+    cursor: pointer;
+  }
+  

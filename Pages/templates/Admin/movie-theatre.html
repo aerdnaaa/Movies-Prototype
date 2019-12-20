@@ -1,0 +1,306 @@
+{% extends "Admin/baseAdmin.html" %}
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Movie Theatres</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Movie Theatres</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        
+        <div class="ml-auto">            
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addMovieModal">
+            Add Movie Theatres
+          </button>
+          <button type="submit" class="btn btn-danger" onclick="deleteMovieTheatre()">Delete</button>
+        </div>
+      </div>
+      <div class="row">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+                <td>
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" onclick="selectAllTheatre(this)">                    
+                    </div>
+                  </td>
+              <th scope="col">No.</th>
+              <th scope="col">Theatre Name</th>
+              <th scope="col">Image</th>                
+              <th scope="col">Halls</th>
+              <th scope="col">Modify</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input">                    
+                </div>
+              </td>
+              <th scope="row">1</th>
+              <td>Jem</td>
+              <td><img src="https://www.neshoba.org/pcdp/cache/file/774AC7F5-155D-D235-07D8165A3BAAEA42_business-photo.jpg" alt="cinema" height="90" width="150"></td>
+              <td>7</td>
+              <td>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editMovieModal" onclick="changeEditMovieNumber(1)">
+                    Modify Movie Theatre
+                  </button>                               
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input">                    
+                </div>
+              </td>
+              <th scope="row">2</th>
+              <td>Saw Tower</td>
+              <td><img src="https://www.neshoba.org/pcdp/cache/file/774AC7F5-155D-D235-07D8165A3BAAEA42_business-photo.jpg" alt="cinema" height="90" width="150"></td>
+              <td>9</td>
+              <td>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editMovieModal" onclick="changeEditMovieNumber(2)">
+                    Modify Movie Theatre
+                  </button>                       
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </a>
+</div>
+<!-- /.content-wrapper -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="addMovieModal" tabindex="-1" role="dialog" aria-labelledby="addMovieModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addMovieModal">Add Movie</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="">
+        {{ form.csrf_token }}
+      <div class="modal-body">    
+          <div class="form-group">
+              <!-- <label for="theatreName">Theatre Name</label>
+              <input type="text" class="form-control" id="theatreName"> -->
+              {{ form.theatre_name.label(class="form-control-label") }}
+              {{ form.theatre_name(class="form-control form-control-lg") }}
+          </div>
+          <div class="form-group">
+            <!-- <label for="theatreImage">Theatre Image</label>
+            <input type="file" class="form-control-file" id="theatreImage"> -->
+            {{ form.theatre_address.label(class="form-control-label") }}
+            {{ form.theatre_address(class="form-control form-control-lg") }}
+          </div>
+          <div class="form-group">
+              <!-- <label for="hallNumber">No. of Hall(s)</label>
+              <input type="number" class="form-control" id="hallNumber" > -->
+              {{ form.theatre_halls.label(class="form-control-label") }}
+              {{ form.theatre_halls(class="form-control form-control-lg",min="1",max="5") }}
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeAddMovieModal">Close</button>
+        <!-- <button type="button" class="btn btn-primary" onclick="addMovieTheatre()" >Add Theatre</button> -->
+        {{ form.submit(class="btn btn-primary") }}
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="editMovieModal" tabindex="-1" role="dialog" aria-labelledby="editMovieModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editMovieModal">Edit Movie</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+              <label for="editTheatreName">Theatre Name</label>
+              <input type="text" class="form-control" id="editTheatreName">
+          </div>
+          <div class="form-group">
+            <label for="editTheatreImage">Theatre Image</label>
+            <input type="file" class="form-control-file" id="editTheatreImage">
+          </div>
+          <div class="form-group">
+              <label for="editHallNumber">No. of Hall(s)</label>
+              <input type="number" class="form-control" id="editHallNumber" min="1" max="5">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEditMovieModal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="editMovieTheatre()" >Save Edits</button>
+      </div>
+    </div>
+  </div>
+</div> 
+{% endblock %}
+
+{% block scripts %}
+<!-- delete movie theatre -->
+<script>
+
+  var editingMovieSerialNumber = 0;
+
+  function changeEditMovieNumber(number) {
+    editingMovieSerialNumber = number;
+  }
+
+  function deleteMovieTheatre() {
+    var tbody=document.getElementsByTagName("tbody")[0];
+    var rowList = tbody.children;    
+    for (i=rowList.length-1; i>-1; i--){
+      var row = rowList[i];
+      var checkBoxTd = row.firstElementChild;            
+      var checkBoxDiv = checkBoxTd.firstElementChild;
+      var checkBox = checkBoxDiv.firstElementChild;      
+      if (checkBox.checked){
+        tbody.removeChild(row);
+      }
+    }
+  }
+
+  function selectAllTheatre(mainCheckBox) {
+    if (mainCheckBox.checked) {    
+      var tbody=document.getElementsByTagName("tbody")[0];
+      var rowList = tbody.children;    
+      for (i=rowList.length-1; i>-1; i--){
+        var row = rowList[i];
+        var checkBoxTd = row.firstElementChild;            
+        var checkBoxDiv = checkBoxTd.firstElementChild;
+        var checkBox = checkBoxDiv.firstElementChild;      
+        if (!checkBox.checked){
+          checkBox.checked = true;
+        }
+      }    
+    }
+    else {
+      var tbody=document.getElementsByTagName("tbody")[0];
+      var rowList = tbody.children;    
+      for (i=rowList.length-1; i>-1; i--){
+        var row = rowList[i];
+        var checkBoxTd = row.firstElementChild;            
+        var checkBoxDiv = checkBoxTd.firstElementChild;
+        var checkBox = checkBoxDiv.firstElementChild;      
+        if (checkBox.checked){
+          checkBox.checked = false;
+        }
+      }
+    }
+  }
+
+function addMovieTheatre() {
+  var theatreName = document.getElementById("theatreName").value;
+  var theatreImageFile = document.getElementById("theatreImage").files[0];
+  var hallNumber = document.getElementById("hallNumber").value;
+  
+  var tr = document.createElement("tr");
+
+  var tdCheckBox = document.createElement("td");
+  var divCheckBox = document.createElement("div");
+  divCheckBox.setAttribute("class", "form-check");
+  var checkBox = document.createElement("input");
+  checkBox.setAttribute("type", "checkbox");
+  checkBox.setAttribute("class", "form-check-input");
+  
+  divCheckBox.appendChild(checkBox);
+  tdCheckBox.appendChild(divCheckBox);
+
+  var th = document.createElement("th");
+  th.setAttribute("scope", "row");
+  var tbody=document.getElementsByTagName("tbody")[0];
+  var rowList = tbody.children;
+  var lastRow = tbody.children[rowList.length-1] ;  
+  var lastRowThValue = lastRow.children[1].innerText;
+  th.innerText = parseInt(lastRowThValue) + 1;
+  
+  var tdTheatreName = document.createElement("td");
+  tdTheatreName.innerText = theatreName;
+
+  var tdTheatreImg = document.createElement("td");
+  var theatreImgNode = document.createElement("img");
+  theatreImgNode.src = window.URL.createObjectURL(theatreImageFile);
+  theatreImgNode.height = "90";
+  tdTheatreImg.appendChild(theatreImgNode);
+
+  var tdHallNumber = document.createElement("td");
+  tdHallNumber.innerText = hallNumber;
+
+  var tdModifyTheatreNumber = document.createElement("td");
+  var buttonModifyTheatreNumber = document.createElement("button");
+  var attributeObj = {"type":"button", "class":"btn btn-primary", "data-toggle":"modal", "data-target":"#editMovieModal"}
+  for (var [key, value] of Object.entries(attributeObj)) {
+    buttonModifyTheatreNumber.setAttribute(key, value);
+  }
+  buttonModifyTheatreNumber.innerText = "Modify Movie Theatre";
+  tdModifyTheatreNumber.appendChild(buttonModifyTheatreNumber);
+  
+  tr.appendChild(tdCheckBox);
+  tr.appendChild(th);
+  tr.appendChild(tdTheatreName);
+  tr.appendChild(tdTheatreImg);
+  tr.appendChild(tdHallNumber);
+  tr.appendChild(tdModifyTheatreNumber);
+  tbody.appendChild(tr);
+
+  var closeButton = document.getElementById("closeAddMovieModal");
+  closeButton.click();
+}
+
+function editMovieTheatre() {
+  var newTheatreName = document.getElementById("editTheatreName").value;
+  var newTheatreImageFile = document.getElementById("editTheatreImage").files[0];
+  var newHallNumber = document.getElementById("editHallNumber").value;
+
+  var tbody=document.getElementsByTagName("tbody")[0];
+  var rowList = tbody.children;
+  var row = rowList[editingMovieSerialNumber-1].children;
+  
+  var tdTheatreName = row[2];
+  var tdTheatreImg = row[3];
+  var imgTheatreImg = tdTheatreImg.firstElementChild;
+  var tdHallNumber = row[4]; 
+
+  tdTheatreName.innerText = newTheatreName;
+  imgTheatreImg.src = window.URL.createObjectURL(newTheatreImageFile);
+  tdHallNumber.innerText = newHallNumber;
+
+  var closeButton = document.getElementById("closeEditMovieModal");
+  closeButton.click();
+}
+</script>
+{% endblock %}

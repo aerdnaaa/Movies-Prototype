@@ -1,0 +1,489 @@
+{% extends "Admin/baseAdmin.html" %}
+
+{% block content %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="min-width: 1500px;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Movies</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Movies</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          
+          <div class="ml-auto">            
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addMovieModal">
+              Add Movies
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="addMovieModal" tabindex="-1" role="dialog" aria-labelledby="addMovieModal" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="addMovieModal">Add Movie</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div class="form-group">
+                          <label for="movieName">Name</label>
+                          <input type="text" class="form-control" id="movieName">
+                      </div>
+                      <div class="form-group">
+                        <label for="movieImage">Movie Poster</label>
+                        <input type="file" class="form-control-file" id="movieImage">
+                      </div>
+                      <div class="form-group">
+                          <label for="movieDescription">Description</label>
+                          <input type="number" class="form-control" id="movieDescription">
+                      </div>
+                      <div class="form-group">
+                          <label for="movieGenre">Genre</label>
+                          <input type="text" class="form-control" id="movieGenre">
+                      </div>
+                      <div class="form-group">
+                          <label for="movieCast">Cast</label>
+                          <input type="text" class="form-control" id="movieCast">
+                      </div>
+                      <div class="form-group">
+                          <label for="movieTrailer">Movie Trailer</label>
+                          <input type="text" class="form-control-file" id="movieTrailer">
+                      </div>
+                      <div class="form-group">
+                          <label for="movieDuration">Movie Duration</label>
+                          <input type="number" class="form-control-file" id="movieDuration" min="1" max="180">
+                      </div>
+                      <div class="form-group">
+                          <label for="startDate">Start Date</label>
+                          <input type="date" id="startDate" class="form-control">
+                      </div>
+                      <div class="form-group">
+                          <label for="movieLanguage">Language</label>
+                          <input type="text" class="form-control-file" id="movieLanguage">
+                      </div>
+                      <div class="form-group">
+                          <label for="movieSubtitles">Movie Subtitles</label>
+                          <input type="text" class="form-control-file" id="movieSubtitles">
+                      </div>
+                      <div class="form-group">
+                          <label for="movieDirector">Movie Director</label>
+                          <input type="text" class="form-control-file" id="movieDirector">
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="addMovie()" >Add Movies</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-danger" onclick="deleteMovie()">Delete Movies</button>
+          </div>
+        </div>
+        <div class="row">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                  <td>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input">                    
+                      </div>
+                    </td>
+                <th scope="col">No.</th>  
+                <th scope="col">Movie Name</th>
+                <th scope="col">Poster</th>
+                <th scope="col">Description</th>
+                <th scope="col">Genre</th>
+                <th scope="col">Casts</th>
+                <th scope="col">Trailer</th>                
+                <th scope="col">Duration</th>
+                <th scope="col">Release Date</th>
+                <th scope="col">Language</th>
+                <th scope="col">Subtitles</th>                
+                <th scope="col">Director</th>
+                <th scope="col">Modify</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                  <tr>
+                      <td>
+                          <div class="form-check">
+                            <input type="checkbox" class="form-check-input">                    
+                          </div>
+                        </td>
+                <th scope="row">1</th>
+                <td>Joker</td>
+                <td><img src="http://macrobertartscentre.org/docs/095_438__jokerlandscape_1570462515_standard.jpg" alt="cinema" height="90" width="150"></td>
+                <td>A failed stand-up comedian is<br> driven insane and becomes a<br>psychopathic murderer.</td>
+                <td>Cartoon</td>
+                <td>Robert De Niro, Joaquin Phoenix,<br> Zazie Beetz, Shea Whigham,<br> Brett Cullen</td>
+                <td>                                      
+                  <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#jokerTrailer">
+                      View Trailer
+                    </button>
+                </td>
+                <td>109mins</td>
+                <td>Thu, 3 Oct</td>
+                <td>English</td>
+                <td>Chinese</td>
+                <td>Todd Phillips</td>
+                <td>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editMovie1Modal">
+                        Modify Movie
+                      </button>                               
+                </td>
+              </tr>
+              <tr>
+                  <td>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input">                    
+                      </div>
+                    </td>
+              <th scope="row">2</th>
+                <td>Frozen II</td>
+                <td><img src="https://specials-images.forbesimg.com/imageserve/5dcd77e09d604400064b8abf/960x0.jpg?cropX1=0&cropX2=1280&cropY1=0&cropY2=720" alt="cinema" height="90" width="150"></td>
+                <td>Anna, Elsa, Kristoff, Olaf and Sven leave<br> Arendelle to travel to an ancient,<br> autumn-bound forest of an<br> enchanted land. They set out to find<br> the origin of Elsa's powers in order<br> to save their kingdom.</td>
+                <td>Horror</td>
+                <td>Idina Menzel, Kristen Bell, Jonathan Groff, Josh Gad</td>
+                <td>                                
+                  <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#frozenTrailer">
+                      View Trailer
+                    </button>
+                </td>
+                <td>121mins</td>
+                <td>Thu, 21 Nov</td>
+                <td>English</td>
+                <td>Chinese</td>
+                <td>Chris Buck, Jennifer Lee</td>
+            
+                <td>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editMovie2Modal">
+                        Modify Movie
+                      </button>
+                        
+                </td>
+              </tr>
+                  <!--third movie-->
+              <tr>
+                <td>
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input">                    
+                    </div>
+                  </td>
+            <th scope="row">3</th>
+              <td>Dora and the lost city of gold</td>
+              <td><img src="http://img.over-blog-kiwi.com/3/54/79/13/20190804/ob_8250dc_20all1rthcjqbttdtlgzqcoflgn.jpg" alt="cinema" height="90" width="150"></td>
+              <td>Deep in the Peruvian jungle, Dora, daughter of explorers Cole and Elena, spends her days going on adventures with her monkey friend Boots, her cousin Diego, and imaginary friends Backpack and Map while thwarting the fox thief Swiper. When Dora is 6 years old and Diego 7, Diego leaves to be with his family in Los Angeles, while Dora's family remains searching for the hidden Inca city Parapata.</td>
+              <td>Comedy</td>
+              <td>	
+                Isabela Moner, Eugenio Derbez, Michael Peña, Eva Longoria, Danny Trejo
+                </td>
+              <td>                                
+                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#doraTrailer">
+                    View Trailer
+                  </button>
+              </td>
+              <td>102mins</td>
+              <td>Nil</td>
+              <td>English</td>
+              <td>Chinese</td>
+              <td>James Bobin</td>
+          
+              <td>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editMovie3Modal">
+                      Modify Movie
+                    </button>
+                      
+              </td>
+            </tr>
+
+            <!---Fourth movie-->
+
+            <tr>
+              <td>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input">                    
+                  </div>
+                </td>
+          <th scope="row">4</th>
+            <td>Intersteller</td>
+            <td><img src="https://miro.medium.com/max/7680/1*hvGHw2fnZ3UP8X4otNl7Fw.jpeg" alt="cinema" height="90" width="150"></td>
+            <td>In the mid-21st century, crop blights and dust storms threaten humanity's survival, with corn the only remaining viable crop. The world has become a post-truth society where younger generations are taught that scientific breakthroughs such as the Apollo moon missions were faked, to discourage interest in space travel and other “excesses of the twentieth century.” Widowed engineer and former NASA pilot Joseph Cooper is now a farmer. Living with him are his father-in-law, Donald; his 15-year-old son, Tom; and 10-year-old daughter, Murphy. After a dust storm, strange patterns made from dust inexplicably appear on Murphy's bedroom floor, which she attributes to a ghost. Cooper eventually deduces the patterns were caused by gravity variations and are a binary code for geographic coordinates.</td>
+            <td>Romance</td>
+            <td>	
+              	
+          Matthew McConaughey,
+          Anne Hathaway,
+          Jessica Chastain,
+          Bill Irwin,
+          Timothée Chalamet,
+          Michael Caine,
+              </td>
+            <td>                                
+              <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#interstellarTrailer">
+                  View Trailer
+                </button>
+            </td>
+            <td>169minutes</td>
+            <td>Nil</td>
+            <td>English</td>
+            <td>Chinese</td>
+            <td>Christopher Nolan</td>
+        
+            <td>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editMovie4Modal">
+                    Modify Movie
+                  </button>
+                    
+            </td>
+          </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    
+    <!-- The Modal trailer -->
+    <div class="modal" id="jokerTrailer">
+        <div class="modal-dialog">
+          <div class="modal-content">
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/KpYAbvj9ULc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    
+    <!-- The Modal trailer -->
+    <div class="modal" id="frozenTrailer">
+      <div class="modal-dialog">
+        <div class="modal-content">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/bwzLiQZDw2I" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="doraTrailer">
+      <div class="modal-dialog">
+        <div class="modal-content">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/gUTtJjV852c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="interstellarTrailer">
+      <div class="modal-dialog">
+        <div class="modal-content">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/zSWdZVtXT7E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal edit joker movie-->
+    <div class="modal fade" id="editMovie1Modal" tabindex="-1" role="dialog" aria-labelledby="editMovie1Modal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editMovie1Modal">Modify Movie</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                  <label for="movieName">Movie Name</label>
+                  <input type="text" class="form-control" id="movieName">
+              </div>
+              <div class="form-group">
+                <label for="movieImage">Movie Poster</label>
+                <input type="file" class="form-control-file" id="movieImage">
+              </div>
+              <div class="form-group">
+                  <label for="movieDescription">Description</label>
+                  <input type="text" class="form-control" id="movieDescription">
+              </div>
+              <div class="form-group">
+                  <label for="movieGenre">Genre</label>
+                  <input type="text" class="form-control" id="movieGenre">
+              </div>
+              <div class="form-group">
+                  <label for="movieCast">Casts</label>
+                  <input type="text" class="form-control" id="movieCast">
+              </div>
+              <div class="form-group">
+                  <label for="movieTrailer">Movie Trailer</label>
+                  <input type="text" class="form-control-file" id="movieTrailer">
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="addMovie()" >Save Edits</button>
+          </div>
+        </div>
+      </div>
+    </div>  
+
+    <!-- Modal edit frozen movie -->
+    <div class="modal fade" id="editMovie2Modal" tabindex="-1" role="dialog" aria-labelledby="editMovie2Modal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editMovie2ModaLabel">Modify Movie</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                  <label for="movieName">Movie Name</label>
+                  <input type="text" class="form-control" id="movieName">
+              </div>
+              <div class="form-group">
+                <label for="movieImage">Movie Poster</label>
+                <input type="file" class="form-control-file" id="movieImage">
+              </div>
+              <div class="form-group">
+                  <label for="movieDescription">Description</label>
+                  <input type="text" class="form-control" id="movieDescription">
+              </div>
+            <div class="form-group">
+                <label for="movieGenre">Genre</label>
+                <input type="text" class="form-control" id="movieGenre">
+            </div>
+            <div class="form-group">
+                <label for="movieCast">Description</label>
+                <input type="text" class="form-control" id="movieCast">
+            </div>
+            <div class="form-group">
+                <label for="movieTrailer">Movie Trailer</label>
+                <input type="text" class="form-control-file" id="movieTrailer">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="addMovie()" >Save Edits</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Dora modal-->
+
+    <div class="modal fade" id="editMovie3Modal" tabindex="-1" role="dialog" aria-labelledby="editMovie1Modal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editMovie1Modal">Modify Movie</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                  <label for="movieName">Movie Name</label>
+                  <input type="text" class="form-control" id="movieName">
+              </div>
+              <div class="form-group">
+                <label for="movieImage">Movie Poster</label>
+                <input type="file" class="form-control-file" id="movieImage">
+              </div>
+              <div class="form-group">
+                  <label for="movieDescription">Description</label>
+                  <input type="text" class="form-control" id="movieDescription">
+              </div>
+              <div class="form-group">
+                  <label for="movieGenre">Genre</label>
+                  <input type="text" class="form-control" id="movieGenre">
+              </div>
+              <div class="form-group">
+                  <label for="movieCast">Casts</label>
+                  <input type="text" class="form-control" id="movieCast">
+              </div>
+              <div class="form-group">
+                  <label for="movieTrailer">Movie Trailer</label>
+                  <input type="text" class="form-control-file" id="movieTrailer">
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="addMovie()" >Save Edits</button>
+          </div>
+        </div>
+      </div>
+    </div>  
+
+    <!--Interstellar-->
+
+    <div class="modal fade" id="editMovie4Modal" tabindex="-1" role="dialog" aria-labelledby="editMovie1Modal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editMovie1Modal">Modify Movie</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                  <label for="movieName">Movie Name</label>
+                  <input type="text" class="form-control" id="movieName">
+              </div>
+              <div class="form-group">
+                <label for="movieImage">Movie Poster</label>
+                <input type="file" class="form-control-file" id="movieImage">
+              </div>
+              <div class="form-group">
+                  <label for="movieDescription">Description</label>
+                  <input type="text" class="form-control" id="movieDescription">
+              </div>
+              <div class="form-group">
+                  <label for="movieGenre">Genre</label>
+                  <input type="text" class="form-control" id="movieGenre">
+              </div>
+              <div class="form-group">
+                  <label for="movieCast">Casts</label>
+                  <input type="text" class="form-control" id="movieCast">
+              </div>
+              <div class="form-group">
+                  <label for="movieTrailer">Movie Trailer</label>
+                  <input type="text" class="form-control-file" id="movieTrailer">
+                </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="addMovie()" >Save Edits</button>
+          </div>
+        </div>
+      </div>
+    </div>  
+
+    <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+      <i class="fas fa-chevron-up"></i>
+    </a>
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}

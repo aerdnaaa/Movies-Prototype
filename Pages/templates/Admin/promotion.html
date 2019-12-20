@@ -1,0 +1,202 @@
+  {% extends "Admin/baseAdmin.html" %}
+  
+  <!-- Content Wrapper. Contains page content -->
+  {% block content %}
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Promotion</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Promotion & Events</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+
+          <div class="ml-auto">
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addPromoModal">
+              Add Promotion
+            </button>
+            <button type="submit" class="btn btn-danger" onclick="deleteMovie()">Delete</button>
+          </div>
+        </div>
+        <div class="row">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <td>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input">
+                  </div>
+                </td>
+                <th scope="col">Promotion Title</th>
+                <th scope="col">Image</th>
+                <th scope="col">Description</th>
+                <th scope="col">Valid Period</th>
+                <th scope="col">Apply to</th>
+                <th scope="col">Terms And Conditions</th>
+              </tr>
+            </thead>
+            <tbody>              
+              {% for key in Promotion_dict %}
+                <tr>
+                  <td>
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input">
+                    </div>
+                  </td>
+                  <td>
+                    {{ Promotion_dict[key].get_title() }}
+                  </td>
+                  <td>
+                    <img src="{{ url_for('static', filename='images/promotion/' + Promotion_dict[key].get_promotion_image() ) }}" alt="{{ Promotion_dict[key].get_title() }} Img" width="200px">
+                  </td>
+                  <td>
+                    {{ Promotion_dict[key].get_description() }}
+                  </td>
+                  <td>
+                    {{ Promotion_dict[key].get_valid_period() }}
+                  </td>
+                  <td>
+                    {{ Promotion_dict[key].get_applicable_to() }}
+                  </td>
+                  <td>
+                    <ul>
+                      {% for terms in Promotion_dict[key].get_terms_and_conditions() %}
+                        <li>{{ terms }}</li>
+                      {% endfor %}
+                    </ul>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rent Movie Modal -->
+    <div class="modal fade" id="addPromoModal" tabindex="-1" role="dialog" aria-labelledby="addPromoModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addPromoModalLabel">Add Promotion</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form method="POST" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+          <div class="modal-body">          
+              <div class="form-group">
+                {{ form.promotion_title.label(class="form-control-label") }}
+                {{ form.promotion_title(class="form-control form-control-lg") }}
+              </div>
+              <div class="form-group">
+                {{ form.promotion_description.label(class="form-control-label") }}
+                {{ form.promotion_description(class="form-control form-control-lg") }}
+              </div>
+              <div class="form-group row">
+                <div class="col">
+                  {{ form.promotion_valid_start_date.label(class="form-control-label") }}
+                  {{ form.promotion_valid_start_date(type="date", class="form-control form-control-lg") }}
+                </div>
+                <div class="col">
+                  {{ form.promotion_valid_end_date.label(class="form-control-label") }}
+                  {{ form.promotion_valid_end_date(type="date", class="form-control form-control-lg") }}
+                </div>                
+              </div>
+              <div class="form-group">
+                {{ form.promotion_applicable_to.label(class="form-control-label") }}
+                {{ form.promotion_applicable_to(class="form-control form-control-lg") }}
+              </div>
+              <div class="form-group">
+                {{ form.promotion_terms_and_condition.label(class="form-control-label") }}
+                {{ form.promotion_terms_and_condition(class="form-control form-control-lg") }}
+              </div>
+              <div class="form-group">
+                {{ form.promotion_image.label(class="form-control-label") }}
+                {{ form.promotion_image(class="form-control-file") }}
+              </div>        
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>            
+            {{ form.submit(class="btn btn-primary") }}
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- edit Promotion Details 1 Modal -->
+    <div class="modal fade" id="editPromotionDetails1Modal" tabindex="-1" role="dialog"
+      aria-labelledby="editPromotionDetails1ModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editPromotionDetails1ModalLabel">Edit Rent Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="PromoName">Promotion Name</label>
+                <input type="text" class="form-control" id="PromoName">
+              </div>
+              <div class="form-group">
+                <label for="PromoDiscount">Discount</label>
+                <input type="text" class="form-control" id="PromoDiscount">
+              </div>
+              <div class="form-group row">
+                <div class="col">
+                  <label for="startDate">Start Date</label>
+                  <input type="date" id="startDate" class="form-control">
+                </div>
+                <div class="col">
+                  <label for="endDate">End Date</label>
+                  <input type="date" id="endDate" class="form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="PromoCondition">Apply to</label>
+                <input type="text" class="form-control" id="PromoCondition">
+              </div>
+              <div class="form-group">
+                <label for="PromoMethod">Method</label>
+                <input type="text" class="form-control" id="PromoMethod">
+              </div>
+              <div class="form-group">
+                <label for="PromoUsage">Usage</label>
+                <input type="text" class="form-control" id="PromoUsage">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="editShowTime()">Save Edits</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+      <i class="fas fa-chevron-up"></i>
+    </a>
+  </div>
+  {% endblock %}
+  <!-- /.content-wrapper -->
