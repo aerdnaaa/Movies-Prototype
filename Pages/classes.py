@@ -25,13 +25,19 @@ class Movie_Theatre:
 # this sets the attributes and methods of a promotion
 
 class Promotion:
+    id = 0
     def __init__(self, title, promotion_image, description, terms_and_conditions, valid_period, applicable_to):
+        Promotion.id += 1
+        self.__id = Promotion.id
         self.__title = title
         self.__promotion_image = promotion_image
         self.__description = description
         self.__terms_and_conditions = terms_and_conditions
         self.__valid_period = valid_period
-        self.__applicable_to = applicable_to
+        self.__applicable_to = applicable_to        
+
+    def get_id(self):
+        return self.__id
 
     def get_title(self):
         return self.__title

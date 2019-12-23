@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, Markup, redirect, url_for
+from flask import Flask, render_template, request, Markup, redirect, url_for, Markup
 from Forms import CreateMovieTheatreForm, CreatePromotion, CreateContactUsForm
 from classes import Promotion
 import shelve, os, secrets
@@ -190,7 +190,8 @@ def admin_promotion():
         Promotion_dict = db["promotion"]
     except:        
         Promotion_dict = {}
-        db["promotion"] = Promotion_dict    
+        db["promotion"] = Promotion_dict
+    db.close()    
     return render_template("Admin/promotion.html", title="Promotion", Promotion_dict=Promotion_dict)
 
 @app.route("/admin/promotion/add_promotion", methods=["POST","GET"])
@@ -199,32 +200,34 @@ def add_promotion():
     db = shelve.open('shelve.db', 'c')
     try:
         Promotion_dict = db["promotion"]
+        Promotion.id = list(Promotion_dict.values())[-1].get_id()
     except:        
         Promotion_dict = {}
         db["promotion"] = Promotion_dict
-    if form.validate_on_submit():
+    if form.validate_on_submit():        
         promotion_title = form.promotion_title.data
         promotion_image = save_promotion_pic(form.promotion_image.data)
-        promotion_description = form.promotion_description.data
+        promotion_description = Markup(form.promotion_description.data)
         promotion_terms_and_conditions = form.promotion_terms_and_condition.data.split("\n")
         promotion_period = form.promotion_valid_start_date.data + " - " + form.promotion_valid_end_date.data
         promotion_applicable_to = form.promotion_applicable_to.data
         promotion_class = Promotion(promotion_title,promotion_image,promotion_description,promotion_terms_and_conditions,promotion_period,promotion_applicable_to)
-        Promotion_dict[promotion_title] = promotion_class
+        promotion_id = promotion_class.get_id()
+        Promotion_dict[promotion_id] = promotion_class
         db["promotion"] = Promotion_dict
         db.close()
         return redirect(url_for("admin_promotion"))
     elif request.method == "GET":
-        promotion_title.data = ""        
-        promotion_description.data = ""
-        promtion_terms_and_conditions.data = ""
+        form.promotion_title.data = ""        
+        form.promotion_description.data = ""
+        form.promotion_terms_and_condition.data = ""
         form.promotion_valid_start_date.data = ""
         form.promotion_valid_end_date.data = ""
         form.promotion_applicable_to.data = ""
     return render_template("Admin/promotion/add_promotion.html", title="Add Promotion", form=form)
 
-@app.route("/admin/promotion/modify_promotion/<promotion_title>", methods=["POST","GET"])
-def modify_promotion(promotion_title):
+@app.route("/admin/promotion/modify_promotion/<promotion_id>", methods=["POST","GET"])
+def modify_promotion(promotion_id):
     form = CreatePromotion()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -239,13 +242,19 @@ def modify_promotion(promotion_title):
         promotion_terms_and_conditions = form.promotion_terms_and_condition.data.split("\n")
         promotion_period = form.promotion_valid_start_date.data + " - " + form.promotion_valid_end_date.data
         promotion_applicable_to = form.promotion_applicable_to.data
-        promotion_class = Promotion(promotion_title,promotion_image,promotion_description,promotion_terms_and_conditions,promotion_period,promotion_applicable_to)
-        Promotion_dict[promotion_title] = promotion_class
+        # editing class, not creating new one as id will newly be generated
+        promotion_class = Promotion_dict[promotion_id]
+        promotion_class.set_title(promotion_title)
+        promotion_class.set_promotion_image(promotion_image)
+        promotion_class.set_description(Markup(promotion_description))
+        promotion_class.set_valid_period(promotion_period)
+        promotion_class.set_applicable_to(promotion_applicable_to)
+        Promotion_dict[promotion_id] = promotion_class
         db["promotion"] = Promotion_dict
         db.close()
         return redirect(url_for("admin_promotion"))
     elif request.method == "GET":
-        promotion = Promotion_dict[promotion_title]
+        promotion = Promotion_dict[promotion_id]
         form.promotion_title.data = promotion.get_title()
         form.promotion_description.data = promotion.get_description()
         form.promotion_terms_and_condition.data = "\n".join(promotion.get_terms_and_conditions())
@@ -254,7 +263,23 @@ def modify_promotion(promotion_title):
         form.promotion_valid_end_date.data = end_date
         form.promotion_applicable_to.data = promotion.get_applicable_to()
         image_source = promotion.get_promotion_image()
-    return render_template("Admin/promotion/add_promotion.html", title="Add Promotion", form=form, image_source=image_source)
+    return render_template("Admin/promotion/modify_promotion.html", title="Modify Promotion", form=form, image_source=image_source)
+
+@app.route("/admin/promotion/delete", methods=["GET","POST"])
+def delete_promotion():    
+    db = shelve.open('shelve.db', 'c')
+    try:
+        Promotion_dict = db["promotion"]
+    except:        
+        Promotion_dict = {}
+        db["promotion"] = Promotion_dict
+    list_of_to_be_deleted_promotions = request.json    
+    for promotion_id in list_of_to_be_deleted_promotions:
+        del Promotion_dict[int(promotion_id)]
+    db["promotion"] = Promotion_dict
+    db.close()    
+    return redirect(url_for('admin_promotion'))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
