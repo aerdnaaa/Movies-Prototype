@@ -89,12 +89,12 @@ def promotion():
     # promotion_list needs a list in a list. Outer list for rows, inner list for promotions in 1 row
     return render_template("User/promotion.html", title="Promotions", promotion_list=promotion_list)
 
-@app.route("/promotion/<name_of_promo>")
-def promotionDetail(name_of_promo):
+@app.route("/promotion/<id_of_promo>")
+def promotionDetail(id_of_promo):
     db = shelve.open("shelve.db", "c")
     Promotion_dict = db["promotion"]
-    promo = Promotion_dict[name_of_promo]
-    return render_template("User/promotionDetail.html", promo=promo, title=name_of_promo.capitalize() + " Promo")
+    promo = Promotion_dict[int(id_of_promo)]
+    return render_template("User/promotionDetail.html", promo=promo, title=promo.get_title().capitalize() + " Promo")
 
 @app.route("/contactUs")
 def contactUs():
@@ -138,13 +138,6 @@ def admin_home():
 #         promtion_applicable_to = ""
 #     return render_template("Admin/promotion.html", title="Promotion", form=form, Promotion_dict=Promotion_dict)
 
-def save_promotion_pic(form_picture):
-    random_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/images/promotion', picture_fn)
-    form_picture.save(picture_path)
-    return picture_fn
 
 @app.route("/admin/booking")
 def admin_booking():
@@ -192,7 +185,7 @@ def admin_promotion():
         Promotion_dict = {}
         db["promotion"] = Promotion_dict
     db.close()    
-    return render_template("Admin/promotion.html", title="Promotion", Promotion_dict=Promotion_dict)
+    return render_template("Admin/promotion/promotion.html", title="Promotion", Promotion_dict=Promotion_dict)
 
 @app.route("/admin/promotion/add_promotion", methods=["POST","GET"])
 def add_promotion():
@@ -279,6 +272,26 @@ def delete_promotion():
     db["promotion"] = Promotion_dict
     db.close()    
     return redirect(url_for('admin_promotion'))
+
+def save_promotion_pic(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/images/promotion', picture_fn)
+    form_picture.save(picture_path)
+    return picture_fn
+
+# admin page to add carousel or remove
+@app.route("/admin/home_page")
+def admin_home():
+    db = shelve.open('shelve.db', 'c')
+    try:
+        Carousel_dict = db['carousel']
+    except:
+        Carousel_dict = {}
+        db['carousel'] = Carousel_dict
+    db.close()
+    return render_template("Admin/carousel/carousel.html", title="Carousel", Carousel_dict=Carousel_dict)
 
 
 if __name__ == "__main__":
