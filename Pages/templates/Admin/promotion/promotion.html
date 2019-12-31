@@ -168,7 +168,7 @@
     <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
       <i class="fas fa-chevron-up"></i>
     </a>
-  </div>
+  </div>  
   {% endblock %}
   <!-- /.content-wrapper -->
 
@@ -205,11 +205,18 @@
         }
       }
       function send_message(url, data){
-      var xhr = new XMLHttpRequest();
-      xhr.open("POST", url, true)
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.send(JSON.stringify(data))
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true)
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onreadystatechange = function() { // Call a function when the state changes.
+          if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            // Request finished. Do processing here.
+            location.reload();
+          }
+        }
+        xhr.send(JSON.stringify(data))
       }
-    
+      
+
     </script>
   {% endblock %}

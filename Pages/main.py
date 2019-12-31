@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, Markup, redirect, url_for, Markup
 from Forms import CreateMovieTheatreForm, CreatePromotion, CreateContactUsForm
-from classes import Promotion
-import shelve, os, secrets
+from classes import Promotion, Carousel
+import shelve, os, secrets, datetime
 
 app = Flask(__name__)
 
@@ -259,19 +259,27 @@ def modify_promotion(promotion_id):
     return render_template("Admin/promotion/modify_promotion.html", title="Modify Promotion", form=form, image_source=image_source)
 
 @app.route("/admin/promotion/delete", methods=["GET","POST"])
-def delete_promotion():    
+def delete_promotion():
     db = shelve.open('shelve.db', 'c')
     try:
         Promotion_dict = db["promotion"]
+        Deleted_list = db["deleted_promotion"]
     except:        
         Promotion_dict = {}
+        Deleted_list = []            
         db["promotion"] = Promotion_dict
-    list_of_to_be_deleted_promotions = request.json    
-    for promotion_id in list_of_to_be_deleted_promotions:
+        db["deleted_promotion"] = Deleted_list    
+    
+    list_of_to_be_deleted_promotions = request.json       
+    for promotion_id in list_of_to_be_deleted_promotions:                              
+        deleted_promotion = Promotion_dict[int(promotion_id)]            
+        smaller_deleted_list = [delete_promotion, datetime.date.today()]
+        Deleted_list.append(smaller_deleted_list)
         del Promotion_dict[int(promotion_id)]
     db["promotion"] = Promotion_dict
-    db.close()    
-    return redirect(url_for('admin_promotion'))
+    db["deleted_promotion"] = Deleted_list
+    db.close()
+    return redirect(url_for('add_promotion'))
 
 def save_promotion_pic(form_picture):
     random_hex = secrets.token_hex(8)
@@ -282,8 +290,8 @@ def save_promotion_pic(form_picture):
     return picture_fn
 
 # admin page to add carousel or remove
-@app.route("/admin/home_page")
-def admin_home():
+@app.route("/admin/carousel")
+def admin_carousel():
     db = shelve.open('shelve.db', 'c')
     try:
         Carousel_dict = db['carousel']
