@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, Markup, redirect, url_for, Markup
-from Forms import CreateMovieTheatreForm, CreatePromotion, CreateContactUsForm
+from Forms import CreateMovieTheatreForm, CreatePromotion, ModifyPromotion, CreateContactUsForm, CreateCarousel
 from classes import Promotion, Carousel
 import shelve, os, secrets, datetime
 
@@ -119,7 +119,7 @@ def admin_home():
 #         db["promotion"] = Promotion_dict
 #     if form.validate_on_submit():
 #         promotion_title = form.promotion_title.data
-#         promotion_image = save_promotion_pic(form.promotion_image.data)
+#         promotion_image = save_picture(form.promotion_image.data)
 #         promotion_description = form.promotion_description.data
 #         promotion_terms_and_conditions = form.promotion_terms_and_condition.data.split("\n")
 #         promotion_period = form.promotion_valid_start_date.data + " - " + form.promotion_valid_end_date.data
@@ -199,7 +199,7 @@ def add_promotion():
         db["promotion"] = Promotion_dict
     if form.validate_on_submit():        
         promotion_title = form.promotion_title.data
-        promotion_image = save_promotion_pic(form.promotion_image.data)
+        promotion_image = save_picture(form.promotion_image.data, "promotion")
         promotion_description = Markup(form.promotion_description.data)
         promotion_terms_and_conditions = form.promotion_terms_and_condition.data.split("\n")
         promotion_period = form.promotion_valid_start_date.data + " - " + form.promotion_valid_end_date.data
@@ -221,7 +221,7 @@ def add_promotion():
 
 @app.route("/admin/promotion/modify_promotion/<promotion_id>", methods=["POST","GET"])
 def modify_promotion(promotion_id):
-    form = CreatePromotion()
+    form = ModifyPromotion()
     db = shelve.open('shelve.db', 'c')
     try:
         Promotion_dict = db["promotion"]
@@ -230,7 +230,7 @@ def modify_promotion(promotion_id):
         db["promotion"] = Promotion_dict
     if form.validate_on_submit():
         promotion_title = form.promotion_title.data
-        promotion_image = save_promotion_pic(form.promotion_image.data)
+        promotion_image = save_picture(form.promotion_image.data, "promotion")
         promotion_description = form.promotion_description.data
         promotion_terms_and_conditions = form.promotion_terms_and_condition.data.split("\n")
         promotion_period = form.promotion_valid_start_date.data + " - " + form.promotion_valid_end_date.data
@@ -281,11 +281,11 @@ def delete_promotion():
     db.close()
     return redirect(url_for('add_promotion'))
 
-def save_promotion_pic(form_picture):
+def save_picture(form_picture, path):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/images/promotion', picture_fn)
+    picture_path = os.path.join(app.root_path, 'static/images/' + path, picture_fn)
     form_picture.save(picture_path)
     return picture_fn
 
@@ -300,6 +300,31 @@ def admin_carousel():
         db['carousel'] = Carousel_dict
     db.close()
     return render_template("Admin/carousel/carousel.html", title="Carousel", Carousel_dict=Carousel_dict)
+
+@app.route("/admin/carousel/add_carousel", methods=["POST","GET"])
+def add_carousel():
+    form = CreateCarousel()
+    db = shelve.open('shelve.db', 'c')
+    try:
+        Carousel_dict = db['carousel']+
+        Carousel.id = list(Carousel_dict.values())[-1].get_id()
+    except:        
+        Carousel_dict = {}
+        db['carousel'] = Carousel_dict
+    if form.validate_on_submit():        
+        carousel_title = form.carousel_title.data
+        carousel_image = save_picture(form.promotion_image.data, "carousel")              
+        carousel_category = form.carousel_category.data
+        carousel_class = Carousel(carousel_title,carousel_category,carousel_image)
+        carousel_id = carousel_class.get_id()
+        Carousel_dict[carousel_id] = carousel_class
+        db["carousel"] = Carousel_dict
+        db.close()
+        return redirect(url_for("admin_promotion"))
+    elif request.method == "GET":
+        form.carousel_title.data = ""        
+        form.carousel_category.data = ""
+    return render_template("Admin/carousel/add_carousel.html", title="Add Carousel", form=form)
 
 
 if __name__ == "__main__":

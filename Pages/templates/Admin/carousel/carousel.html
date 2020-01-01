@@ -19,7 +19,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Promotion</h1>
+          <h1>Carousel</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -37,13 +37,10 @@
       <div class="row mb-2">
 
         <div class="ml-auto">
-          <!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addPromoModal">
-            Add Promotion
-          </button> -->
           <button type="button" class="btn btn-success">
-            <a href="">Add Promotion</a>              
+            <a href="">Add Carousel</a>              
           </button>
-          <button type="submit" class="btn btn-danger"onclick="delete_promotion()">Delete</button>
+          <button type="submit" class="btn btn-danger"onclick="">Delete</button>
         </div>
       </div>
       <div class="row">
@@ -56,51 +53,35 @@
                 </div>
               </td>
               <th scope="col">Id</th>
-              <th scope="col">Promotion Title</th>
+              <th scope="col">Carousel Title</th>
+              <th scope="col">Category</th>
               <th scope="col">Image</th>
-              <th scope="col">Description</th>
-              <th scope="col">Valid Period</th>
-              <th scope="col">Apply to</th>
-              <th scope="col">Terms And Conditions</th>
-              <th scope="col">Modify Promotion</th>
+              <th scope="col">Modify Carousel</th>
             </tr>
           </thead>
           <tbody>              
-            {% for key in Promotion_dict %}
+            {% for key in Carousel_dict %}
               <tr>
                 <td>
                   <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="{{ Promotion_dict[key].get_id() }}">
+                    <input type="checkbox" class="form-check-input" name="{{ Carousel_dict[key].get_id() }}">
                   </div>
                 </td>
                 <td>
-                  {{ Promotion_dict[key].get_id() }}
+                  {{ Carousel_dict[key].get_id() }}
                 </td>
                 <td>
-                  {{ Promotion_dict[key].get_title() }}
+                  {{ Carousel_dict[key].get_title() }}
                 </td>
                 <td>
-                  <img src="{{ url_for('static', filename='images/promotion/' + Promotion_dict[key].get_promotion_image() ) }}" alt="{{ Promotion_dict[key].get_title() }} Img" width="200px">
+                  {{ Carousel_dict[key].get_category() }}
                 </td>
                 <td>
-                  {{ Promotion_dict[key].get_description() }}
-                </td>
-                <td>
-                  {{ Promotion_dict[key].get_valid_period() }}
-                </td>
-                <td>
-                  {{ Promotion_dict[key].get_applicable_to() }}
-                </td>
-                <td>
-                  <ul>
-                    {% for terms in Promotion_dict[key].get_terms_and_conditions() %}
-                      <li>{{ terms }}</li>
-                    {% endfor %}
-                  </ul>
+                  <img src="{{ url_for('static', filename='images/Carousel/' + Carousel_dict[key].get_Carousel_image() ) }}" alt="{{ Carousel_dict[key].get_title() }} Img" width="200px">
                 </td>
                 <td>
                   <button type="button" class="btn btn-primary">
-                    <a href="{{ url_for('modify_promotion', promotion_id=Promotion_dict[key].get_id()) }}">Modify Promotion</a>              
+                    <a href="{{ url_for('modify_Carousel', Carousel_id=Carousel_dict[key].get_id()) }}">Modify Carousel</a>              
                   </button>
                 </td>
               </tr>
@@ -111,59 +92,6 @@
     </div>
   </section>
 
-  
-  <!-- edit Promotion Details 1 Modal -->
-  <div class="modal fade" id="editPromotionDetails1Modal" tabindex="-1" role="dialog"
-    aria-labelledby="editPromotionDetails1ModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editPromotionDetails1ModalLabel">Edit Rent Details</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-              <label for="PromoName">Promotion Name</label>
-              <input type="text" class="form-control" id="PromoName">
-            </div>
-            <div class="form-group">
-              <label for="PromoDiscount">Discount</label>
-              <input type="text" class="form-control" id="PromoDiscount">
-            </div>
-            <div class="form-group row">
-              <div class="col">
-                <label for="startDate">Start Date</label>
-                <input type="date" id="startDate" class="form-control">
-              </div>
-              <div class="col">
-                <label for="endDate">End Date</label>
-                <input type="date" id="endDate" class="form-control">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="PromoCondition">Apply to</label>
-              <input type="text" class="form-control" id="PromoCondition">
-            </div>
-            <div class="form-group">
-              <label for="PromoMethod">Method</label>
-              <input type="text" class="form-control" id="PromoMethod">
-            </div>
-            <div class="form-group">
-              <label for="PromoUsage">Usage</label>
-              <input type="text" class="form-control" id="PromoUsage">
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" onclick="editShowTime()">Save Edits</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
     <i class="fas fa-chevron-up"></i>
@@ -174,42 +102,16 @@
 
 {% block scripts %}
   <script>
-    function delete_promotion() {
-      var list_of_to_be_deleted_promotions = [];
-      var list_of_checkboxes = document.getElementsByClassName("form-check-input");        
-      for (var index=1;index<list_of_checkboxes.length;index++){                    
-        var checkbox = list_of_checkboxes[index];                    
-        if (checkbox.checked){
-          list_of_to_be_deleted_promotions.push(checkbox.name);
-        }          
-      }        
-      send_message("{{ url_for('delete_promotion') }}", list_of_to_be_deleted_promotions)
-    }
-    function select_all(main_checkbox) {        
-      var list_of_checkboxes = document.getElementsByClassName("form-check-input");
-      if (!main_checkbox.checked) {
-        for (var index=1;index<list_of_checkboxes.length;index++){                    
-          var checkbox = list_of_checkboxes[index];                    
-          if (checkbox.checked){
-            checkbox.checked = false
-          }
-        }
-      }
-      else {
-        for (var index=1;index<list_of_checkboxes.length;index++){                    
-          var checkbox = list_of_checkboxes[index];                    
-          if (!checkbox.checked){
-            checkbox.checked = true
-          }
-        }
-      }
-    }
-    function send_message(url, data){
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true)
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(data))
-    }
-  
-  </script>
+    // function delete_Carousel() {
+    //   var list_of_to_be_deleted_Carousels = [];
+    //   var list_of_checkboxes = document.getElementsByClassName("form-check-input");        
+    //   for (var index=1;index<list_of_checkboxes.length;index++){                    
+    //     var checkbox = list_of_checkboxes[index];                    
+    //     if (checkbox.checked){
+    //       list_of_to_be_deleted_Carousels.push(checkbox.name);
+    //     }          
+    //   }        
+    //   send_message("{{ url_for('delete_Carousel') }}", list_of_to_be_deleted_Carousels)
+    // }
+  <script src="{{ url_for('static', filename='js/extension.js') }}"></script>
 {% endblock %}

@@ -1,0 +1,72 @@
+{% extends "Admin/baseAdmin.html" %}
+  
+<!-- Content Wrapper. Contains page content -->
+{% block content %}
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Modify Carousel</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Carousel</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row">
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.csrf_token }}                 
+            <div class="form-group">
+            {{ form.Carousel_title.label(class="form-control-label") }}
+            {{ form.Carousel_title(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+            {{ form.Carousel_description.label(class="form-control-label") }}
+            {{ form.Carousel_description(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group row">
+            <div class="col">
+                {{ form.Carousel_valid_start_date.label(class="form-control-label") }}
+                {{ form.Carousel_valid_start_date(type="date", class="form-control form-control-lg") }}
+            </div>
+            <div class="col">
+                {{ form.Carousel_valid_end_date.label(class="form-control-label") }}
+                {{ form.Carousel_valid_end_date(type="date", class="form-control form-control-lg") }}
+            </div>                
+            </div>
+            <div class="form-group">
+            {{ form.Carousel_applicable_to.label(class="form-control-label") }}
+            {{ form.Carousel_applicable_to(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+            {{ form.Carousel_terms_and_condition.label(class="form-control-label") }}
+            {{ form.Carousel_terms_and_condition(class="form-control form-control-lg") }}
+            </div>
+            <img src="{{ url_for('static', filename='images/Carousel/' + image_source ) }}" alt="Img" width="200px">
+            <div class="form-group">            
+            {{ form.Carousel_image.label(class="form-control-label") }}
+            {{ form.Carousel_image(class="form-control-file") }}
+            </div>                
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
+      </div>
+    </div>
+  </section>
+
+
+  <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </a>
+</div>
+{% endblock %}
+<!-- /.content-wrapper -->

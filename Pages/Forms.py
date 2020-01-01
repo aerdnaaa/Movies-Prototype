@@ -54,6 +54,22 @@ class CreatePromotion(FlaskForm):
     promotion_image = FileField(label='Promotion Image', validators=[FileAllowed(['jpg','png','jpeg'])])
     submit = SubmitField("Add Promotion")
 
+class ModifyPromotion(FlaskForm):
+    promotion_title = StringField(label='Promotion Title', validators=[DataRequired(), Length(min=5, max=30)])
+    promotion_description = TextAreaField(label='Promotion Description', validators=[DataRequired()])
+    promotion_terms_and_condition = TextAreaField(label='Promotion Terms and Condition', validators=[DataRequired()])
+    promotion_valid_start_date = StringField(label='Promotion Start Date', validators=[DataRequired()])
+    promotion_valid_end_date = StringField(label='Promotion End Date', validators=[DataRequired()])    
+    promotion_applicable_to = SelectField(label='Promotion Applicable To', validators=[DataRequired()], choices=[('All','All'),('Student','Student'),('Elderly','Elderly')], default='All')
+    promotion_image = FileField(label='Promotion Image', validators=[FileAllowed(['jpg','png','jpeg'])])
+    submit = SubmitField("Modify Promotion")
+
+class CreateCarousel(FlaskForm):
+    carousel_title = StringField(label='Carousel Title', validators=[DataRequired(), Length(min=5, max=30)])
+    carousel_category = SelectField(label='Carousel category', validators=[DataRequired()], choices=[('Nil','Nil'),('Movie','Movie'),('Rent Movie','Rent Movie'),('Promotion','Promotion')], default='Nil')
+    carousel_image = FileField(label='Carousel Image', validators=[FileAllowed(['jpg','png','jpeg'])])
+    submit = SubmitField("Add carousel")
+
 class CreateContactUsForm(FlaskForm):
     salutation = SelectField("Salutation", validators=[DataRequired()], choices=[("Mr","Mr"),("Mrs","Mrs"),("Ms","Ms"),("Dr","Dr")], default="Mr")
     first_name = StringField("First Name", validators=[DataRequired()])

@@ -76,10 +76,16 @@ class Promotion:
         self.__applicable_to = applicable_to
 
 class Carousel:
+    id = 0
     def __init__(self, title, category, carousel_image):
+        Carousel.id += 1
+        self.__id = Carousel.id
         self.__title = title
         self.__category = category
         self.__carousel_image = carousel_image
+
+    def get_id(self):
+        return self.__id
 
     def get_title(self):
         return self.__title
