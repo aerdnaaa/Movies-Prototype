@@ -102,16 +102,17 @@
 
 {% block scripts %}
   <script>
-    // function delete_Carousel() {
-    //   var list_of_to_be_deleted_Carousels = [];
-    //   var list_of_checkboxes = document.getElementsByClassName("form-check-input");        
-    //   for (var index=1;index<list_of_checkboxes.length;index++){                    
-    //     var checkbox = list_of_checkboxes[index];                    
-    //     if (checkbox.checked){
-    //       list_of_to_be_deleted_Carousels.push(checkbox.name);
-    //     }          
-    //   }        
-    //   send_message("{{ url_for('delete_Carousel') }}", list_of_to_be_deleted_Carousels)
-    // }
+    function delete_carousel() {
+      var list_of_to_be_deleted_carousels = [];
+      var list_of_checkboxes = document.getElementsByClassName("form-check-input");        
+      for (var index=1;index<list_of_checkboxes.length;index++){                    
+        var checkbox = list_of_checkboxes[index];                    
+        if (checkbox.checked){
+          list_of_to_be_deleted_carousels.push(checkbox.name);
+        }          
+      }        
+      send_message("{{ url_for('delete_carousel') }}", list_of_to_be_deleted_carousels)
+    }
+    </script>
   <script src="{{ url_for('static', filename='js/extension.js') }}"></script>
 {% endblock %}

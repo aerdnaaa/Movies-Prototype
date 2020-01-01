@@ -1,5 +1,14 @@
 {% extends "Admin/baseAdmin.html" %}
-
+{% block styles %}
+    <style>
+      a {
+        color:white;
+      }
+      a:hover{
+        color:white;
+      }
+    </style>
+  {% endblock %}
 {% block content %}
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -26,8 +35,8 @@
       <div class="row mb-2">
         
         <div class="ml-auto">            
-          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addMovieModal">
-            Add Movie Theatres
+          <button type="button" class="btn btn-success">
+            <a href="{{ url_for('add_movie_theatre') }}">Add Movie Theatre</a>              
           </button>
           <button type="submit" class="btn btn-danger" onclick="deleteMovieTheatre()">Delete</button>
         </div>
@@ -36,51 +45,48 @@
         <table class="table table-striped">
           <thead>
             <tr>
+              <th scope="col">
                 <td>
-                    <div class="form-check">
-                      <input type="checkbox" class="form-check-input" onclick="selectAllTheatre(this)">                    
-                    </div>
-                  </td>
-              <th scope="col">No.</th>
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" onclick="selectAllTheatre(this)">                    
+                  </div>
+                </td>
+              </th>
+              <th scope="col">Id</th>
               <th scope="col">Theatre Name</th>
               <th scope="col">Image</th>                
-              <th scope="col">Halls</th>
+              <th scope="col">No. Halls</th>
               <th scope="col">Modify</th>
             </tr>
           </thead>
           <tbody>
+            {% for key in Movie_theatre_dict %}
             <tr>
               <td>
                 <div class="form-check">
-                  <input type="checkbox" class="form-check-input">                    
+                  <input type="checkbox" class="form-check-input" name="{{ Movie_theatre_dict[key].get_id() }}">                    
                 </div>
               </td>
-              <th scope="row">1</th>
-              <td>Jem</td>
-              <td><img src="https://www.neshoba.org/pcdp/cache/file/774AC7F5-155D-D235-07D8165A3BAAEA42_business-photo.jpg" alt="cinema" height="90" width="150"></td>
-              <td>7</td>
               <td>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editMovieModal" onclick="changeEditMovieNumber(1)">
-                    Modify Movie Theatre
-                  </button>                               
+                {{ Movie_theatre_dict[key].get_id() }}
+              </td>
+              <td>
+                {{ Movie_theatre_dict[key].get_theatre_name() }}
+              </td>
+              <!-- <td><img src="https://www.neshoba.org/pcdp/cache/file/774AC7F5-155D-D235-07D8165A3BAAEA42_business-photo.jpg" alt="cinema" height="90" width="150"></td> -->
+              <td>
+                <img src="{{ url_for('static', filename='images/theatre/' + Movie_theatre_dict[key].get_theatre_image() ) }}" alt="{{ Movie_theatre_dict[key].get_theatre_name() }} Img" width="200px">
+              </td>
+              <td>
+                {{ Movie_theatre_dict[key].get_hall() }}
+              </td>
+              <td>
+                <button type="button" class="btn btn-primary">
+                  <a href="{{ url_for('modify_movie_theatre', movie_theatre_id=Movie_theatre_dict[key].get_id()) }}">Modify Movie Theatre</a>              
+                </button>
               </td>
             </tr>
-            <tr>
-              <td>
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input">                    
-                </div>
-              </td>
-              <th scope="row">2</th>
-              <td>Saw Tower</td>
-              <td><img src="https://www.neshoba.org/pcdp/cache/file/774AC7F5-155D-D235-07D8165A3BAAEA42_business-photo.jpg" alt="cinema" height="90" width="150"></td>
-              <td>9</td>
-              <td>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editMovieModal" onclick="changeEditMovieNumber(2)">
-                    Modify Movie Theatre
-                  </button>                       
-              </td>
-            </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
@@ -173,134 +179,17 @@
 {% block scripts %}
 <!-- delete movie theatre -->
 <script>
-
-  var editingMovieSerialNumber = 0;
-
-  function changeEditMovieNumber(number) {
-    editingMovieSerialNumber = number;
-  }
-
-  function deleteMovieTheatre() {
-    var tbody=document.getElementsByTagName("tbody")[0];
-    var rowList = tbody.children;    
-    for (i=rowList.length-1; i>-1; i--){
-      var row = rowList[i];
-      var checkBoxTd = row.firstElementChild;            
-      var checkBoxDiv = checkBoxTd.firstElementChild;
-      var checkBox = checkBoxDiv.firstElementChild;      
-      if (checkBox.checked){
-        tbody.removeChild(row);
-      }
-    }
-  }
-
-  function selectAllTheatre(mainCheckBox) {
-    if (mainCheckBox.checked) {    
-      var tbody=document.getElementsByTagName("tbody")[0];
-      var rowList = tbody.children;    
-      for (i=rowList.length-1; i>-1; i--){
-        var row = rowList[i];
-        var checkBoxTd = row.firstElementChild;            
-        var checkBoxDiv = checkBoxTd.firstElementChild;
-        var checkBox = checkBoxDiv.firstElementChild;      
-        if (!checkBox.checked){
-          checkBox.checked = true;
-        }
-      }    
-    }
-    else {
-      var tbody=document.getElementsByTagName("tbody")[0];
-      var rowList = tbody.children;    
-      for (i=rowList.length-1; i>-1; i--){
-        var row = rowList[i];
-        var checkBoxTd = row.firstElementChild;            
-        var checkBoxDiv = checkBoxTd.firstElementChild;
-        var checkBox = checkBoxDiv.firstElementChild;      
-        if (checkBox.checked){
-          checkBox.checked = false;
-        }
-      }
-    }
-  }
-
-function addMovieTheatre() {
-  var theatreName = document.getElementById("theatreName").value;
-  var theatreImageFile = document.getElementById("theatreImage").files[0];
-  var hallNumber = document.getElementById("hallNumber").value;
-  
-  var tr = document.createElement("tr");
-
-  var tdCheckBox = document.createElement("td");
-  var divCheckBox = document.createElement("div");
-  divCheckBox.setAttribute("class", "form-check");
-  var checkBox = document.createElement("input");
-  checkBox.setAttribute("type", "checkbox");
-  checkBox.setAttribute("class", "form-check-input");
-  
-  divCheckBox.appendChild(checkBox);
-  tdCheckBox.appendChild(divCheckBox);
-
-  var th = document.createElement("th");
-  th.setAttribute("scope", "row");
-  var tbody=document.getElementsByTagName("tbody")[0];
-  var rowList = tbody.children;
-  var lastRow = tbody.children[rowList.length-1] ;  
-  var lastRowThValue = lastRow.children[1].innerText;
-  th.innerText = parseInt(lastRowThValue) + 1;
-  
-  var tdTheatreName = document.createElement("td");
-  tdTheatreName.innerText = theatreName;
-
-  var tdTheatreImg = document.createElement("td");
-  var theatreImgNode = document.createElement("img");
-  theatreImgNode.src = window.URL.createObjectURL(theatreImageFile);
-  theatreImgNode.height = "90";
-  tdTheatreImg.appendChild(theatreImgNode);
-
-  var tdHallNumber = document.createElement("td");
-  tdHallNumber.innerText = hallNumber;
-
-  var tdModifyTheatreNumber = document.createElement("td");
-  var buttonModifyTheatreNumber = document.createElement("button");
-  var attributeObj = {"type":"button", "class":"btn btn-primary", "data-toggle":"modal", "data-target":"#editMovieModal"}
-  for (var [key, value] of Object.entries(attributeObj)) {
-    buttonModifyTheatreNumber.setAttribute(key, value);
-  }
-  buttonModifyTheatreNumber.innerText = "Modify Movie Theatre";
-  tdModifyTheatreNumber.appendChild(buttonModifyTheatreNumber);
-  
-  tr.appendChild(tdCheckBox);
-  tr.appendChild(th);
-  tr.appendChild(tdTheatreName);
-  tr.appendChild(tdTheatreImg);
-  tr.appendChild(tdHallNumber);
-  tr.appendChild(tdModifyTheatreNumber);
-  tbody.appendChild(tr);
-
-  var closeButton = document.getElementById("closeAddMovieModal");
-  closeButton.click();
-}
-
-function editMovieTheatre() {
-  var newTheatreName = document.getElementById("editTheatreName").value;
-  var newTheatreImageFile = document.getElementById("editTheatreImage").files[0];
-  var newHallNumber = document.getElementById("editHallNumber").value;
-
-  var tbody=document.getElementsByTagName("tbody")[0];
-  var rowList = tbody.children;
-  var row = rowList[editingMovieSerialNumber-1].children;
-  
-  var tdTheatreName = row[2];
-  var tdTheatreImg = row[3];
-  var imgTheatreImg = tdTheatreImg.firstElementChild;
-  var tdHallNumber = row[4]; 
-
-  tdTheatreName.innerText = newTheatreName;
-  imgTheatreImg.src = window.URL.createObjectURL(newTheatreImageFile);
-  tdHallNumber.innerText = newHallNumber;
-
-  var closeButton = document.getElementById("closeEditMovieModal");
-  closeButton.click();
-}
+  function delete_promotion() {
+    var list_of_to_be_deleted_promotions = [];
+    var list_of_checkboxes = document.getElementsByClassName("form-check-input");        
+    for (var index=1;index<list_of_checkboxes.length;index++){                    
+      var checkbox = list_of_checkboxes[index];                    
+      if (checkbox.checked){
+        list_of_to_be_deleted_promotions.push(checkbox.name);
+      }          
+    }        
+    send_message("{{ url_for('delete_promotion') }}", list_of_to_be_deleted_promotions)
+  }             
 </script>
+<script src="{{ url_for('static', filename='js/extension.js') }}"></script>
 {% endblock %}

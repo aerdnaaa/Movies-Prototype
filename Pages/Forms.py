@@ -38,11 +38,11 @@ from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, Length, Email
 from flask_wtf.file import FileField, FileAllowed
 
-class CreateMovieTheatreForm(FlaskForm):
-    theatre_name = StringField(label='Theatre Name', validators=[DataRequired(), Length(min=3,max=20)])
-    theatre_address = StringField(label='Theatre Address', validators=[DataRequired(), Length(min=3,max=20)])
-    theatre_halls = IntegerField(label='Theatre Halls', validators=[DataRequired()])
-    submit = SubmitField('Add Theatre')
+class CreateMovieTheatre(FlaskForm):
+    theatre_name = StringField(label='Movie Theatre Name', validators=[DataRequired(), Length(min=3,max=20)])
+    theatre_address = StringField(label='Movie Theatre Address', validators=[DataRequired(), Length(min=3,max=20)])
+    theatre_halls = IntegerField(label='Movie Theatre Halls', validators=[DataRequired()])
+    submit = SubmitField('Add Movie Theatre')
 
 class CreatePromotion(FlaskForm):
     promotion_title = StringField(label='Promotion Title', validators=[DataRequired(), Length(min=5, max=30)])
@@ -70,6 +70,12 @@ class CreateCarousel(FlaskForm):
     carousel_image = FileField(label='Carousel Image', validators=[FileAllowed(['jpg','png','jpeg'])])
     submit = SubmitField("Add carousel")
 
+class ModifyCarousel(FlaskForm):
+    carousel_title = StringField(label='Carousel Title', validators=[DataRequired(), Length(min=5, max=30)])
+    carousel_category = SelectField(label='Carousel category', validators=[DataRequired()], choices=[('Nil','Nil'),('Movie','Movie'),('Rent Movie','Rent Movie'),('Promotion','Promotion')], default='Nil')
+    carousel_image = FileField(label='Carousel Image', validators=[FileAllowed(['jpg','png','jpeg'])])
+    submit = SubmitField("Modify carousel")
+
 class CreateContactUsForm(FlaskForm):
     salutation = SelectField("Salutation", validators=[DataRequired()], choices=[("Mr","Mr"),("Mrs","Mrs"),("Ms","Ms"),("Dr","Dr")], default="Mr")
     first_name = StringField("First Name", validators=[DataRequired()])
@@ -77,3 +83,4 @@ class CreateContactUsForm(FlaskForm):
     email = EmailField("Email", validators=[DataRequired(),Email()])
     message = TextAreaField("Your message", validators=[DataRequired(), Length(min=10, max=2000)])
     submit = SubmitField("Send Message")
+

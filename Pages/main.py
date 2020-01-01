@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, Markup, redirect, url_for, Markup
-from Forms import CreateMovieTheatreForm, CreatePromotion, ModifyPromotion, CreateContactUsForm, CreateCarousel
+from Forms import CreateMovieTheatre, CreatePromotion, ModifyPromotion, CreateContactUsForm, CreateCarousel, ModifyCarousel
 from classes import Promotion, Carousel
 import shelve, os, secrets, datetime
 
@@ -45,13 +45,13 @@ def rentmovie():
 
 @app.route("/login")
 def login():
-    form = loginform()
+    # form = loginform()
     return render_template("User/login.html", title="Login Page",form=form)
 
 
 @app.route("/register")
 def register():
-    createUserForm = CreateUserForm(request.form)
+    # createUserForm = CreateUserForm(request.form)
     return render_template("User/register.html", title="Register",form=createUserForm)
 
 
@@ -163,12 +163,21 @@ def admin_calendar():
 def admin_mailbox():
     return render_template("Admin/mailbox.html", title="Mailbox")
 
-@app.route("/admin/movieTheatre", methods=["GET","POST"])
+@app.route("/admin/movie_theatre", methods=["GET","POST"])
 def admin_movieTheatre():
-    form = CreateMovieTheatreForm()
+    form = CreateMovieTheatre()
     if form.validate_on_submit():
         print("jesus is coming")
     return render_template("Admin/movie-theatre.html", title="Movie Theatre", form=form)
+
+@app.route("/admin/movie_theatre/add_movie_theatre", methods=["GET","POST"])
+def add_movie_theatre():
+    pass
+
+@app.route("/admin/movie_theatre/modify_movie_theatre", methods=["GET","POST"])
+def modify_movie_theatre():
+    pass
+
 
 @app.route("/admin/movies")
 def admin_movies():
@@ -228,6 +237,7 @@ def modify_promotion(promotion_id):
     except:        
         Promotion_dict = {}
         db["promotion"] = Promotion_dict
+    promotion_id = int(promotion_id)
     if form.validate_on_submit():
         promotion_title = form.promotion_title.data
         promotion_image = save_picture(form.promotion_image.data, "promotion")
@@ -242,6 +252,7 @@ def modify_promotion(promotion_id):
         promotion_class.set_description(Markup(promotion_description))
         promotion_class.set_valid_period(promotion_period)
         promotion_class.set_applicable_to(promotion_applicable_to)
+        promotion_class.set_terms_and_conditions(promotion_terms_and_conditions)
         Promotion_dict[promotion_id] = promotion_class
         db["promotion"] = Promotion_dict
         db.close()
@@ -272,7 +283,7 @@ def delete_promotion():
     
     list_of_to_be_deleted_promotions = request.json       
     for promotion_id in list_of_to_be_deleted_promotions:                              
-        deleted_promotion = Promotion_dict[int(promotion_id)]            
+        delete_promotion = Promotion_dict[int(promotion_id)]            
         smaller_deleted_list = [delete_promotion, datetime.date.today()]
         Deleted_list.append(smaller_deleted_list)
         del Promotion_dict[int(promotion_id)]
@@ -306,26 +317,75 @@ def add_carousel():
     form = CreateCarousel()
     db = shelve.open('shelve.db', 'c')
     try:
-        Carousel_dict = db['carousel']+
+        Carousel_dict = db['carousel']
         Carousel.id = list(Carousel_dict.values())[-1].get_id()
     except:        
         Carousel_dict = {}
         db['carousel'] = Carousel_dict
     if form.validate_on_submit():        
         carousel_title = form.carousel_title.data
-        carousel_image = save_picture(form.promotion_image.data, "carousel")              
+        carousel_image = save_picture(form.carousel_image.data, "carousel")              
         carousel_category = form.carousel_category.data
         carousel_class = Carousel(carousel_title,carousel_category,carousel_image)
         carousel_id = carousel_class.get_id()
         Carousel_dict[carousel_id] = carousel_class
         db["carousel"] = Carousel_dict
         db.close()
-        return redirect(url_for("admin_promotion"))
+        return redirect(url_for("admin_carousel"))
     elif request.method == "GET":
         form.carousel_title.data = ""        
         form.carousel_category.data = ""
     return render_template("Admin/carousel/add_carousel.html", title="Add Carousel", form=form)
 
+@app.route("/admin/carousel/modify_carousel/<carousel_id>", methods=["POST","GET"])
+def modify_carousel(carousel_id):
+    form = ModifyCarousel()
+    db = shelve.open('shelve.db', 'c')
+    try:
+        Carousel_dict = db['carousel']
+    except:        
+        Carousel_dict = {}
+        db['carousel'] = Carousel_dict
+    carousel_id = int(carousel_id)
+    if form.validate_on_submit():
+        carousel_title = form.carousel_title.data
+        carousel_image = save_picture(form.carousel_image.data, "carousel")              
+        carousel_category = form.carousel_category.data
+        carousel_class = Carousel(carousel_title,carousel_category,carousel_image)
+        carousel_id = carousel_class.get_id()
+        Carousel_dict[carousel_id] = carousel_class
+        db["carousel"] = Carousel_dict
+        db.close()
+        return redirect(url_for("admin_carousel"))
+    elif request.method == "GET":
+        carousel = Carousel_dict[carousel_id]
+        form.carousel_title.data = carousel.get_title()
+        form.carousel_category = carousel.get_category()        
+        image_source = promotion.get_promotion_image()
+    return render_template("Admin/carousel/modify_carousel.html", title="Modify Carousel", form=form, image_source=image_source)
+
+@app.route("/admin/carousel/delete", methods=["GET","POST"])
+def delete_carousel():
+    db = shelve.open('shelve.db', 'c')
+    try:
+        Carousel_dict = db["carousel"]
+        Deleted_list = db["deleted_carousel"]
+    except:        
+        Carousel_dict = {}
+        Deleted_list = []            
+        db["carousel"] = Carousel_dict
+        db["deleted_carousel"] = Deleted_list    
+    
+    list_of_to_be_deleted_carousels = request.json       
+    for carousel_id in list_of_to_be_deleted_carousels:                              
+        delete_carousel = Carousel_dict[int(carousel_id)]            
+        smaller_deleted_list = [delete_carousel, datetime.date.today()]
+        Deleted_list.append(smaller_deleted_list)
+        del Carousel_dict[int(carousel_id)]
+    db["carousel"] = Carousel_dict
+    db["deleted_carousel"] = Deleted_list
+    db.close()
+    return redirect(url_for('add_carousel'))
 
 if __name__ == "__main__":
     app.run(debug=True)

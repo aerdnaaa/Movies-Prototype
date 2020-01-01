@@ -26,8 +26,9 @@ margin: auto;
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Carousel</li>
+            <li class="breadcrumb-item"><a href="{{ url_for('admin_home') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('admin_carousel') }}">Carousel</a></li>
+            <li class="breadcrumb-item active">Add Carousel</li>
           </ol>
         </div>
       </div>
@@ -39,23 +40,23 @@ margin: auto;
     <div class="container-fluid">
       <div class="row">
         <div class="col-10">
-        <form method="POST" enctype="multipart/form-data">
-          {{ form.csrf_token }}
-          <div class="form-group">
-            {{ form.carousel_title.label(class="form-control-label") }}
-            {{ form.carousel_title(class="form-control form-control-lg") }}
-          </div>
-          <div class="form-group">
-            {{ form.carousel_category.label(class="form-control-label") }}
-            {{ form.carousel_category(class="form-control form-control-lg") }}
-          </div>
-          <div class="form-group">
-            {{ form.carousel_image.label(class="form-control-label") }}
-            {{ form.carousel_image(class="form-control-file") }}
-          </div>
-          {{ form.submit(class="btn btn-primary") }}
-        </form>
-      </div>
+          <form method="POST" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            <div class="form-group">
+              {{ form.carousel_title.label(class="form-control-label") }}
+              {{ form.carousel_title(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+              {{ form.carousel_category.label(class="form-control-label") }}
+              {{ form.carousel_category(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+              {{ form.carousel_image.label(class="form-control-label") }}
+              {{ form.carousel_image(class="form-control-file") }}
+            </div>
+            {{ form.submit(class="btn btn-primary") }}
+          </form>
+        </div>
       </div>
     </div>
   </section>
@@ -69,12 +70,5 @@ margin: auto;
 <!-- /.content-wrapper -->
 
 {% block scripts %}
-<script>
-function convert_to_html(){
-  var description = document.getElementById("Carousel-description").value
-  var temporary_html = document.getElementById("temporary_html");
-  temporary_html.innerHTML = description;
-}
-</script>
 
 {% endblock %}
