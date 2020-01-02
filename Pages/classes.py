@@ -1,27 +1,3 @@
-class Movie_Theatre:
-    def __init__(self, theatre_name, theatre_address, theatre_halls):
-        self.__theatre_name = theatre_name
-        self.__theatre_address = theatre_address
-        self.__theatre_halls = theatre_halls
-
-    def get_theatre_name(self):
-        return self.__theatre_address
-
-    def get_theatre_address(self):
-        return self.__theatre_name
-
-    def get_theatre_halls(self):
-        return self.__theatre_halls
-    
-    def set_theatre_name(self, theatre_name):
-        self.__theatre_name = theatre_name
-
-    def set_theatre_address(self, theatre_address):
-        self.__theatre_address = theatre_address
-        
-    def set_theatre_halls(self, theatre_halls):
-        self.__theatre_halls = theatre_halls
-    
 # this sets the attributes and methods of a promotion
 
 class Promotion:
@@ -121,7 +97,7 @@ class Theatre:
         return self.__theatre_name
 
     def get_theatre_image(self):
-        return self.__theatre_name
+        return self.__theatre_image
 
     def get_number_of_halls(self):
         return self.__number_of_halls
@@ -135,3 +111,15 @@ class Theatre:
     def set_number_of_halls(self, number_of_halls):
         self.__number_of_halls = number_of_halls
 
+class Person:
+    def __init__(self, id, name, profile_picture):
+        self.id = id
+        self.name = name
+        self.profile_picture = profile_picture
+
+class Admin(Person):
+    id = 0
+    def __init__(self, name, profile_picture, admininstrative_rights):
+        Admin.id += 1
+        Person.__init__(Admin.id, name, profile_picture)
+        self.admininstrative_rights = admininstrative_rights

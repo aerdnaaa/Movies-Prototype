@@ -35,14 +35,20 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, validators, SubmitField, IntegerField, TextAreaField, DateField, SelectField
 from wtforms.fields.html5 import EmailField
-from wtforms.validators import DataRequired, Length, Email
+from wtforms.validators import DataRequired, Length, Email, NumberRange
 from flask_wtf.file import FileField, FileAllowed
 
 class CreateMovieTheatre(FlaskForm):
     theatre_name = StringField(label='Movie Theatre Name', validators=[DataRequired(), Length(min=3,max=20)])
-    theatre_address = StringField(label='Movie Theatre Address', validators=[DataRequired(), Length(min=3,max=20)])
-    theatre_halls = IntegerField(label='Movie Theatre Halls', validators=[DataRequired()])
+    theatre_image = FileField(label='Movie Theatre Image', validators=[FileAllowed(['jpg','png','jpeg'])])
+    theatre_halls = IntegerField(label='Movie Theatre Halls', validators=[DataRequired(), NumberRange(min=1, max=10)])
     submit = SubmitField('Add Movie Theatre')
+
+class ModifyMovieTheatre(FlaskForm):
+    theatre_name = StringField(label='Movie Theatre Name', validators=[DataRequired(), Length(min=3,max=20)])
+    theatre_image = FileField(label='Movie Theatre Image', validators=[FileAllowed(['jpg','png','jpeg'])])
+    theatre_halls = IntegerField(label='Movie Theatre Halls', validators=[DataRequired(), NumberRange(min=1, max=10)])
+    submit = SubmitField('Modify Movie Theatre')
 
 class CreatePromotion(FlaskForm):
     promotion_title = StringField(label='Promotion Title', validators=[DataRequired(), Length(min=5, max=30)])

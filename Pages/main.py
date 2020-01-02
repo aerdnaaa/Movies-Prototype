@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, Markup, redirect, url_for, Markup
-from Forms import CreateMovieTheatre, CreatePromotion, ModifyPromotion, CreateContactUsForm, CreateCarousel, ModifyCarousel
-from classes import Promotion, Carousel
+from Forms import CreateMovieTheatre, ModifyMovieTheatre, CreatePromotion, ModifyPromotion, CreateContactUsForm, CreateCarousel, ModifyCarousel
+from classes import Promotion, Carousel, Theatre
 import shelve, os, secrets, datetime
 
 app = Flask(__name__)
@@ -107,49 +107,31 @@ def contactUs():
 def admin_home():
     return render_template("Admin/index.html", title="Dashboard")
 
-
-# @app.route("/admin/promotion", methods=["GET","POST"])
-# def admin_promotion():
-#     form = CreatePromotion()
-#     db = shelve.open('shelve.db', 'c')
-#     try:
-#         Promotion_dict = db["promotion"]
-#     except:        
-#         Promotion_dict = {}
-#         db["promotion"] = Promotion_dict
-#     if form.validate_on_submit():
-#         promotion_title = form.promotion_title.data
-#         promotion_image = save_picture(form.promotion_image.data)
-#         promotion_description = form.promotion_description.data
-#         promotion_terms_and_conditions = form.promotion_terms_and_condition.data.split("\n")
-#         promotion_period = form.promotion_valid_start_date.data + " - " + form.promotion_valid_end_date.data
-#         promotion_applicable_to = form.promotion_applicable_to.data
-#         promotion_class = Promotion(promotion_title,promotion_image,promotion_description,promotion_terms_and_conditions,promotion_period,promotion_applicable_to)
-#         Promotion_dict[promotion_title] = promotion_class
-#         db["promotion"] = Promotion_dict
-#         db.close()
-#         return redirect(url_for("admin_promotion"))
-#     elif request.method == "GET":
-#         promotion_title = ""        
-#         promotion_description = ""
-#         promtion_terms_and_conditions = ""
-#         form.promotion_valid_start_date.data = ""
-#         form.promotion_valid_end_date.data = ""
-#         promtion_applicable_to = ""
-#     return render_template("Admin/promotion.html", title="Promotion", form=form, Promotion_dict=Promotion_dict)
-
-
 @app.route("/admin/booking")
 def admin_booking():
     return render_template("Admin/booking.html", title="Booking")
 
-@app.route("/admin/rent")
-def admin_rent():
-    return render_template("Admin/rent.html", title="Renting")
+#? Rent Movie 
+@app.route("/admin/rental")
+def admin_rental():
+    db = shelve.open('shelve.db', 'c')
+    try:
+        Rental_dict = db["rental"]
+    except:        
+        Rental_dict = {}
+        db["rental"] = Rental_dict
+    db.close()
+    return render_template("Admin/rent/rent.html", title="Renting", Rental_dict=Rental_dict)
+
+#! need to ask jooseng about logic for rental
+
+@app.route("/admin/modify")
+def modify_rental():
+    pass
 
 @app.route("/admin/composeMail")
 def admin_composeMail():
-    return render_template("Admin/compose.html", title="Compose Mail")
+    return render_template("Admin/compose.html", title="Compose Mail") 
 
 @app.route("/admin/readMail")
 def admin_readMail():
@@ -163,28 +145,99 @@ def admin_calendar():
 def admin_mailbox():
     return render_template("Admin/mailbox.html", title="Mailbox")
 
+#? Movie Theatre
 @app.route("/admin/movie_theatre", methods=["GET","POST"])
 def admin_movieTheatre():
-    form = CreateMovieTheatre()
-    if form.validate_on_submit():
-        print("jesus is coming")
-    return render_template("Admin/movie-theatre.html", title="Movie Theatre", form=form)
+    db = shelve.open('shelve.db', 'c')
+    try:
+        Movie_theatre_dict = db["movie_theatre"]
+    except:        
+        Movie_theatre_dict = {}
+        db["movie_theatre"] = Movie_theatre_dict
+    db.close()    
+    return render_template("Admin/movie_theatre/movie_theatre.html", title="Movie Theatre", Movie_theatre_dict=Movie_theatre_dict)
 
 @app.route("/admin/movie_theatre/add_movie_theatre", methods=["GET","POST"])
 def add_movie_theatre():
-    pass
+    form = CreateMovieTheatre()
+    db = shelve.open('shelve.db', 'c')    
+    try:
+        Movie_theatre_dict = db["movie_theatre"]
+    except:        
+        Movie_theatre_dict = {}
+        db["movie_theatre"] = Movie_theatre_dict      
 
-@app.route("/admin/movie_theatre/modify_movie_theatre", methods=["GET","POST"])
-def modify_movie_theatre():
-    pass
+    if form.validate_on_submit():
+        theatre_name = form.theatre_name.data
+        theatre_image = save_picture(form.theatre_image.data, "theatre")        
+        theatre_halls = int(form.theatre_halls.data)
+        movie_theatre_class = Theatre(theatre_name,theatre_image,theatre_halls)
+        theatre_id = movie_theatre_class.get_id()
+        Movie_theatre_dict[theatre_id] = movie_theatre_class
+        db["movie_theatre"] = Movie_theatre_dict
+        db.close()
+        return redirect(url_for('admin_movieTheatre'))
+    elif request.method == "GET":
+        form.theatre_name.data = ""
+        form.theatre_halls.data = 1
+    return render_template("Admin/movie_theatre/add_movie_theatre.html", title="Add Movie Theatre", form=form)
 
+@app.route("/admin/movie_theatre/modify_movie_theatre/<movie_theatre_id>", methods=["GET","POST"])
+def modify_movie_theatre(movie_theatre_id):
+    movie_theatre_id = int(movie_theatre_id)
+    form = ModifyMovieTheatre()
+    db = shelve.open('shelve.db', 'c')    
+    try:
+        Movie_theatre_dict = db["movie_theatre"]
+    except:        
+        Movie_theatre_dict = {}
+        db["movie_theatre"] = Movie_theatre_dict 
+    if form.validate_on_submit():  
+        theatre_name = form.theatre_name.data
+        theatre_image = save_picture(form.theatre_image.data, "theatre")        
+        theatre_halls = int(form.theatre_halls.data)
+        movie_theatre_class = Theatre(theatre_name,theatre_image,theatre_halls)
+        Movie_theatre_dict[movie_theatre_id] = movie_theatre_class
+        db["movie_theatre"] = Movie_theatre_dict
+        db.close()
+        return redirect(url_for('admin_movieTheatre'))
+    elif request.method == "GET":
+        movie_theatre = Movie_theatre_dict[movie_theatre_id]
+        form.theatre_name.data = movie_theatre.get_theatre_name()
+        form.theatre_halls.data = movie_theatre.get_number_of_halls()
+        image_source = movie_theatre.get_theatre_image()
+    return render_template("Admin/movie_theatre/modify_movie_theatre.html", title="Modify Movie Theatre", form=form, image_source=image_source)
 
+@app.route("/admin/movie_theatre/delete", methods=["GET","POST"])
+def delete_movie_theatre():
+    db = shelve.open('shelve.db', 'c')    
+    try:
+        Movie_theatre_dict = db["movie_theatre"]
+        Deleted_list = db["deleted_movie_theatre"]
+    except:        
+        Movie_theatre_dict = {}
+        Deleted_list = []
+        db["movie_theatre"] = Movie_theatre_dict
+        db["deleted_movie_theatre"] = Deleted_list
+
+    list_of_to_be_deleted_theatres = request.json       
+    for theatre_id in list_of_to_be_deleted_theatres: 
+        print(Movie_theatre_dict)                             
+        delete_theatre = Movie_theatre_dict[int(theatre_id)]            
+        smaller_deleted_list = [delete_theatre, datetime.date.today()]
+        Deleted_list.append(smaller_deleted_list)
+        del Movie_theatre_dict[int(theatre_id)]
+    db["movie_theatre"] = Movie_theatre_dict
+    db["deleted_movie_theatre"] = Deleted_list
+    db.close()
+    return redirect(url_for('add_promotion'))
+
+#? Movies
 @app.route("/admin/movies")
 def admin_movies():
     return render_template("Admin/movies.html", title="Movies")
 
-# 2nd version of CRUD of promotions:
-
+#? Promotion
 @app.route("/admin/promotion")
 def admin_promotion():    
     db = shelve.open('shelve.db', 'c')
@@ -230,6 +283,7 @@ def add_promotion():
 
 @app.route("/admin/promotion/modify_promotion/<promotion_id>", methods=["POST","GET"])
 def modify_promotion(promotion_id):
+    promotion_id = int(promotion_id)
     form = ModifyPromotion()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -237,7 +291,6 @@ def modify_promotion(promotion_id):
     except:        
         Promotion_dict = {}
         db["promotion"] = Promotion_dict
-    promotion_id = int(promotion_id)
     if form.validate_on_submit():
         promotion_title = form.promotion_title.data
         promotion_image = save_picture(form.promotion_image.data, "promotion")
@@ -290,17 +343,9 @@ def delete_promotion():
     db["promotion"] = Promotion_dict
     db["deleted_promotion"] = Deleted_list
     db.close()
-    return redirect(url_for('add_promotion'))
+    return redirect(url_for('admin_promotion'))
 
-def save_picture(form_picture, path):
-    random_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/images/' + path, picture_fn)
-    form_picture.save(picture_path)
-    return picture_fn
-
-# admin page to add carousel or remove
+#? Carousel
 @app.route("/admin/carousel")
 def admin_carousel():
     db = shelve.open('shelve.db', 'c')
@@ -360,8 +405,9 @@ def modify_carousel(carousel_id):
     elif request.method == "GET":
         carousel = Carousel_dict[carousel_id]
         form.carousel_title.data = carousel.get_title()
-        form.carousel_category = carousel.get_category()        
-        image_source = promotion.get_promotion_image()
+        form.carousel_category.data = carousel.get_category()
+        form.carousel_image.data = carousel.get_carousel_image()      
+        image_source = carousel.get_carousel_image()
     return render_template("Admin/carousel/modify_carousel.html", title="Modify Carousel", form=form, image_source=image_source)
 
 @app.route("/admin/carousel/delete", methods=["GET","POST"])
@@ -385,7 +431,15 @@ def delete_carousel():
     db["carousel"] = Carousel_dict
     db["deleted_carousel"] = Deleted_list
     db.close()
-    return redirect(url_for('add_carousel'))
+    return redirect(url_for('admin_carousel'))
+
+def save_picture(form_picture, path):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/images/' + path, picture_fn)
+    form_picture.save(picture_path)
+    return picture_fn
 
 if __name__ == "__main__":
     app.run(debug=True)

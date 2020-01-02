@@ -38,7 +38,7 @@
 
         <div class="ml-auto">
           <button type="button" class="btn btn-success">
-            <a href="">Add Carousel</a>              
+            <a href="{{ url_for('add_carousel') }}">Add Carousel</a>              
           </button>
           <button type="submit" class="btn btn-danger"onclick="">Delete</button>
         </div>
@@ -77,11 +77,11 @@
                   {{ Carousel_dict[key].get_category() }}
                 </td>
                 <td>
-                  <img src="{{ url_for('static', filename='images/Carousel/' + Carousel_dict[key].get_Carousel_image() ) }}" alt="{{ Carousel_dict[key].get_title() }} Img" width="200px">
+                  <img src="{{ url_for('static', filename='images/Carousel/' + Carousel_dict[key].get_carousel_image() ) }}" alt="{{ Carousel_dict[key].get_title() }} Img" width="200px">
                 </td>
                 <td>
                   <button type="button" class="btn btn-primary">
-                    <a href="{{ url_for('modify_Carousel', Carousel_id=Carousel_dict[key].get_id()) }}">Modify Carousel</a>              
+                    <a href="{{ url_for('modify_carousel', carousel_id=Carousel_dict[key].get_id()) }}">Modify Carousel</a>              
                   </button>
                 </td>
               </tr>
