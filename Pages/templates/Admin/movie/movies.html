@@ -21,7 +21,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="{{ url_for('admin_home') }}">Home</a></li>
               <li class="breadcrumb-item active">Movies</li>
             </ol>
           </div>
@@ -36,73 +36,8 @@
           
           <div class="ml-auto">            
             <button type="button" class="btn btn-success">
-              <a href="{{ url_for('admin_movies') }}">Add Movies</a>              
+              <a href="{{ url_for('add_movie') }}">Add Movies</a>              
             </button>
-            <!-- Modal -->
-            <div class="modal fade" id="addMovieModal" tabindex="-1" role="dialog" aria-labelledby="addMovieModal" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="addMovieModal">Add Movie</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <form>
-                      <div class="form-group">
-                          <label for="movieName">Name</label>
-                          <input type="text" class="form-control" id="movieName">
-                      </div>
-                      <div class="form-group">
-                        <label for="movieImage">Movie Poster</label>
-                        <input type="file" class="form-control-file" id="movieImage">
-                      </div>
-                      <div class="form-group">
-                          <label for="movieDescription">Description</label>
-                          <input type="number" class="form-control" id="movieDescription">
-                      </div>
-                      <div class="form-group">
-                          <label for="movieGenre">Genre</label>
-                          <input type="text" class="form-control" id="movieGenre">
-                      </div>
-                      <div class="form-group">
-                          <label for="movieCast">Cast</label>
-                          <input type="text" class="form-control" id="movieCast">
-                      </div>
-                      <div class="form-group">
-                          <label for="movieTrailer">Movie Trailer</label>
-                          <input type="text" class="form-control-file" id="movieTrailer">
-                      </div>
-                      <div class="form-group">
-                          <label for="movieDuration">Movie Duration</label>
-                          <input type="number" class="form-control-file" id="movieDuration" min="1" max="180">
-                      </div>
-                      <div class="form-group">
-                          <label for="startDate">Start Date</label>
-                          <input type="date" id="startDate" class="form-control">
-                      </div>
-                      <div class="form-group">
-                          <label for="movieLanguage">Language</label>
-                          <input type="text" class="form-control-file" id="movieLanguage">
-                      </div>
-                      <div class="form-group">
-                          <label for="movieSubtitles">Movie Subtitles</label>
-                          <input type="text" class="form-control-file" id="movieSubtitles">
-                      </div>
-                      <div class="form-group">
-                          <label for="movieDirector">Movie Director</label>
-                          <input type="text" class="form-control-file" id="movieDirector">
-                      </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="addMovie()" >Add Movies</button>
-                  </div>
-                </div>
-              </div>
-            </div>
             <button type="submit" class="btn btn-danger"onclick="delete_movie()">Delete</button>
           </div>
         </div>
@@ -131,57 +66,56 @@
               </tr>
             </thead>
             <tbody>
-              {% for key in Movies_dict %}
-              <tr>
-                  <tr>
-                      <td>
-                          <div class="form-check">
-                            <input type="checkbox" class="form-check-input" name="{{ Movies_dict[key].get_id() }}">
-                          </div>
-                        </td>
-                        <td>
-                          {{ Movies_dict[key].get_id() }}
-                        </td>
-                        <td>
-                          {{ Movies_dict[key].get_movie_title() }}
-                        </td>
-                <!-- <td><img src="http://macrobertartscentre.org/docs/095_438__jokerlandscape_1570462515_standard.jpg" alt="cinema" height="90" width="150"></td> -->
-                        <td>
-                          <img src="{{ url_for('static', filename='images/movies/' + Movies_dict[key].get_movie_image() ) }}" alt="{{ Movies_dict[key].get_movie_title() }} Img" width="200px">
-                        </td>
-                        <td>
-                          {{ Movies_dict[key].get_description() }}
-                        </td>
-                        <td>
-                          {{ Movies_dict[key].get_genre() }}
-                        </td>
-                        <td>
-                          {{ Movies_dict[key].get_casts() }}
-                        </td>
-                        <td>
-                          {{ Movies_dict[key].get_trailer() }}
-                        </td>
-                        <td>
-                          {{ Movies_dict[key].get_duration() }}
-                        </td>
-                        <td>
-                          {{ Movies_dict[key].get_release_date() }}
-                        </td>
-                        <td>
-                          {{ Movies_dict[key].get_language() }}
-                        </td>
-                        <td>
-                          {{ Movies_dict[key].get_subtitles() }}
-                        </td>
-                        <td>
-                          {{ Movies_dict[key].get_directors() }}
-                        </td>
-                        <td>
-                          <button type="button" class="btn btn-primary">
-                            <a href="{{ url_for('modify_movies', movies_id=Movies_dict[key].get_id()) }}">Modify Movies</a>              
-                          </button>
-                        </td>
-              </tr>
+              {% for key in Movies_dict %}              
+                <tr>
+                  <td>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="{{ Movies_dict[key].get_id() }}">
+                      </div>
+                    </td>
+                    <td>
+                      {{ Movies_dict[key].get_id() }}
+                    </td>
+                    <td>
+                      {{ Movies_dict[key].get_movie_title() }}
+                    </td>
+            <!-- <td><img src="http://macrobertartscentre.org/docs/095_438__jokerlandscape_1570462515_standard.jpg" alt="cinema" height="90" width="150"></td> -->
+                    <td>
+                      <img src="{{ url_for('static', filename='images/movies/' + Movies_dict[key].get_movie_image() ) }}" alt="{{ Movies_dict[key].get_movie_title() }} Img" width="200px">
+                    </td>
+                    <td>
+                      {{ Movies_dict[key].get_description() }}
+                    </td>
+                    <td>
+                      {{ Movies_dict[key].get_genre() }}
+                    </td>
+                    <td>
+                      {{ Movies_dict[key].get_casts() }}
+                    </td>
+                    <td>
+                      {{ Movies_dict[key].get_trailer() }}
+                    </td>
+                    <td>
+                      {{ Movies_dict[key].get_duration() }}
+                    </td>
+                    <td>
+                      {{ Movies_dict[key].get_release_date() }}
+                    </td>
+                    <td>
+                      {{ Movies_dict[key].get_language() }}
+                    </td>
+                    <td>
+                      {{ Movies_dict[key].get_subtitles() }}
+                    </td>
+                    <td>
+                      {{ Movies_dict[key].get_directors() }}
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-primary">
+                        <a href="{{ url_for('modify_movies', movies_id=Movies_dict[key].get_id()) }}">Modify Movies</a>              
+                      </button>
+                    </td>
+                </tr>
               {% endfor %}
             </tbody>
           </table>

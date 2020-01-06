@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, Markup, redirect, url_for, Markup
-from Forms import CreateMovieTheatre, ModifyMovieTheatre, CreatePromotion, ModifyPromotion, CreateContactUsForm, CreateCarousel, ModifyCarousel
-from classes import Promotion, Carousel, Theatre
+from Forms import CreateMovieTheatre, ModifyMovieTheatre, CreatePromotion, ModifyPromotion, CreateContactUsForm, CreateCarousel, ModifyCarousel, CreateMovieForm
+from classes import Promotion, Carousel, Theatre, Movie
 import shelve, os, secrets, datetime
 
 app = Flask(__name__)
@@ -180,6 +180,7 @@ def add_movie_theatre():
     elif request.method == "GET":
         form.theatre_name.data = ""
         form.theatre_halls.data = 1
+        db.close()
     return render_template("Admin/movie_theatre/add_movie_theatre.html", title="Add Movie Theatre", form=form)
 
 @app.route("/admin/movie_theatre/modify_movie_theatre/<movie_theatre_id>", methods=["GET","POST"])
@@ -235,7 +236,54 @@ def delete_movie_theatre():
 #? Movies
 @app.route("/admin/movies")
 def admin_movies():
-    return render_template("Admin/movies.html", title="Movies")
+    db = shelve.open('shelve.db', 'c')
+    try:
+        Movies_dict = db["movies"]
+    except:
+        Movies_dict = {}
+        db["Movies"] = Movies_dict
+    db.close()
+    return render_template("Admin/movie/movies.html", title="Movies", Movies_dict=Movies_dict)
+
+@app.route("/admin/movies/add_movie", methods=["POST","GET"])
+def add_movie():
+    form = CreateMovieForm()
+    db = shelve.open('shelve.db', 'c')
+    try:
+        Movies_dict = db["movies"]
+    except:
+        Movies_dict = {}
+        db["Movies"] = Movies_dict
+    if form.validate_on_submit():
+        movie_name = form.movie_name.data
+        movie_poster = save_picture(form.movie_poster.data, "movie poster")
+        movie_description = form.movie_description.data
+        movie_genre = form.movie_genre.data
+        movie_casts = form.movie_casts.data
+        movie_director = form.movie_director.data
+        movie_trailer = save_video(form.movie_trailer.data, "movie trailer")
+        movie_duration = int(form.movie_duration.data)
+        movie_release_date = form.movie_release_date.data
+        movie_language = form.movie_language.data
+        movie_subtitles = form.movie_subtitles.data
+        movie_class = Movie(movie_name, movie_poster, movie_description, movie_genre, movie_casts, movie_director, movie_duration, movie_release_date, movie_language, movie_subtitles)
+        movie_id = movie_class.get_id()    
+        Movies_dict[movie_id] = movie_class
+        db["Movies"] = Movies_dict
+        db.close()
+        return redirect(url_for("admin_movies"))
+    elif request.method == "GET":
+        form.movie_name.data = ""
+        form.movie_description.data = ""
+        form.movie_genre.data = ""
+        form.movie_casts.data = ""
+        form.movie_director = ""
+        form.movie_duration = ""
+        form.movie_release_date = ""
+        form.movie_language = "English"
+        form.movie_subtitles = "Chinese"
+        db.close()
+    return render_template("Admin/movie/add_movie.html", title="Add Movie", form=form)
 
 #? Promotion
 @app.route("/admin/promotion")
@@ -440,6 +488,14 @@ def save_picture(form_picture, path):
     picture_path = os.path.join(app.root_path, 'static/images/' + path, picture_fn)
     form_picture.save(picture_path)
     return picture_fn
+
+def save_video(form_video, path):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_video.filename)
+    video_fn = random_hex + f_ext
+    video_path = os.path.join(app.root_path, 'static/videos/' + path, video_fn)
+    form_video.save(video_path)
+    return video_fn
 
 if __name__ == "__main__":
     app.run(debug=True)
