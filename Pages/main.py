@@ -251,10 +251,11 @@ def add_movie():
     db = shelve.open('shelve.db', 'c')
     try:
         Movies_dict = db["movies"]
+        Movie.id = list(Movies_dict.values())[-1].get_id()
     except:
         Movies_dict = {}
-        db["Movies"] = Movies_dict
-    if form.validate_on_submit():
+        db["movies"] = Movies_dict
+    if form.validate_on_submit():        
         movie_name = form.movie_name.data
         movie_poster = save_picture(form.movie_poster.data, "movie poster")
         movie_description = form.movie_description.data
@@ -262,14 +263,15 @@ def add_movie():
         movie_casts = form.movie_casts.data
         movie_director = form.movie_director.data
         movie_trailer = save_video(form.movie_trailer.data, "movie trailer")
-        movie_duration = int(form.movie_duration.data)
+        movie_duration = form.movie_duration.data
         movie_release_date = form.movie_release_date.data
         movie_language = form.movie_language.data
         movie_subtitles = form.movie_subtitles.data
-        movie_class = Movie(movie_name, movie_poster, movie_description, movie_genre, movie_casts, movie_director, movie_duration, movie_release_date, movie_language, movie_subtitles)
+        movie_class = Movie(movie_name, movie_poster, movie_description, movie_genre, movie_casts, movie_director, movie_trailer, movie_duration, movie_release_date, movie_language, movie_subtitles)
         movie_id = movie_class.get_id()    
         Movies_dict[movie_id] = movie_class
-        db["Movies"] = Movies_dict
+        db["movies"] = Movies_dict
+        print(Movies_dict)
         db.close()
         return redirect(url_for("admin_movies"))
     elif request.method == "GET":
@@ -277,11 +279,11 @@ def add_movie():
         form.movie_description.data = ""
         form.movie_genre.data = ""
         form.movie_casts.data = ""
-        form.movie_director = ""
-        form.movie_duration = ""
-        form.movie_release_date = ""
-        form.movie_language = "English"
-        form.movie_subtitles = "Chinese"
+        form.movie_director.data = ""
+        form.movie_duration.data = ""
+        form.movie_release_date.data = ""
+        form.movie_language.data = "English"
+        form.movie_subtitles.data = "Chinese"
         db.close()
     return render_template("Admin/movie/add_movie.html", title="Add Movie", form=form)
 

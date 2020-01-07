@@ -55,13 +55,13 @@
                 <th scope="col">Poster</th>
                 <th scope="col">Description</th>
                 <th scope="col">Genre</th>
+                <th scope="col">Director</th>
                 <th scope="col">Casts</th>
                 <th scope="col">Trailer</th>                
                 <th scope="col">Duration</th>
                 <th scope="col">Release Date</th>
                 <th scope="col">Language</th>
                 <th scope="col">Subtitles</th>                
-                <th scope="col">Director</th>
                 <th scope="col">Modify</th>
               </tr>
             </thead>
@@ -77,11 +77,11 @@
                       {{ Movies_dict[key].get_id() }}
                     </td>
                     <td>
-                      {{ Movies_dict[key].get_movie_title() }}
+                      {{ Movies_dict[key].get_movie_name() }}
                     </td>
             <!-- <td><img src="http://macrobertartscentre.org/docs/095_438__jokerlandscape_1570462515_standard.jpg" alt="cinema" height="90" width="150"></td> -->
                     <td>
-                      <img src="{{ url_for('static', filename='images/movies/' + Movies_dict[key].get_movie_image() ) }}" alt="{{ Movies_dict[key].get_movie_title() }} Img" width="200px">
+                      <img src="{{ url_for('static', filename='images/movie poster/' + Movies_dict[key].get_poster() ) }}" alt="{{ Movies_dict[key].get_movie_name() }} Img" width="200px">
                     </td>
                     <td>
                       {{ Movies_dict[key].get_description() }}
@@ -93,7 +93,10 @@
                       {{ Movies_dict[key].get_casts() }}
                     </td>
                     <td>
-                      {{ Movies_dict[key].get_trailer() }}
+                      {{ Movies_dict[key].get_director() }}
+                    </td>
+                    <td>                      
+                      <video src="{{ url_for('static', filename='videos/movie trailer/' + Movies_dict[key].get_trailer() ) }}" alt="{{ Movies_dict[key].get_movie_name() }} Img" width="200px" controls></video>
                     </td>
                     <td>
                       {{ Movies_dict[key].get_duration() }}
@@ -108,11 +111,8 @@
                       {{ Movies_dict[key].get_subtitles() }}
                     </td>
                     <td>
-                      {{ Movies_dict[key].get_directors() }}
-                    </td>
-                    <td>
                       <button type="button" class="btn btn-primary">
-                        <a href="{{ url_for('modify_movies', movies_id=Movies_dict[key].get_id()) }}">Modify Movies</a>              
+                        <a href="{{ url_for('add_movie', movies_id=Movies_dict[key].get_id()) }}">Modify Movies</a>              
                       </button>
                     </td>
                 </tr>

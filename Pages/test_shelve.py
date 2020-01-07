@@ -1,4 +1,4 @@
-# import shelve
+import shelve
 
 # db = shelve.open("shelve.db", "c")
 
@@ -12,23 +12,33 @@
 #     print(value.get_valid_period())
 #     print()
 
-promotion_list = []
-promotion_sub_list = []
-index = 0
-main_index = 0
-list_of_promotion_classes = ["a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a"]
-for promotion_class in list_of_promotion_classes:
-    main_index += 1
-    if index <= 5:
-        promotion_sub_list.append(promotion_class)
-        if index == 5 or main_index == len(list_of_promotion_classes):
-            promotion_list.append(promotion_sub_list)
-        index += 1        
-        print(promotion_sub_list)
-    else:
-        promotion_sub_list = []
-        promotion_sub_list.append(promotion_class)
-        index = 1    
+# promotion_list = []
+# promotion_sub_list = []
+# index = 0
+# main_index = 0
+# list_of_promotion_classes = ["a","a","a","a","a","a","a","a","a","a","a","a","a","a","a","a"]
+# for promotion_class in list_of_promotion_classes:
+#     main_index += 1
+#     if index <= 5:
+#         promotion_sub_list.append(promotion_class)
+#         if index == 5 or main_index == len(list_of_promotion_classes):
+#             promotion_list.append(promotion_sub_list)
+#         index += 1        
+#         print(promotion_sub_list)
+#     else:
+#         promotion_sub_list = []
+#         promotion_sub_list.append(promotion_class)
+#         index = 1    
 
-print(promotion_list)
+# print(promotion_list)
+
+db = shelve.open('shelve.db', 'c')
+try:
+    Movies_dict = db["movies"]
+except:
+    Movies_dict = {}
+    db["Movies"] = Movies_dict
+
+print(Movies_dict)
+
 
