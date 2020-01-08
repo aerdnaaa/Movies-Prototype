@@ -38,7 +38,7 @@
           <button type="button" class="btn btn-success">
             <a href="{{ url_for('add_movie_theatre') }}">Add Movie Theatre</a>              
           </button>
-          <button type="submit" class="btn btn-danger" onclick="deleteMovieTheatre()">Delete</button>
+          <button type="submit" class="btn btn-danger" onclick="delete_movie_theatre()">Delete</button>
         </div>
       </div>
       <div class="row">
@@ -101,16 +101,16 @@
 {% block scripts %}
 <!-- delete movie theatre -->
 <script>
-  function deleteMovieTheatre() {
-    var list_of_to_be_deleted_promotions = [];
+  function delete_movie_theatre() {
+    var list_of_to_be_deleted_movie_theatres = [];
     var list_of_checkboxes = document.getElementsByClassName("form-check-input");        
     for (var index=1;index<list_of_checkboxes.length;index++){                    
       var checkbox = list_of_checkboxes[index];                    
       if (checkbox.checked){
-        list_of_to_be_deleted_promotions.push(checkbox.name);
+        list_of_to_be_deleted_movie_theatres.push(checkbox.name);
       }          
     }        
-    send_message("{{ url_for('delete_movie_theatre') }}", list_of_to_be_deleted_promotions)
+    send_message("{{ url_for('delete_movie_theatre') }}", list_of_to_be_deleted_movie_theatres)
   }             
 </script>
 <script src="{{ url_for('static', filename='js/extension.js') }}"></script>

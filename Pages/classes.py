@@ -51,6 +51,14 @@ class Promotion:
     def set_applicable_to(self, applicable_to):
         self.__applicable_to = applicable_to
 
+    def set_all_attributes(self, title, promotion_image, description, terms_and_conditions, valid_period, applicable_to):
+        self.__title = title
+        self.__promotion_image = promotion_image
+        self.__description = description
+        self.__terms_and_conditions = terms_and_conditions
+        self.__valid_period = valid_period
+        self.__applicable_to = applicable_to
+        
 class Carousel:
     id = 0
     def __init__(self, title, category, carousel_image):
@@ -81,6 +89,11 @@ class Carousel:
     def set_carousel_image(self, carousel_image):
         self.__carousel_image = carousel_image
 
+    def set_all_attributes(self, title, category, carousel_image):
+        self.__title = title
+        self.__category = category
+        self.__carousel_image = carousel_image
+
 class Theatre:
     id = 0
     def __init__(self, theatre_name, theatre_image, number_of_halls):
@@ -109,6 +122,11 @@ class Theatre:
         self.__theatre_name = theatre_image
 
     def set_number_of_halls(self, number_of_halls):
+        self.__number_of_halls = number_of_halls
+
+    def set_all_attributes(self, theatre_name, theatre_image, number_of_halls):
+        self.__theatre_name = theatre_name
+        self.__theatre_image = theatre_image
         self.__number_of_halls = number_of_halls
 
 class Person:
@@ -209,4 +227,16 @@ class Movie:
 
     def set_director(self, director):
         self.__director = director
-      
+    
+    def set_all_attributes(self, movie_name, poster, description, genre, casts, trailer, duration, release_date, language, subtitles, director):        
+        self.__movie_name = movie_name
+        self.__poster = poster
+        self.__description = description
+        self.__genre = genre
+        self.__casts = casts
+        self.__trailer = trailer
+        self.__duration = duration
+        self.__release_date = release_date
+        self.__language = language
+        self.__subtitles = subtitles
+        self.__director = director

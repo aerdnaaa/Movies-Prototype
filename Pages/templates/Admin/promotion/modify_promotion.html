@@ -25,41 +25,47 @@
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
-        <form method="POST" enctype="multipart/form-data">
-            {{ form.csrf_token }}                 
-            <div class="form-group">
-            {{ form.promotion_title.label(class="form-control-label") }}
-            {{ form.promotion_title(class="form-control form-control-lg") }}
-            </div>
-            <div class="form-group">
-            {{ form.promotion_description.label(class="form-control-label") }}
-            {{ form.promotion_description(class="form-control form-control-lg") }}
-            </div>
-            <div class="form-group row">
-            <div class="col">
-                {{ form.promotion_valid_start_date.label(class="form-control-label") }}
-                {{ form.promotion_valid_start_date(type="date", class="form-control form-control-lg") }}
-            </div>
-            <div class="col">
-                {{ form.promotion_valid_end_date.label(class="form-control-label") }}
-                {{ form.promotion_valid_end_date(type="date", class="form-control form-control-lg") }}
-            </div>                
-            </div>
-            <div class="form-group">
-            {{ form.promotion_applicable_to.label(class="form-control-label") }}
-            {{ form.promotion_applicable_to(class="form-control form-control-lg") }}
-            </div>
-            <div class="form-group">
-            {{ form.promotion_terms_and_condition.label(class="form-control-label") }}
-            {{ form.promotion_terms_and_condition(class="form-control form-control-lg") }}
-            </div>
-            <img src="{{ url_for('static', filename='images/promotion/' + image_source ) }}" alt="Img" width="200px">
-            <div class="form-group">            
-            {{ form.promotion_image.label(class="form-control-label") }}
-            {{ form.promotion_image(class="form-control-file") }}
-            </div>                
-            {{ form.submit(class="btn btn-primary") }}
-        </form>
+        <div class="col">
+          <form method="POST" enctype="multipart/form-data">
+              {{ form.csrf_token }}                 
+              <div class="form-group">
+                {{ form.promotion_title.label(class="form-control-label") }}
+                {{ form.promotion_title(class="form-control form-control-lg") }}
+              </div>
+              <div class="form-group">
+                {{ form.promotion_description.label(class="form-control-label") }}
+                {{ form.promotion_description(class="form-control form-control-lg") }}
+              </div>
+              <div class="form-row">
+                <div class="form-group col">
+                  {{ form.promotion_valid_start_date.label(class="form-control-label") }}
+                  {{ form.promotion_valid_start_date(type="date", class="form-control form-control-lg") }}
+                </div>
+                <div class="form-group col">
+                  {{ form.promotion_valid_end_date.label(class="form-control-label") }}
+                  {{ form.promotion_valid_end_date(type="date", class="form-control form-control-lg") }}
+                </div>                
+              </div>
+              <div class="form-group">
+                {{ form.promotion_applicable_to.label(class="form-control-label") }}
+                {{ form.promotion_applicable_to(class="form-control form-control-lg") }}
+              </div>
+              <div class="form-group">
+                {{ form.promotion_terms_and_condition.label(class="form-control-label") }}
+                {{ form.promotion_terms_and_condition(class="form-control form-control-lg") }}
+              </div>
+              <div class="form-row">
+                <div class="form-group col">
+                  <img src="{{ url_for('static', filename='images/promotion/' + image_source ) }}" alt="Img" width="200px">
+                </div>
+                <div class="form-group col">            
+                  {{ form.promotion_image.label(class="form-control-label") }}
+                  {{ form.promotion_image(class="form-control-file") }}
+                </div>                
+              </div>
+              {{ form.submit(class="btn btn-primary") }}
+          </form>
+        </div>
       </div>
     </div>
   </section>

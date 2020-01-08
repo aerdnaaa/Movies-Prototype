@@ -79,7 +79,6 @@
                     <td>
                       {{ Movies_dict[key].get_movie_name() }}
                     </td>
-            <!-- <td><img src="http://macrobertartscentre.org/docs/095_438__jokerlandscape_1570462515_standard.jpg" alt="cinema" height="90" width="150"></td> -->
                     <td>
                       <img src="{{ url_for('static', filename='images/movie poster/' + Movies_dict[key].get_poster() ) }}" alt="{{ Movies_dict[key].get_movie_name() }} Img" width="200px">
                     </td>
@@ -112,7 +111,7 @@
                     </td>
                     <td>
                       <button type="button" class="btn btn-primary">
-                        <a href="{{ url_for('add_movie', movies_id=Movies_dict[key].get_id()) }}">Modify Movies</a>              
+                        <a href="{{ url_for('modify_movie', movie_id=Movies_dict[key].get_id()) }}">Modify Movies</a>              
                       </button>
                     </td>
                 </tr>
@@ -122,230 +121,28 @@
         </div>
       </div>
     </section>
-    
-    <!-- The Modal trailer -->
-    <div class="modal" id="jokerTrailer">
-        <div class="modal-dialog">
-          <div class="modal-content">
-              <iframe width="560" height="315" src="https://www.youtube.com/embed/KpYAbvj9ULc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
-      </div>
-    
-    <!-- The Modal trailer -->
-    <div class="modal" id="frozenTrailer">
-      <div class="modal-dialog">
-        <div class="modal-content">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/bwzLiQZDw2I" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal" id="doraTrailer">
-      <div class="modal-dialog">
-        <div class="modal-content">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/gUTtJjV852c" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal" id="interstellarTrailer">
-      <div class="modal-dialog">
-        <div class="modal-content">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/zSWdZVtXT7E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal edit joker movie-->
-    <div class="modal fade" id="editMovie1Modal" tabindex="-1" role="dialog" aria-labelledby="editMovie1Modal" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editMovie1Modal">Modify Movie</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                  <label for="movieName">Movie Name</label>
-                  <input type="text" class="form-control" id="movieName">
-              </div>
-              <div class="form-group">
-                <label for="movieImage">Movie Poster</label>
-                <input type="file" class="form-control-file" id="movieImage">
-              </div>
-              <div class="form-group">
-                  <label for="movieDescription">Description</label>
-                  <input type="text" class="form-control" id="movieDescription">
-              </div>
-              <div class="form-group">
-                  <label for="movieGenre">Genre</label>
-                  <input type="text" class="form-control" id="movieGenre">
-              </div>
-              <div class="form-group">
-                  <label for="movieCast">Casts</label>
-                  <input type="text" class="form-control" id="movieCast">
-              </div>
-              <div class="form-group">
-                  <label for="movieTrailer">Movie Trailer</label>
-                  <input type="text" class="form-control-file" id="movieTrailer">
-                </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="addMovie()" >Save Edits</button>
-          </div>
-        </div>
-      </div>
-    </div>  
-
-    <!-- Modal edit frozen movie -->
-    <div class="modal fade" id="editMovie2Modal" tabindex="-1" role="dialog" aria-labelledby="editMovie2Modal" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editMovie2ModaLabel">Modify Movie</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                  <label for="movieName">Movie Name</label>
-                  <input type="text" class="form-control" id="movieName">
-              </div>
-              <div class="form-group">
-                <label for="movieImage">Movie Poster</label>
-                <input type="file" class="form-control-file" id="movieImage">
-              </div>
-              <div class="form-group">
-                  <label for="movieDescription">Description</label>
-                  <input type="text" class="form-control" id="movieDescription">
-              </div>
-            <div class="form-group">
-                <label for="movieGenre">Genre</label>
-                <input type="text" class="form-control" id="movieGenre">
-            </div>
-            <div class="form-group">
-                <label for="movieCast">Description</label>
-                <input type="text" class="form-control" id="movieCast">
-            </div>
-            <div class="form-group">
-                <label for="movieTrailer">Movie Trailer</label>
-                <input type="text" class="form-control-file" id="movieTrailer">
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="addMovie()" >Save Edits</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!--Dora modal-->
-
-    <div class="modal fade" id="editMovie3Modal" tabindex="-1" role="dialog" aria-labelledby="editMovie1Modal" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editMovie1Modal">Modify Movie</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                  <label for="movieName">Movie Name</label>
-                  <input type="text" class="form-control" id="movieName">
-              </div>
-              <div class="form-group">
-                <label for="movieImage">Movie Poster</label>
-                <input type="file" class="form-control-file" id="movieImage">
-              </div>
-              <div class="form-group">
-                  <label for="movieDescription">Description</label>
-                  <input type="text" class="form-control" id="movieDescription">
-              </div>
-              <div class="form-group">
-                  <label for="movieGenre">Genre</label>
-                  <input type="text" class="form-control" id="movieGenre">
-              </div>
-              <div class="form-group">
-                  <label for="movieCast">Casts</label>
-                  <input type="text" class="form-control" id="movieCast">
-              </div>
-              <div class="form-group">
-                  <label for="movieTrailer">Movie Trailer</label>
-                  <input type="text" class="form-control-file" id="movieTrailer">
-                </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="addMovie()" >Save Edits</button>
-          </div>
-        </div>
-      </div>
-    </div>  
-
-    <!--Interstellar-->
-
-    <div class="modal fade" id="editMovie4Modal" tabindex="-1" role="dialog" aria-labelledby="editMovie1Modal" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editMovie1Modal">Modify Movie</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                  <label for="movieName">Movie Name</label>
-                  <input type="text" class="form-control" id="movieName">
-              </div>
-              <div class="form-group">
-                <label for="movieImage">Movie Poster</label>
-                <input type="file" class="form-control-file" id="movieImage">
-              </div>
-              <div class="form-group">
-                  <label for="movieDescription">Description</label>
-                  <input type="text" class="form-control" id="movieDescription">
-              </div>
-              <div class="form-group">
-                  <label for="movieGenre">Genre</label>
-                  <input type="text" class="form-control" id="movieGenre">
-              </div>
-              <div class="form-group">
-                  <label for="movieCast">Casts</label>
-                  <input type="text" class="form-control" id="movieCast">
-              </div>
-              <div class="form-group">
-                  <label for="movieTrailer">Movie Trailer</label>
-                  <input type="text" class="form-control-file" id="movieTrailer">
-                </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="addMovie()" >Save Edits</button>
-          </div>
-        </div>
-      </div>
-    </div>  
 
     <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
       <i class="fas fa-chevron-up"></i>
     </a>
   </div>
   <!-- /.content-wrapper -->
+{% endblock %}
+
+{% block scripts %}
+<!-- delete movie theatre -->
+<script>
+  function delete_movie() {
+    var list_of_to_be_deleted_movies = [];
+    var list_of_checkboxes = document.getElementsByClassName("form-check-input");        
+    for (var index=1;index<list_of_checkboxes.length;index++){                    
+      var checkbox = list_of_checkboxes[index];                    
+      if (checkbox.checked){
+        list_of_to_be_deleted_movies.push(checkbox.name);
+      }          
+    }        
+    send_message("{{ url_for('delete_movie') }}", list_of_to_be_deleted_movies)
+  }             
+</script>
+<script src="{{ url_for('static', filename='js/extension.js') }}"></script>
 {% endblock %}
