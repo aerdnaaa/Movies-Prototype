@@ -62,7 +62,16 @@
           </div>
           <div class="form-row">
             <div class="form-group col">
-                <video src="{{ url_for('static', filename='videos/movie trailer/' + video_source) }}" width="200px" controls></video>
+              <video src="{{ url_for('static', filename='videos/movie fullvideo/' + fullvideo_source) }}" width="200px" controls></video>
+            </div>
+            <div class="form-group col">
+              {{ form.movie_fullvideo.label(class="form-control-label") }}
+              {{ form.movie_fullvideo.label(class="form-control-file") }}
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col">
+                <video src="{{ url_for('static', filename='videos/movie trailer/' + trailer_source) }}" width="200px" controls></video>
             </div>
             <div class="form-group col">
               {{ form.movie_trailer.label(class="form-control-label") }}

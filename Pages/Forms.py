@@ -97,6 +97,7 @@ class CreateMovieForm(FlaskForm):
     movie_genre = SelectField(label="Movie Genre", choices=[("Comedy","Comedy"), ("Horror", "Horror"), ("Adventure", "Adventure"), ("","")], default="")
     movie_casts = TextAreaField(label="Movie Casts", validators=[DataRequired()])
     movie_director = StringField(label="Movie Director", validators=[DataRequired()])
+    movie_fullvideo = FileField(label="Movie Full Video")
     movie_trailer = FileField(label="Movie Trailer") #, validators=[FileAllowed("mov", "mp4")]
     movie_duration = StringField(label="Movie Duration in Minutes", validators=[DataRequired()])
     movie_release_date = StringField(label="Movie Release Date", validators=[DataRequired()])
@@ -111,9 +112,25 @@ class ModifyMovieForm(FlaskForm):
     movie_genre = SelectField(label="Movie Genre", choices=[("Comedy","Comedy"), ("Horror", "Horror"), ("Adventure", "Adventure"), ("","")], default="")
     movie_casts = TextAreaField(label="Movie Casts", validators=[DataRequired()])
     movie_director = StringField(label="Movie Director", validators=[DataRequired()])
+    movie_fullvideo = FileField(label="Movie Full Video")
     movie_trailer = FileField(label="Movie Trailer") #, validators=[FileAllowed("mov", "mp4")]
     movie_duration = StringField(label="Movie Duration in Minutes", validators=[DataRequired()])
     movie_release_date = StringField(label="Movie Release Date", validators=[DataRequired()])
     movie_language = SelectField(label="Movie Language", choices=[("English","English"), ("Chinese", "Chinese"), ("Arabic", "Arabic"), ("Korean", "Korean"), ("Japanese", "Japanese")], default="English")
     movie_subtitles = SelectField(label="Movie Language", choices=[("English","English"), ("Chinese", "Chinese"), ("Arabic", "Arabic"), ("Korean", "Korean"), ("Japanese", "Japanese")], default="Chinese")
     submit = SubmitField("Modify Movies")
+
+class CreateRental(FlaskForm):
+    movie_available = []
+    movie_title = SelectField(label="Movie Title", choices=movie_available)
+    rent_period = StringField(label="Rent Period", validators=[DataRequired()])
+    rent_price = IntegerField(label="Rent Price", validators=[DataRequired()])
+    submit = SubmitField("Add Rental")
+
+class ModifyRental(FlaskForm):
+    movie_available = []
+    movie_title = SelectField(label="Movie Title", choices=movie_available)
+    rent_period = StringField(label="Rent Period", validators=[DataRequired()])
+    rent_price = IntegerField(label="Rent Price", validators=[DataRequired()])
+    submit = SubmitField("Modify Rental")
+

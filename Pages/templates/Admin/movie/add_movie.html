@@ -56,6 +56,10 @@
             {{ form.movie_director(class="form-control form-control-lg") }}
           </div>
           <div class="form-group">
+            {{ form.movie_fullvideo.label(class="form-control-label") }}
+            {{ form.movie_fullvideo(class="form-control-file") }}
+          </div>
+          <div class="form-group">
             {{ form.movie_trailer.label(class="form-control-label") }}
             {{ form.movie_trailer(class="form-control-file") }}
           </div>

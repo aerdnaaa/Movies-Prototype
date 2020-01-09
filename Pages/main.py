@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, Markup, redirect, url_for, Markup
-from Forms import CreateMovieTheatre, ModifyMovieTheatre, CreatePromotion, ModifyPromotion, CreateContactUsForm, CreateCarousel, ModifyCarousel, CreateMovieForm, ModifyMovieForm
-from classes import Promotion, Carousel, Theatre, Movie
+from Forms import CreateMovieTheatre, ModifyMovieTheatre, CreatePromotion, ModifyPromotion, CreateContactUsForm, CreateCarousel, ModifyCarousel, CreateMovieForm, ModifyMovieForm, CreateRental, ModifyRental
+from classes import Promotion, Carousel, Theatre, Movie, Rental
 import shelve, os, secrets, datetime
 
 app = Flask(__name__)
@@ -121,10 +121,27 @@ def admin_rental():
         Rental_dict = {}
         db["rental"] = Rental_dict
     db.close()
-    return render_template("Admin/rent/rent.html", title="Renting", Rental_dict=Rental_dict)
+    return render_template("Admin/rental/rental.html", title="Rental", Rental_dict=Rental_dict)
 
-#! need to ask jooseng about logic for rental
-
+@app.route("/admin/rental/add_rental", methods=["GET","POST"])
+def add_rental():
+    form = CreateRental()
+    db = shelve.open('shelve.db', 'c')
+    try:
+        Rental_dict = db["rental"]
+        Movies_dict = db["movies"]
+        Rental.id = list(Rental_dict.values())[-1].get_id()
+    except:        
+        Rental_dict = {}
+        db["rental"] = Rental_dict        
+    movie_available = []    
+    for key in Movies_dict:
+        movie_class = Movies_dict[key]        
+        movie_available.append((movie_class.get_movie_name(), movie_class.get_movie_name()))
+    form.movie_available = movie_available
+    print(form.movie_available)
+    return render_template("Admin/rental/add_rental.html", title="Add Rental", form=form)
+#! need edit here, list thingy not working as expected
 @app.route("/admin/modify")
 def modify_rental():
     pass
@@ -166,7 +183,6 @@ def add_movie_theatre():
     except:        
         Movie_theatre_dict = {}
         db["movie_theatre"] = Movie_theatre_dict      
-
     if form.validate_on_submit():
         theatre_name = form.theatre_name.data
         theatre_image = save_picture(form.theatre_image.data, "theatre")        
@@ -262,16 +278,16 @@ def add_movie():
         movie_genre = form.movie_genre.data
         movie_casts = form.movie_casts.data
         movie_director = form.movie_director.data
+        movie_fullvideo = save_video(form.movie_fullvideo.data, "movie fullvideo")
         movie_trailer = save_video(form.movie_trailer.data, "movie trailer")
         movie_duration = form.movie_duration.data
         movie_release_date = form.movie_release_date.data
         movie_language = form.movie_language.data
         movie_subtitles = form.movie_subtitles.data
-        movie_class = Movie(movie_name, movie_poster, movie_description, movie_genre, movie_casts, movie_director, movie_trailer, movie_duration, movie_release_date, movie_language, movie_subtitles)
+        movie_class = Movie(movie_name, movie_poster, movie_description, movie_genre, movie_casts, movie_director, movie_fullvideo, movie_trailer, movie_duration, movie_release_date, movie_language, movie_subtitles)
         movie_id = movie_class.get_id()    
         Movies_dict[movie_id] = movie_class
-        db["movies"] = Movies_dict
-        print(Movies_dict)
+        db["movies"] = Movies_dict        
         db.close()
         return redirect(url_for("admin_movies"))
     elif request.method == "GET":
@@ -304,13 +320,14 @@ def modify_movie(movie_id):
         movie_genre = form.movie_genre.data
         movie_casts = form.movie_casts.data
         movie_director = form.movie_director.data
+        movie_fullvideo = save_video(form.movie_fullvideo.data, "movie fullvideo")
         movie_trailer = save_video(form.movie_trailer.data, "movie trailer")
         movie_duration = form.movie_duration.data
         movie_release_date = form.movie_release_date.data
         movie_language = form.movie_language.data
         movie_subtitles = form.movie_subtitles.data
         movie_class = Movies_dict[movie_id]
-        movie_class.set_all_attributes(movie_name, movie_poster, movie_description, movie_genre, movie_casts, movie_trailer, movie_duration, movie_release_date, movie_language, movie_subtitles, movie_director)
+        movie_class.set_all_attributes(movie_name, movie_poster, movie_description, movie_genre, movie_casts, movie_fullvideo, movie_trailer, movie_duration, movie_release_date, movie_language, movie_subtitles, movie_director)
         Movies_dict[movie_id] = movie_class
         db["movies"] = Movies_dict        
         db.close()
@@ -323,12 +340,13 @@ def modify_movie(movie_id):
         form.movie_genre.data = movie_class.get_genre()
         form.movie_casts.data = movie_class.get_casts()
         form.movie_director.data = movie_class.get_director()
-        video_source = movie_class.get_trailer()
+        fullvideo_source = movie_class.get_movie_fullvideo()
+        trailer_source = movie_class.get_trailer()
         form.movie_duration.data = movie_class.get_duration()
         form.movie_release_date.data = movie_class.get_release_date()
         form.movie_language.data = movie_class.get_language()
         form.movie_subtitles.data = movie_class.get_subtitles()
-    return render_template("Admin/movie/modify_movie.html", title="Modify Movie Theatre", form=form, image_source=image_source, video_source=video_source)
+    return render_template("Admin/movie/modify_movie.html", title="Modify Movie Theatre", form=form, image_source=image_source, trailer_source=trailer_source, fullvideo_source=fullvideo_source)
 
 @app.route("/admin/movies/delete", methods=["POST","GET"])
 def delete_movie():

@@ -57,7 +57,8 @@
                 <th scope="col">Genre</th>
                 <th scope="col">Director</th>
                 <th scope="col">Casts</th>
-                <th scope="col">Trailer</th>                
+                <th scope="col">Movie</th>
+                <th scope="col">Trailer</th>                                
                 <th scope="col">Duration</th>
                 <th scope="col">Release Date</th>
                 <th scope="col">Language</th>
@@ -89,13 +90,16 @@
                       {{ Movies_dict[key].get_genre() }}
                     </td>
                     <td>
-                      {{ Movies_dict[key].get_casts() }}
-                    </td>
-                    <td>
                       {{ Movies_dict[key].get_director() }}
                     </td>
+                    <td>
+                      {{ Movies_dict[key].get_casts() }}
+                    </td>
                     <td>                      
-                      <video src="{{ url_for('static', filename='videos/movie trailer/' + Movies_dict[key].get_trailer() ) }}" alt="{{ Movies_dict[key].get_movie_name() }} Img" width="200px" controls></video>
+                      <video src="{{ url_for('static', filename='videos/movie fullvideo/' + Movies_dict[key].get_movie_fullvideo() ) }}" alt="{{ Movies_dict[key].get_movie_name() }} Movie" width="200px" controls></video>
+                    </td>
+                    <td>                      
+                      <video src="{{ url_for('static', filename='videos/movie trailer/' + Movies_dict[key].get_trailer() ) }}" alt="{{ Movies_dict[key].get_movie_name() }} Trailer" width="200px" controls></video>
                     </td>
                     <td>
                       {{ Movies_dict[key].get_duration() }}
