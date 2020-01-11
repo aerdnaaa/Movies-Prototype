@@ -290,4 +290,3 @@ class Rental:
         self.__movie_class = movie_class
         self.__rent_period = rent_period
         self.__price = price
-        self.__users = users

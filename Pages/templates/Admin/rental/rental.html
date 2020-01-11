@@ -38,7 +38,7 @@
             
             <div class="ml-auto">            
               <button type="button" class="btn btn-success"><a href="{{ url_for('add_rental') }}">Add Rent Movies</a></button>
-              <button type="submit" class="btn btn-danger" onclick="deleteMovie()">Delete</button>
+              <button type="submit" class="btn btn-danger" onclick="delete_rental()">Delete</button>
             </div>
           </div>
           <div class="row">
@@ -47,7 +47,7 @@
                 <tr>
                   <td>
                       <div class="form-check">
-                        <input type="checkbox" class="form-check-input">                    
+                        <input type="checkbox" class="form-check-input" onclick="select_all(this)">                    
                       </div>
                     </td>
                   <th scope="col">No.</th>
@@ -70,22 +70,22 @@
                       {{ Rental_dict[key].get_id() }}
                     </td> 
                     <td>
-                      {{ Rental_dict[key].get_movie_title() }}
+                      {{ Rental_dict[key].get_movie_class().get_movie_name() }}
                     </td>
                     <td>
                       {{ Rental_dict[key].get_rent_period() }}
                     </td>
                     <td>
-                      {{ Rental_dict[key].get_rent_price() }}
+                      {{ Rental_dict[key].get_price() }}
                     </td>         
                     <td>
                       <button type="button" class="btn btn-primary">
-                        <a href="{{ url_for('modify_rental', rent_id=Rental_dict[key].get_id()) }}">Modify Rent</a>              
+                        <a href="{{ url_for('modify_rental', rental_id=Rental_dict[key].get_id()) }}">Modify Rent</a>              
                       </button>
                     </td>
                     <td>
                       <button type="button" class="btn btn-primary">
-                        <a href="{{ url_for('rental_users', rent_id=Rental_dict[key].get_id()) }}">Rental User(s)</a>              
+                        <a href="{{ url_for('rental_users', rental_id=Rental_dict[key].get_id()) }}">Rental User(s)</a>              
                       </button>
                     </td>
                 </tr>
@@ -95,207 +95,7 @@
           </div>
         </div>
       </section>
-  
-      <!-- Rent Movie Modal -->
-      <div class="modal fade" id="addMovieModal" tabindex="-1" role="dialog" aria-labelledby="addMovieModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="addMovieModalLabel">Add Rent Movie</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form>
-                <div class="form-group">
-                  <label for="movieTitle">Movie Title</label>
-                  <select class="custom-select" id="movieTitle">   
-                      <option value=""></option>                 
-                      <option value="1">Joker</option>
-                      <option value="2">Frozen</option>
-                                          
-                  </select>
-                </div>
-                <div class="form-group row">                
-                  <div class="col">
-                      <label for="startDate">Start Date</label>
-                      <input type="date" id="startDate" class="form-control">
-                  </div>                                
-                  <div class="col">
-                      <label for="endDate">End Date</label>
-                      <input type="date" id="endDate" class="form-control">
-                  </div>                
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" onclick="addMovie()" >Add Theatre</button>
-            </div>
-          </div>
-        </div>
-      </div>
-  
-      <!-- edit Rent Details 1 Modal -->
-      <div class="modal fade" id="editRentDetails1Modal" tabindex="-1" role="dialog" aria-labelledby="editRentDetails1Modal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="editRentDetails1Modal">Edit Rent Details</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                      <label for="movieTitle">Movie Title</label>
-                      <select class="custom-select" id="movieTitle">   
-                          <option value=""></option>                 
-                          <option value="1">Joker</option>
-                          <option value="2">Frozen</option>                    
-                      </select>
-                    </div>
-                    <div class="form-group row">                
-                      <div class="col">
-                          <label for="startDate">Start Date</label>
-                          <input type="date" id="startDate" class="form-control">
-                      </div>                                
-                      <div class="col">
-                          <label for="endDate">End Date</label>
-                          <input type="date" id="endDate" class="form-control">
-                      </div>                
-                    </div>
-                  </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" onclick="editShowTime()" >Save Edits</button>
-            </div>
-          </div>
-        </div>
-      </div>
-  
-      <!-- edit Rent Movie Details 2 Modal -->
-      <div class="modal fade" id="editRentDetails2Modal" tabindex="-1" role="dialog" aria-labelledby="editRentDetails2Modal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="editRentDetails2Modal">Edit Showtime</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                      <label for="movieTitle">Movie Title</label>
-                      <select class="custom-select" id="movieTitle">   
-                          <option value=""></option>                 
-                          <option value="1">Joker</option>
-                          <option value="2">Frozen</option>                    
-                      </select>
-                    </div>
-                    <div class="form-group row">                
-                      <div class="col">
-                          <label for="startDate">Start Date</label>
-                          <input type="date" id="startDate" class="form-control">
-                      </div>                                
-                      <div class="col">
-                          <label for="endDate">End Date</label>
-                          <input type="date" id="endDate" class="form-control">
-                      </div>                
-                    </div>
-                  </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" onclick="editShowTime()" >Save Edits</button>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- edit Rent Movie Details 3 Modal -->
-      <div class="modal fade" id="editRentDetails3Modal" tabindex="-1" role="dialog" aria-labelledby="editRentDetails3Modal" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="editRentDetails3Modal">Edit Showtime</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                  <form>
-                      <div class="form-group">
-                        <label for="movieTitle">Movie Title</label>
-                        <select class="custom-select" id="movieTitle">   
-                            <option value=""></option>                 
-                            <option value="1">Joker</option>
-                            <option value="2">Frozen</option>                    
-                        </select>
-                      </div>
-                      <div class="form-group row">                
-                        <div class="col">
-                            <label for="startDate">Start Date</label>
-                            <input type="date" id="startDate" class="form-control">
-                        </div>                                
-                        <div class="col">
-                            <label for="endDate">End Date</label>
-                            <input type="date" id="endDate" class="form-control">
-                        </div>                
-                      </div>
-                    </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="editShowTime()" >Save Edits</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      <!-- edit Rent Movie Details 4 Modal -->
-      <div class="modal fade" id="editRentDetails4Modal" tabindex="-1" role="dialog" aria-labelledby="editRentDetails4Modal" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="editRentDetails4Modal">Edit Showtime</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                  <form>
-                      <div class="form-group">
-                        <label for="movieTitle">Movie Title</label>
-                        <select class="custom-select" id="movieTitle">   
-                            <option value=""></option>                 
-                            <option value="1">Joker</option>
-                            <option value="2">Frozen</option>                    
-                        </select>
-                      </div>
-                      <div class="form-group row">                
-                        <div class="col">
-                            <label for="startDate">Start Date</label>
-                            <input type="date" id="startDate" class="form-control">
-                        </div>                                
-                        <div class="col">
-                            <label for="endDate">End Date</label>
-                            <input type="date" id="endDate" class="form-control">
-                        </div>                
-                      </div>
-                    </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="editShowTime()" >Save Edits</button>
-              </div>
-            </div>
-          </div>
-        </div>
 
     <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
       <i class="fas fa-chevron-up"></i>
@@ -304,4 +104,20 @@
   {% endblock %}
   <!-- /.content-wrapper -->
 
+  {% block scripts %}
+    <script>
+      function delete_rental() {
+        var list_of_to_be_deleted_rentals = [];
+        var list_of_checkboxes = document.getElementsByClassName("form-check-input");        
+        for (var index=1;index<list_of_checkboxes.length;index++){                    
+          var checkbox = list_of_checkboxes[index];                    
+          if (checkbox.checked){
+            list_of_to_be_deleted_rentals.push(checkbox.name);
+          }          
+        }        
+        send_message("{{ url_for('delete_rental') }}", list_of_to_be_deleted_rentals)
+      }             
+    </script>
+    <script src="{{ url_for('static', filename='js/extension.js') }}"></script>
+  {% endblock %}
   

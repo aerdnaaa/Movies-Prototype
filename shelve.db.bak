@@ -1,4 +1,5 @@
-'movies', (5120, 529)
-'rental', (512, 6)
+'movies', (5120, 792)
+'rental', (11264, 6)
 'movie_theatre', (2048, 6)
 'carousel', (3584, 6)
+'deleted_rental', (12288, 1399)

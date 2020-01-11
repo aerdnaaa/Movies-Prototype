@@ -120,17 +120,17 @@ class ModifyMovieForm(FlaskForm):
     movie_subtitles = SelectField(label="Movie Language", choices=[("English","English"), ("Chinese", "Chinese"), ("Arabic", "Arabic"), ("Korean", "Korean"), ("Japanese", "Japanese")], default="Chinese")
     submit = SubmitField("Modify Movies")
 
-class CreateRental(FlaskForm):
-    movie_available = []
-    movie_title = SelectField(label="Movie Title", choices=movie_available)
-    rent_period = StringField(label="Rent Period", validators=[DataRequired()])
+class CreateRental(FlaskForm):    
+    movie_title = SelectField(label="Movie Title", choices=[("","")])
+    rent_start_date = StringField(label="Rent Start Date", validators=[DataRequired()])
+    rent_end_date = StringField(label="Rent End Date", validators=[DataRequired()])
     rent_price = IntegerField(label="Rent Price", validators=[DataRequired()])
     submit = SubmitField("Add Rental")
 
-class ModifyRental(FlaskForm):
-    movie_available = []
-    movie_title = SelectField(label="Movie Title", choices=movie_available)
-    rent_period = StringField(label="Rent Period", validators=[DataRequired()])
+class ModifyRental(FlaskForm):    
+    movie_title = SelectField(label="Movie Title", choices=[])
+    rent_start_date = StringField(label="Rent Start Date", validators=[DataRequired()])
+    rent_end_date = StringField(label="Rent End Date", validators=[DataRequired()])
     rent_price = IntegerField(label="Rent Price", validators=[DataRequired()])
     submit = SubmitField("Modify Rental")
 
