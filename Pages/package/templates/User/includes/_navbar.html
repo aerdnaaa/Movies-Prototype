@@ -1,0 +1,29 @@
+    <nav class="navbar navbar-expand-sm navbar-dark" style="background: black;">
+        <!-- Brand -->
+        <a class="navbar-brand" href="{{ url_for('carousel.home') }}">
+            <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Logo" style="width: 60px;">
+            <span1>Saw Cinematics</span>
+        </a>
+
+        <!-- Links -->
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('movie.movieslist') }}">Movies</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('booking.bookmovie') }}">Book Movies</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('rental.rentmovie') }}">Rent Movies</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('promotion.promotion') }}">Promotions</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('user.register') }}"><i class="fa fa-user"></i> Sign Up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('user.login') }}"><i class="fa fa-sign-in"></i> Log In</a>
+          </li>
+        </ul>
+    </nav>

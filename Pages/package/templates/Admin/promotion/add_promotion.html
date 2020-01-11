@@ -1,0 +1,106 @@
+{% extends "Admin/baseAdmin.html" %}
+
+{% block styles %}
+<style>
+.col1{
+margin: auto;
+}
+
+#temporary_html{
+  border: grey solid 2px;
+}
+</style>
+{% endblock %}
+
+<!-- Content Wrapper. Contains page content -->
+{% block content %}
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Add Promotion</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="{{ url_for('other.admin_home') }}">Home</a></li>
+            <li class="breadcrumb-item">Promotion</li>
+            <li class="breadcrumb-item active">Add Promotion</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-10">
+        <form method="POST" enctype="multipart/form-data">
+          {{ form.csrf_token }}
+          <div class="form-group">
+            {{ form.promotion_title.label(class="form-control-label") }}
+            {{ form.promotion_title(class="form-control form-control-lg") }}
+          </div>
+          <div class="form-group row">
+            <div class="col">
+              {{ form.promotion_description.label(class="form-control-label") }}
+              {{ form.promotion_description(class="form-control form-control-lg",id="promotion-description") }}
+            </div>
+            <div class="col col1">              
+              <input type="submit" class="btn btn-primary" value="Convert To HTML" onclick="convert_to_html()">              
+            </div>
+            <div class="col" id="temporary_html">
+              
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col">
+              {{ form.promotion_valid_start_date.label(class="form-control-label") }}
+              {{ form.promotion_valid_start_date(type="date", class="form-control form-control-lg") }}
+            </div>
+            <div class="col">
+              {{ form.promotion_valid_end_date.label(class="form-control-label") }}
+              {{ form.promotion_valid_end_date(type="date", class="form-control form-control-lg") }}
+            </div>
+          </div>
+          <div class="form-group">
+            {{ form.promotion_applicable_to.label(class="form-control-label") }}
+            {{ form.promotion_applicable_to(class="form-control form-control-lg") }}
+          </div>
+          <div class="form-group">
+            {{ form.promotion_terms_and_condition.label(class="form-control-label") }}
+            {{ form.promotion_terms_and_condition(class="form-control form-control-lg") }}
+          </div>
+          <div class="form-group">
+            {{ form.promotion_image.label(class="form-control-label") }}
+            {{ form.promotion_image(class="form-control-file") }}
+          </div>
+
+          {{ form.submit(class="btn btn-primary") }}
+        </form>
+      </div>
+      </div>
+    </div>
+  </section>
+
+
+  <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </a>
+</div>
+{% endblock %}
+<!-- /.content-wrapper -->
+
+{% block scripts %}
+<script>
+function convert_to_html(){
+  var description = document.getElementById("promotion-description").value
+  var temporary_html = document.getElementById("temporary_html");
+  temporary_html.innerHTML = description;
+}
+</script>
+
+{% endblock %}

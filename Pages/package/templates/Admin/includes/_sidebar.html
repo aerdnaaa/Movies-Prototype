@@ -1,0 +1,134 @@
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="index.html" class="brand-link">
+      <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text font-weight-light">Saw Cinematics</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="" class="img-circle elevation-2" alt="User Image" height="160" width="160">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">Admin</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item has-treeview menu-open">
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url_for('other.admin_home') }}" class="nav-link">                  
+                  <i class="nav-icon fas fa-chart-line"></i>
+                  <p>Admin Dashboard</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('carousel.admin_carousel') }}" class="nav-link">              
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                Carousel
+                <span class="badge badge-info right"></span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('movie_theatre.admin_movie_theatre') }}" class="nav-link">              
+              <i class="nav-icon far fa-building"></i>
+              <p>
+                Movie Theatres
+                <span class="right badge badge-danger"></span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('movie.admin_movies') }}" class="nav-link">              
+              <i class="nav-icon fas fa-film"></i>
+              <p>
+                Movies
+                <span class="right badge badge-danger"></span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('rental.admin_rental') }}" class="nav-link">
+              <i class="nav-icon 	fas fa-video" ></i>
+              <p>
+                Rental
+                <span class="right badge badge-danger"></span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('booking.admin_booking') }}" class="nav-link">              
+              <i class="nav-icon fas fa-ticket-alt"></i>
+              <p>
+                Booking
+                <span class="right badge badge-danger"></span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('promotion.admin_promotion') }}" class="nav-link">
+              <i class="nav-icon fas fa-tag"></i>
+              <p>
+                Promotion
+                <span class="right badge badge-danger"></span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url_for('other.admin_calendar') }}" class="nav-link">
+              <i class="nav-icon far fa-calendar-alt"></i>              
+              <p>
+                Calendar
+                <span class="badge badge-info right"></span>
+              </p>
+            </a>
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-envelope"></i>              
+              <p>
+                Mailbox
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ url_for('other.admin_mailbox') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Inbox</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url_for('other.admin_composeMail') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Compose</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url_for('other.admin_readMail') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Read</p>
+                </a>
+              </li>
+            </ul>          
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>

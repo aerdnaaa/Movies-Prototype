@@ -1,0 +1,123 @@
+{% extends "Admin/baseAdmin.html" %}
+
+{% block styles %}
+    <style>
+      a {
+        color:white;
+      }
+      a:hover{
+        color:white;
+      }
+    </style>
+  {% endblock %}
+
+  <!-- Content Wrapper. Contains page content -->
+  {% block content %}
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Rental</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Rent</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            
+            <div class="ml-auto">            
+              <button type="button" class="btn btn-success"><a href="{{ url_for('rental.add_rental') }}">Add Rent Movies</a></button>
+              <button type="submit" class="btn btn-danger" onclick="delete_rental()">Delete</button>
+            </div>
+          </div>
+          <div class="row">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <td>
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" onclick="select_all(this)">                    
+                      </div>
+                    </td>
+                  <th scope="col">No.</th>
+                  <th scope="col">Movie Title</th>
+                  <th scope="col">Rent Period</th>
+                  <th scope="col">Price</th>                               
+                  <th scope="col">Modify</th>
+                  <th scope="col">Users</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for key in Rental_dict %}
+                <tr>
+                  <td>
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input" name="{{ Rental_dict[key].get_id() }}">
+                    </div>
+                    </td>
+                    <td>
+                      {{ Rental_dict[key].get_id() }}
+                    </td> 
+                    <td>
+                      {{ Rental_dict[key].get_movie_class().get_movie_name() }}
+                    </td>
+                    <td>
+                      {{ Rental_dict[key].get_rent_period() }}
+                    </td>
+                    <td>
+                      {{ Rental_dict[key].get_price() }}
+                    </td>         
+                    <td>
+                      <button type="button" class="btn btn-primary">
+                        <a href="{{ url_for('rental.modify_rental', rental_id=Rental_dict[key].get_id()) }}">Modify Rent</a>              
+                      </button>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-primary">
+                        <a href="{{ url_for('rental.rental_users', rental_id=Rental_dict[key].get_id()) }}">Rental User(s)</a>              
+                      </button>
+                    </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+    <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+      <i class="fas fa-chevron-up"></i>
+    </a>
+  </div>
+  {% endblock %}
+  <!-- /.content-wrapper -->
+
+  {% block scripts %}
+    <script>
+      function delete_rental() {
+        var list_of_to_be_deleted_rentals = [];
+        var list_of_checkboxes = document.getElementsByClassName("form-check-input");        
+        for (var index=1;index<list_of_checkboxes.length;index++){                    
+          var checkbox = list_of_checkboxes[index];                    
+          if (checkbox.checked){
+            list_of_to_be_deleted_rentals.push(checkbox.name);
+          }          
+        }        
+        send_message("{{ url_for('rental.delete_rental') }}", list_of_to_be_deleted_rentals)
+      }             
+    </script>
+    <script src="{{ url_for('static', filename='js/extension.js') }}"></script>
+  {% endblock %}
+  
