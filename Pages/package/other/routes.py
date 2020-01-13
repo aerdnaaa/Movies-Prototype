@@ -1,5 +1,6 @@
 from flask import Blueprint
 from flask import render_template, request, redirect, url_for, Markup
+from package.other.forms import CreateContactUsForm
 
 main_blueprint = Blueprint("other", __name__)
 

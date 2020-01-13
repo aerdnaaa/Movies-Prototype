@@ -1,3 +1,4 @@
+from package import app
 import os, secrets
 
 def save_picture(form_picture, path):

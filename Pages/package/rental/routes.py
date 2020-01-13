@@ -112,7 +112,7 @@ def delete_rental():
     db["rental"] = Rental_dict
     db["deleted_rental"] = Deleted_list
     db.close()
-    return redirect(url_for("admin_rental"))
+    return redirect(url_for("rental.admin_rental"))
 
 @rental_blueprint.route("/admin/rental/rental_users")
 def rental_users():

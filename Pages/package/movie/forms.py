@@ -15,7 +15,7 @@ class CreateMovieForm(FlaskForm):
     movie_duration = StringField(label="Movie Duration in Minutes", validators=[DataRequired()])
     movie_release_date = StringField(label="Movie Release Date", validators=[DataRequired()])
     movie_language = SelectField(label="Movie Language", choices=[("English","English"), ("Chinese", "Chinese"), ("Arabic", "Arabic"), ("Korean", "Korean"), ("Japanese", "Japanese")], default="English")
-    movie_subtitles = SelectField(label="Movie Language", choices=[("English","English"), ("Chinese", "Chinese"), ("Arabic", "Arabic"), ("Korean", "Korean"), ("Japanese", "Japanese")], default="Chinese")
+    movie_subtitles = SelectField(label="Movie Subtitles", choices=[("English","English"), ("Chinese", "Chinese"), ("Arabic", "Arabic"), ("Korean", "Korean"), ("Japanese", "Japanese")], default="Chinese")
     submit = SubmitField("Add Movies")
 
 class ModifyMovieForm(FlaskForm):
@@ -30,5 +30,5 @@ class ModifyMovieForm(FlaskForm):
     movie_duration = StringField(label="Movie Duration in Minutes", validators=[DataRequired()])
     movie_release_date = StringField(label="Movie Release Date", validators=[DataRequired()])
     movie_language = SelectField(label="Movie Language", choices=[("English","English"), ("Chinese", "Chinese"), ("Arabic", "Arabic"), ("Korean", "Korean"), ("Japanese", "Japanese")], default="English")
-    movie_subtitles = SelectField(label="Movie Language", choices=[("English","English"), ("Chinese", "Chinese"), ("Arabic", "Arabic"), ("Korean", "Korean"), ("Japanese", "Japanese")], default="Chinese")
+    movie_subtitles = SelectField(label="Movie Subtitles", choices=[("English","English"), ("Chinese", "Chinese"), ("Arabic", "Arabic"), ("Korean", "Korean"), ("Japanese", "Japanese")], default="Chinese")
     submit = SubmitField("Modify Movies")

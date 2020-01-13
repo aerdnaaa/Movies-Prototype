@@ -79,7 +79,7 @@ def add_promotion():
         Promotion_dict[promotion_id] = promotion_class
         db["promotion"] = Promotion_dict
         db.close()
-        return redirect(url_for("admin_promotion"))
+        return redirect(url_for("promotion.admin_promotion"))
     elif request.method == "GET":
         form.promotion_title.data = ""        
         form.promotion_description.data = ""
@@ -112,7 +112,7 @@ def modify_promotion(promotion_id):
         Promotion_dict[promotion_id] = promotion_class
         db["promotion"] = Promotion_dict
         db.close()
-        return redirect(url_for("admin_promotion"))
+        return redirect(url_for("promotion.admin_promotion"))
     elif request.method == "GET":
         promotion = Promotion_dict[promotion_id]
         form.promotion_title.data = promotion.get_title()
@@ -145,5 +145,5 @@ def delete_promotion():
     db["promotion"] = Promotion_dict
     db["deleted_promotion"] = Deleted_list
     db.close()
-    return redirect(url_for('admin_promotion'))
+    return redirect(url_for('promotion.admin_promotion'))
 

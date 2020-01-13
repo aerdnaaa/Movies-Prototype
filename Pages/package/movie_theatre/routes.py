@@ -38,7 +38,7 @@ def add_movie_theatre():
         Movie_theatre_dict[theatre_id] = movie_theatre_class
         db["movie_theatre"] = Movie_theatre_dict
         db.close()
-        return redirect(url_for('admin_movie_theatre'))
+        return redirect(url_for('movie_theatre.admin_movie_theatre'))
     elif request.method == "GET":
         form.theatre_name.data = ""
         form.theatre_halls.data = 1
@@ -64,12 +64,13 @@ def modify_movie_theatre(movie_theatre_id):
         Movie_theatre_dict[movie_theatre_id] = movie_theatre_class
         db["movie_theatre"] = Movie_theatre_dict
         db.close()
-        return redirect(url_for('admin_movie_theatre'))
+        return redirect(url_for('movie_theatre.admin_movie_theatre'))
     elif request.method == "GET":
         movie_theatre = Movie_theatre_dict[movie_theatre_id]
         form.theatre_name.data = movie_theatre.get_theatre_name()
         form.theatre_halls.data = movie_theatre.get_number_of_halls()
         image_source = movie_theatre.get_theatre_image()
+        db.close()
     return render_template("Admin/movie_theatre/modify_movie_theatre.html", title="Modify Movie Theatre", form=form, image_source=image_source)
 
 @theatre_blueprint.route("/admin/movie_theatre/delete", methods=["GET","POST"])
@@ -92,4 +93,4 @@ def delete_movie_theatre():
     db["movie_theatre"] = Movie_theatre_dict
     db["deleted_movie_theatre"] = Deleted_list
     db.close()    
-    return redirect(url_for('admin_movie_theatre'))
+    return redirect(url_for('movie_theatre.admin_movie_theatre'))

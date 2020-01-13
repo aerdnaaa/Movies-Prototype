@@ -11,7 +11,7 @@ def login():
 
 @user_blueprint.route("/register")
 def register():
-    # createUserForm = CreateUserForm(request.form)
+    createUserForm = CreateUserForm(request.form)
     return render_template("User/register.html", title="Register",form=createUserForm)
 
 @user_blueprint.route("/accountpage")

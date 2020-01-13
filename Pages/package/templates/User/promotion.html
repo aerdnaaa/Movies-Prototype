@@ -10,7 +10,7 @@
     <div class="col">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="{{ url_for('home') }}">HOME</a></li>
+          <li class="breadcrumb-item"><a href="{{ url_for('carousel.home') }}">HOME</a></li>
           <li class="breadcrumb-item active" aria-current="page">PROMOTIONS</li>
         </ol>
       </nav>
@@ -25,7 +25,7 @@
     <div class="row mt-3 promo-row-{{ loop.index }}">
       {% for class in list %}
         <div class="col-2 promo-{{ loop.index }}">
-          <a href="{{ url_for('promotionDetail', id_of_promo=class.get_id()) }}">
+          <a href="{{ url_for('promotion.promotionDetail', id_of_promo=class.get_id()) }}">
             <img src="{{ url_for('static', filename='images/promotion/' + class.get_promotion_image()) }}" width="100%">
           </a>
         </div>

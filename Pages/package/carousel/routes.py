@@ -7,6 +7,7 @@ import shelve, datetime
 
 carousel_blueprint = Blueprint("carousel", __name__)
 
+
 #* Home Page contains carousel
 @carousel_blueprint.route("/")
 @carousel_blueprint.route("/home")
@@ -45,7 +46,7 @@ def add_carousel():
         Carousel_dict[carousel_id] = carousel_class
         db["carousel"] = Carousel_dict
         db.close()
-        return redirect(url_for("admin_carousel"))
+        return redirect(url_for("carousel.admin_carousel"))
     elif request.method == "GET":
         form.carousel_title.data = ""        
         form.carousel_category.data = ""
@@ -70,7 +71,7 @@ def modify_carousel(carousel_id):
         Carousel_dict[carousel_id] = carousel_class
         db["carousel"] = Carousel_dict
         db.close()
-        return redirect(url_for("admin_carousel"))
+        return redirect(url_for("carousel.admin_carousel"))
     elif request.method == "GET":
         carousel = Carousel_dict[carousel_id]
         form.carousel_title.data = carousel.get_title()
@@ -99,4 +100,4 @@ def delete_carousel():
     db["carousel"] = Carousel_dict
     db["deleted_carousel"] = Deleted_list
     db.close()
-    return redirect(url_for('admin_carousel'))
+    return redirect(url_for('carousel.admin_carousel'))

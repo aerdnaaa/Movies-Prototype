@@ -10,8 +10,8 @@
         <div class="col">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ url_for('home') }}">HOME</a></li>
-                    <li class="breadcrumb-item" aria-current="page"><a href="{{ url_for('promotion') }}">PROMOTIONS</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('carousel.home') }}">HOME</a></li>
+                    <li class="breadcrumb-item" aria-current="page"><a href="{{ url_for('promotion.promotion') }}">PROMOTIONS</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{ promo.get_title() }}</li>
                 </ol>
             </nav>

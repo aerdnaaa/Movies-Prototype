@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, validators, SubmitField, TextAreaField, SelectField
-from wtforms.validators import DataRequired, Length
+from wtforms.fields.html5 import EmailField
+from wtforms.validators import DataRequired, Length, Email
 
 class CreateContactUsForm(FlaskForm):
     salutation = SelectField("Salutation", validators=[DataRequired()], choices=[("Mr","Mr"),("Mrs","Mrs"),("Ms","Ms"),("Dr","Dr")], default="Mr")

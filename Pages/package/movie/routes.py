@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import render_template, request, redirect, url_for, Markup
 from package.movie.forms import CreateMovieForm, ModifyMovieForm
 from package.movie.classes import Movie
-from package.movie.utilis import save_picture
+from package.movie.utilis import save_picture, save_video
 import shelve, datetime
 
 movie_blueprint = Blueprint("movie", __name__)
@@ -55,7 +55,7 @@ def add_movie():
         Movies_dict[movie_id] = movie_class
         db["movies"] = Movies_dict        
         db.close()
-        return redirect(url_for("admin_movies"))
+        return redirect(url_for("movie.admin_movies"))
     elif request.method == "GET":
         form.movie_name.data = ""
         form.movie_description.data = ""
@@ -97,7 +97,7 @@ def modify_movie(movie_id):
         Movies_dict[movie_id] = movie_class
         db["movies"] = Movies_dict        
         db.close()
-        return redirect(url_for("admin_movies"))
+        return redirect(url_for("movie.admin_movies"))
     elif request.method == "GET":
         movie_class = Movies_dict[movie_id]
         form.movie_name.data = movie_class.get_movie_name()
@@ -133,5 +133,5 @@ def delete_movie():
     db["movies"] = Movies_dict
     db["deleted_movies"] = Deleted_list
     db.close()
-    return redirect(url_for("admin_movies"))
+    return redirect(url_for("movie.admin_movies"))
 

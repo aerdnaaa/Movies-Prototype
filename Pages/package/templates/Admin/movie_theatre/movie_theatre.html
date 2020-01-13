@@ -1,14 +1,7 @@
 {% extends "Admin/baseAdmin.html" %}
-{% block styles %}
-    <style>
-      a {
-        color:white;
-      }
-      a:hover{
-        color:white;
-      }
-    </style>
-  {% endblock %}
+{% block links %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/master.css') }}">
+{% endblock %}
 {% block content %}
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -21,7 +14,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="{{ url_for('other.admin_home') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('other.admin_home') }}"class="homeButton">Home</a></li>
             <li class="breadcrumb-item active">Movie Theatres</li>
           </ol>
         </div>
