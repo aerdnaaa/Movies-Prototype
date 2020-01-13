@@ -9,6 +9,7 @@ showtime_blueprint = Blueprint("showtime", __name__)
 #* User Showtime
 @showtime_blueprint.route("/bookmovie")
 def bookmovie():
+    # Date
     base = datetime.date.today()
     date_list = [base + datetime.timedelta(days=x) for x in range(7)]
     date_dict = {}
@@ -18,8 +19,23 @@ def bookmovie():
         year, month, day = str(date).split('-')
         value = day_list[date.weekday()] + ', ' + day + ' ' + month_list[int(month)-1] + ' ' + year
         date_dict[str(date)] = value
+
+    # Movie
+    db = shelve.open("shelve.db", "c")
+    try:
+        movie_dict = db["movies"]
+    except:
+        movie_dict = {}
+        db["movies"] = movie_dict
     
-    return render_template("User/showtime/showtime.html", title="Book Movie", date_dict=date_dict)
+    # Theatres
+    try:
+        theatre_dict = db["movie_theatre"]
+    except:
+        theatre_dict = {}
+        db["movie_theatre"] = theatre_dict
+    
+    return render_template("User/showtime/showtime.html", title="Book Movie", date_dict=date_dict, movie_dict=movie_dict, theatre_dict=theatre_dict)
 
 @showtime_blueprint.route("/bookmovieseats")
 def bookmovieseats():

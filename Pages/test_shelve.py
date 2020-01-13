@@ -37,7 +37,7 @@ try:
     Movies_dict = db["movies"]
 except:
     Movies_dict = {}
-    db["Movies"] = Movies_dict
+    db["movies"] = Movies_dict
 
 print(Movies_dict)
 
