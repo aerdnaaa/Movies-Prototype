@@ -1,11 +1,15 @@
 'movies', (22016, 847)
 'rental', (11264, 6)
+<<<<<<< Updated upstream
 'movie_theatre', (2048, 282)
+=======
+'movie_theatre', (2048, 6)
+>>>>>>> Stashed changes
 'carousel', (3584, 215)
 'deleted_rental', (12288, 1399)
 'promotion', (20992, 631)
 'showtime', (23040, 1065)
 'deleted_movies', (18944, 6)
-'deleted_movie_theatre', (19456, 6)
+'deleted_movie_theatre', (19456, 250)
 'deleted_carousel', (19968, 248)
 'deleted_showtime', (20480, 6)
