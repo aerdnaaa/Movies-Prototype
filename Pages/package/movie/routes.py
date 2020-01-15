@@ -11,7 +11,27 @@ movie_blueprint = Blueprint("movie", __name__)
 # list of movies
 @movie_blueprint.route("/movieslist")
 def movieslist():
-    return render_template("User/movieslist.html", title="Movies List")
+    db = shelve.open('shelve.db', 'c')
+    try:
+        Movies_dict = db["movies"]        
+    except:
+        Movies_dict = {}
+        db["movies"] = Movies_dict
+    sorted_dict = {}
+    id = 0
+    for key in Movies_dict:
+        if key % 6 == 1:
+            list_of_movies = []
+            id += 1
+            list_of_movies.append(Movies_dict[key])
+            sorted_dict[id] = list_of_movies
+                    
+        else:
+            list_of_movies.append(Movies_dict[key])
+            sorted_dict[id] = list_of_movies
+    print(sorted_dict)
+
+    return render_template("User/movieslist.html", title="Movies List", Movies_dict=Movies_dict)
 
 
 

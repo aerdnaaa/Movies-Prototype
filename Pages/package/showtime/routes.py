@@ -34,6 +34,7 @@ def bookmovie():
     except:
         theatre_dict = {}
         db["movie_theatre"] = theatre_dict
+    db.close()
     
     return render_template("User/showtime/showtime.html", title="Book Movie", date_dict=date_dict, movie_dict=movie_dict, theatre_dict=theatre_dict)
 
