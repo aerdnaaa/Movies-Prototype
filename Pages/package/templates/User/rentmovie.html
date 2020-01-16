@@ -85,7 +85,7 @@ top: 80%;
     <div class="col">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="{{ url_for('home') }}">HOME</a></li>
+          <li class="breadcrumb-item"><a href="{{ url_for('carousel.home') }}">HOME</a></li>
           <li class="breadcrumb-item active" aria-current="page">RENT MOVIE</li>
         </ol>
       </nav>
@@ -124,7 +124,7 @@ top: 80%;
   <div class="row mt-3 movie-row-1">
     <div class="col-2 movie1">
       <div class="content">
-        <a href="{{ url_for('frozenmoviedetails') }}">
+        <a href="">
           <div class="content-overlay"></div>
           <img class="content-image"
             src="{{ url_for('static', filename='images/movie details/Poster-Frozen-V3.jpg') }}">
@@ -137,7 +137,7 @@ top: 80%;
     </div>
     <div class="col-2 movie2">
       <div class="content">
-        <a href="{{ url_for('jokermoviedetails') }}">
+        <a href="">
           <div class="content-overlay"></div>
           <img class="content-image" src="{{ url_for('static', filename='images/movie details/Poster-Joker-V1.jpg') }}">
           <div class="content-details fadeIn-bottom">
@@ -148,27 +148,23 @@ top: 80%;
       </div>
     </div>
     <div class="col-2 movie2">
-      <div class="content">
-        <!-- <a href="{{ url_for('jokermoviedetails') }}"> -->
+      <div class="content">        
           <div class="content-overlay"></div>
           <img class="content-image" src="{{ url_for('static', filename='images/interstellar.jpg') }}" height="100%">
           <div class="content-details fadeIn-bottom">
             <h3 class="content-title">Interstellar</h3>
             <p class="content-text">This is a short description</p>
-          </div>
-        </a>
+          </div>        
       </div>
     </div>
     <div class="col-2 movie2">
-        <div class="content">
-          <!-- <a href="{{ url_for('jokermoviedetails') }}"> -->
+        <div class="content">          
             <div class="content-overlay"></div>
             <img class="content-image" src="{{ url_for('static', filename='images/doraCover.jpg') }}" height="100%">
             <div class="content-details fadeIn-bottom">
               <h3 class="content-title">Dora</h3>
               <p class="content-text">This is a short description</p>
-            </div>
-          </a>
+            </div>          
         </div>
       </div>
   </div>

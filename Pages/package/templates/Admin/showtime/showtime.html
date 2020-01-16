@@ -73,7 +73,11 @@
                 {{ Showtime_dict[key].get_show_period() }}
               </td>
               <td>
-                {{ Showtime_dict[key].get_timeslot() }}
+                <ul>
+                {% for timeslot in Showtime_dict[key].get_timeslot() %}
+                  <li>{{ timeslot }}</li>
+                {% endfor %}
+                </ul>
               </td>
               <td>
                 {{ Showtime_dict[key].get_hall_number() }}

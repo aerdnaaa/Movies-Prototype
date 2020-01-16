@@ -26,6 +26,7 @@ def add_movie_theatre():
     db = shelve.open('shelve.db', 'c')    
     try:
         Movie_theatre_dict = db["movie_theatre"]
+        Theatre.id = list(Movie_theatre_dict.values())[-1].get_id()
     except:        
         Movie_theatre_dict = {}
         db["movie_theatre"] = Movie_theatre_dict      
