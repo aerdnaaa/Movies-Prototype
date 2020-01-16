@@ -12,14 +12,24 @@
     <style media="screen">
             hr.new1 {
         border: 1px solid black;
-      }    
-      {% block styles %}
+      } 
+      {% block styles%}
       {% endblock %}
     </style>
   </head>
   <body>
     {% include 'User/includes/_navbar.html' %}
-
+    <!--flash message-->
+    {%with messages = get_flashed_messages(with_categories=true)%}
+      {%if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{category}}">
+            {{message}}
+          </div>
+        {% endfor %}
+      {%endif%}
+    {%endwith%}
+    <!--flash message-->
     {% block content %}
     {% endblock %}
 

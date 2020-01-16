@@ -13,31 +13,42 @@ class Admin(Person):
 
 class User(Person):
     id = 0
-    def __init__(self,profile_picture,firstname,lastname,email,password):
+    def __init__(self,firstname,lastname,email,password,username,gender,DateofBirth):
         User.id += 1
-        Person.__init__(User.id,profile_picture)
+        Person.__init__(self,User.id,0,0)
         self.__email = email
         self.__firstname = firstname
         self.__lastname = lastname
         self.__password = password
-        
+        self.__username = username
+        self.__gender = gender
+        self.___DateofBirth = DateofBirth
+        self.__userID = User.id
+
+    
     def get_userID(self):
-        return User.id
-    def get_profilepicture(self):
-        return self.profile_picture
+        return self.__userID
+    # def get_profilepicture(self):
+    #     return self.profile_picture
     def get_firstname(self):
-        return self.firstname
+        return self.__firstname
     def get_lastname(self):
-        return self.lastname
+        return self.__lastname
     def get_email(self):
-        return self.email
+        return self.__email
     def get_password(self):
-        return self.password
+        return self.__password
+    def get_username(self):
+        return self.__username
+    def get_gender(self):
+        return self.__gender
+    def get_DateofBirth(self):
+        return self.__DateofBirth
 
     def set_userID(self,userID):
-        User.id = userID
-    def set_profilepicture(self,profile_picture):
-        self.__profile_picture = profile_picture
+        self.__userID = userID
+    # def set_profilepicture(self,profile_picture):
+    #     self.__profile_picture = profile_picture
     def set_firstname(self,firstname):
         self.__firstname=firstname
     def set_lastname(self,lastname):
@@ -46,6 +57,12 @@ class User(Person):
         self.__email = email
     def set_password(self,password):
         self.__password=password
+    def set_username(self,username):
+        self.__username = username
+    def set_gender(self,gender):
+        self.__gender = gender
+    def set_DateofBirth(self,DateofBirth):
+        self.__DateofBirth=DateofBirth
 
 
 
