@@ -10,9 +10,13 @@ user_blueprint = Blueprint("user", __name__)
 @user_blueprint.route("/login", methods=['GET','POST'])
 def login():
     form = LoginForm()
-    #not working atm
-    if form.validate_on_submit():
-        if form.Username.data == 'test'  and form.password.data == 'test':
+    print('test')
+    usersDict = {}
+    db = shelve.open('storage.db','r')
+    usersDict = db['Users']
+    db.close()
+    if form.validate_on_submit() and request.method=='GET':
+        if form.Username.data == 'test' and form.password.data =='password':
             flash('You have been logged in!','success')
             return redirect(url_for('carousel.home'))
         else:
@@ -25,24 +29,35 @@ def register():
     createUserForm = CreateUserForm(request.form)
     if request.method=='POST' and createUserForm.validate():
         flash(f'Account created for {createUserForm.Username.data}!','success')
-        usersDict={}
+        userDict={}
         db = shelve.open('storage.db','c')
         try:
             userDict = db['Users']
         except:
+            userDict = {}
             print("Error in retrieving Users from storage.db.")
+
         user = User(createUserForm.firstName.data,createUserForm.lastName.data,
         createUserForm.email.data,createUserForm.password.data,createUserForm.Username.data,
         createUserForm.gender.data,createUserForm.DateofBirth.data)
-        usersDict[user.get_userID()] = user
-        db['Users'] = usersDict
-        # userDict=db['Users']
-        # user = usersDict[user.get_userID()]
-        # print(f'Account for {user.get_username()} has been created with id number {user.get_userID()}')
+        userDict[user.get_userID()] = user
+        db['Users'] = userDict
+
+        userDict=db['Users']
+        user = userDict[user.get_userID()]
+        print(f'Account for {user.get_username()} has been created with id number {user.get_userID()}')
         db.close()
         return redirect(url_for('carousel.home'))
     return render_template("User/register.html", title="Register",form=createUserForm)
 
 @user_blueprint.route("/accountpage")
 def accountpage():
+    uDict = {}
+    user=User('r1','r2','r3','r4','r5','r6','r7')
+    uDict={
+        user.get_userID : user
+    }
+    userlist =  list(uDict.values())
+    db = shelve.open('storage.db','r')
+    usersDict = db['Users']
     return render_template("User/accountpage.html", title="Account")

@@ -3,7 +3,7 @@
 'movie_theatre', (2048, 368)
 'carousel', (3584, 381)
 'deleted_rental', (12288, 1399)
-'promotion', (20992, 797)
+'promotion', (20992, 6)
 'showtime', (23040, 1505)
 'deleted_movies', (28672, 1447)
 'deleted_movie_theatre', (19456, 345)
