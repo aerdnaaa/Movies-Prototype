@@ -17,7 +17,7 @@ color: #CDE0F5;
     <div class="col">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="{{ url_for('home') }}">HOME</a></li>
+          <li class="breadcrumb-item"><a href="{{ url_for('carousel.home') }}">HOME</a></li>
           <li class="breadcrumb-item active" aria-current="page">SEATS SELECTION</li>
         </ol>
       </nav>
@@ -26,7 +26,7 @@ color: #CDE0F5;
   <div class="section section-movie-info" style="padding:5px;">
     <div class="row">
       <div class="col-2">
-        <img src="{{ url_for('static', filename='images/movie details/Poster-Frozen-V3.jpg') }}" alt="" width="75%">
+        <img src="{{ url_for('static', filename='images/movie poster/' + showtime_class.get_movie_class().get_poster()) }}" alt="" width="75%">
       </div>
       <div class="col-9 align-self-center ml-4">
         <div class="row">
@@ -34,12 +34,12 @@ color: #CDE0F5;
             <img src="{{ url_for('static', filename='svgs/PG.svg') }}" alt="" width="100%">
           </div>
           <div class="col-5">
-            <h4>Frozen 2</h4>
+            <h4>{{ showtime_class.get_movie_class().get_movie_name() }}</h4>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <h5>Saw Lido Theatre Hall 6</h5>
+            <h5>{{ showtime_class.get_theatre_class().get_theatre_name() }} Theatre Hall {{ showtime_class.get_hall_number() }}</h5>
           </div>
         </div>
         <div class="row">

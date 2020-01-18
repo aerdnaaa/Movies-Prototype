@@ -34,13 +34,41 @@ def bookmovie():
     except:
         theatre_dict = {}
         db["movie_theatre"] = theatre_dict
-    db.close()
-    
-    return render_template("User/showtime/showtime.html", title="Book Movie", date_dict=date_dict, movie_dict=movie_dict, theatre_dict=theatre_dict)
 
-@showtime_blueprint.route("/bookmovieseats")
-def bookmovieseats():
-    return render_template("User/showtime/bookmovieseats.html", title="Buying Seats")
+    # Showtime
+    try:
+        Showtime_dict = db["showtime"]
+    except:
+        Showtime_dict = {}
+        db["showtime"] = Showtime_dict
+    db.close()
+
+    theatre_movie_showtime_dict = {}
+
+    for key in Showtime_dict:
+        showtime_class = Showtime_dict[key]
+        theatre_class = showtime_class.get_theatre_class()
+        theatre_name = theatre_class.get_theatre_name()
+        theatre_movie_showtime_list = theatre_movie_showtime_dict.get(theatre_name, [])
+        theatre_movie_showtime_list.append(showtime_class)
+        theatre_movie_showtime_dict[theatre_name] = theatre_movie_showtime_list    
+    return render_template("User/showtime/showtime.html", title="Book Movie", date_dict=date_dict, movie_dict=movie_dict, theatre_dict=theatre_dict, theatre_movie_showtime_dict=theatre_movie_showtime_dict)
+
+@showtime_blueprint.route("/bookmovieseats/<showtime_id>")
+def bookmovieseats(showtime_id):
+    showtime_id = int(showtime_id)
+    db = shelve.open('shelve.db', 'c')
+    # Showtime
+    try:
+        Showtime_dict = db["showtime"]
+    except:
+        Showtime_dict = {}
+        db["showtime"] = Showtime_dict
+    db.close()
+
+    showtime_class = Showtime_dict[showtime_id]
+
+    return render_template("User/showtime/bookmovieseats.html", title="Buying Seats", showtime_class=showtime_class)
 
 
 @showtime_blueprint.route("/admin/showtime")
