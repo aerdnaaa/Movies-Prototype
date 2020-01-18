@@ -31,7 +31,7 @@ def movieslist():
             sorted_dict[id] = list_of_movies
     print(sorted_dict)
 
-    return render_template("User/movieslist.html", title="Movies List", Movies_dict=Movies_dict)
+    return render_template("User/movieslist.html", title="Movies List", sorted_dict=sorted_dict)
 
 
 

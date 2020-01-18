@@ -120,7 +120,7 @@ top: 80%;
       </div>
     </div>
   </div>
-  <div class="row mt-3 movie-row-1">
+  <!-- <div class="row mt-3 movie-row-1">
     <div class="col-2 movie1">
       <div class="content">
         <a href="">
@@ -170,9 +170,24 @@ top: 80%;
             </a>
           </div>
         </div>
-  </div>
+  </div> -->
   {% for key in sorted_dict %}
-    
+  <div class="row mt-3 movie-row-{{ key }}">
+    {% for movie in sorted_dict[key] %}
+    <div class="col-2 movie1">
+      <div class="content">
+        <a href="">
+          <div class="content-overlay"></div>
+          <img class="content-image"
+            src="{{ url_for('static', filename='images/movie poster/' + movie.get_poster()) }}">
+          <div class="content-details fadeIn-bottom">
+            <h4 class="content-title" style="color:white;">{{ movie.get_movie_name() }}</h4>            
+          </div>
+        </a>
+      </div>
+    </div>
+    {% endfor%}
+  </div>
   {% endfor %}
   
   <div class="row mt-3 d-flex justify-content-center">
