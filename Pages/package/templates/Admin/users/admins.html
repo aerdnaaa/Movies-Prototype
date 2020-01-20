@@ -10,12 +10,12 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Showtimes</h1>
+          <h1>Admins</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{ url_for('other.admin_home') }}" class="homeButton">Home</a></li>
-            <li class="breadcrumb-item active">Showtimes</li>
+            <li class="breadcrumb-item active">Admins</li>
           </ol>
         </div>
       </div>
@@ -29,7 +29,7 @@
         
         <div class="ml-auto">            
           <button type="button" class="btn btn-success">
-            <a href="{{ url_for('showtime.add_showtime') }}">Add Show Timing</a>              
+            <a href="{{ url_for('showtime.add_showtime') }}">Add Admin</a>              
           </button>
           <button type="submit" class="btn btn-danger" onclick="delete_showtime()">Delete</button>
         </div>
@@ -43,17 +43,17 @@
                     <input type="checkbox" class="form-check-input" onclick="select_all(this)">                    
                   </div>
                 </td>
-              <th scope="col">No.</th>
+              <!-- <th scope="col">No.</th>
               <th scope="col">Theatre Name</th>
               <th scope="col">Movie Title</th>
               <th scope="col">Show Period</th>
               <th scope="col">TimeSlot</th>                
               <th scope="col">Hall Number</th>                
-              <th scope="col">Modify</th>
+              <th scope="col">Modify</th> -->
             </tr>
           </thead>
           <tbody>
-            {% for key in Showtime_dict %}
+            <!-- {% for key in Showtime_dict %}
             <tr>
               <td>
                   <div class="form-check">
@@ -88,7 +88,7 @@
                 </button>           
               </td>
             </tr>
-            {% endfor %}
+            {% endfor %} -->
           </tbody>
         </table>
       </div>

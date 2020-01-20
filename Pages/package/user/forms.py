@@ -20,3 +20,9 @@ class LoginForm(FlaskForm):
      Username = StringField('Username', [validators.length(min=2, max=20), validators.DataRequired()])
      password = PasswordField('Password', [validators.length(min=8), validators.DataRequired()])
      login = SubmitField('Login')
+
+class CreateAdminForm(FlaskForm):
+    username = StringField("Username",[Length(min=1, max=30), DataRequired()])
+    password = PasswordField("Password", [Length(min=8), DataRequired()])
+    confirm_password = PasswordField("Confirm Password", [Length(min=8), DataRequired(), EqualTo('password', message="Passwords must match.")])
+    submit = SubmitField("Add Admin")

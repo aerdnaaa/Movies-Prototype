@@ -36,7 +36,7 @@
       <div class="row">
         <!-- this is the dropdowns -->
         <div class="form-group col">
-          <select class="top_selector date-top-selector form-control">
+          <select class="top_selector date-top-selector form-control" id="date">
             {% for key in date_dict %}
               <option value="{{ key }}">
                 {{ date_dict[key] }}
@@ -46,7 +46,7 @@
         </div>
         <div class="form-group col">
           {% if movie_dict %}
-            <select class="top_selector movie-top-selector form-control">
+            <select class="top_selector movie-top-selector form-control" id="movie">
               <option value="All">
                 All Movies
               </option>
@@ -56,7 +56,7 @@
                 </option>
               {% endfor %}
           {% else %}
-            <select class="top_selector movie-top-selector form-control" disabled>
+            <select class="top_selector movie-top-selector form-control" id="movie" disabled>
               <option value="">No movies available</option>
           {% endif %}
               <!-- <option value="All">
@@ -162,7 +162,7 @@
         </div>
         <div class="form-group col">
           {% if theatre_dict %}
-            <select class="top_selector theatre-top-selector form-control">
+            <select class="top_selector theatre-top-selector form-control" id="theatre" onchange="change_theatre()">
                 <option value="All">
                   All Theatres
                 </option>
@@ -172,7 +172,7 @@
                 </option>
               {% endfor %}
           {% else %}
-            <select class="top_selector theatre-top-selector form-control" disabled>
+            <select class="top_selector theatre-top-selector form-control" id="theatre" onchange="change_theatre()" disabled>
               <option value="">No theatres available</option>
           {% endif %}
               <!-- <option value="All">
@@ -233,14 +233,53 @@
         <!-- </div> -->
       </div>
 
+      <!-- 
+
+        If all movies is selected:
+
+          If all theatres is selected:
+            Loop through theatres:
+              Loop through showtimes:
+                If match with current theatre:
+                  Display movie
+          
+          Elif a specific theatre is selected:
+            Loop through showtimes:
+              If match with theatre selected:
+                Display movie
+        
+        Elif specific movie is selected:
+           
+          If all theatres is selected:
+            Loop through all showtimes:
+              If match with movie:
+                Display theatre it matched with (and movie? i think)
+          
+          Elif specific theatres is selected:
+            Loop through all showtimes:
+              If match with movie and theatre:
+                Display theatre and movie 
+      -->
+
       <!-- Showtimes -->
       {% for theatre in theatre_movie_showtime_dict %}
-      <div class="row mt-5">
+      <div class="row mt-5" id="{{ theatre }}">
         <div class="col-11">
           <div class="row">
             <div class="col">
               <div class="heading">
-                <h3>{{ theatre }}</h3>
+                <h3 id="h3">{{ theatre }}</h3>
+                <script>
+                  function change_theatre() {
+                    var current_theatre = "{{ theatre }}";
+                    // if (document.getElementById("theatre").value == current_theatre) {
+                    //   document.getElementById("h3").innerHTML = current_theatre
+                    // }
+                    console.log(document.getElementById("theatre").value);
+                    
+                    document.getElementById("h3").innerHTML = document.getElementById("theatre").value;
+                  }
+                </script>
               </div>
             </div>
           </div>
@@ -276,34 +315,7 @@
         </div>
       </div>
       {% endfor %}
-      <!-- 
-        Note: Does not include datetime logic yet.
-
-        If all movies is selected:
-
-          If all theatres is selected:
-            Loop through theatres:
-              Loop through showtimes:
-                If match with current theatre:
-                  Display movie
-          
-          Elif a specific theatre is selected:
-            Loop through showtimes:
-              If match with theatre selected:
-                Display movie
-        
-        Elif specific movie is selected:
-           
-          If all theatres is selected:
-            Loop through all showtimes:
-              If match with movie:
-                Display theatre it matched with (and movie? i think)
-          
-          Elif specific theatres is selected:
-            Loop through all showtimes:
-              If match with movie and theatre:
-                Display theatre and movie 
-      -->
+    
       <!-- <div class="row mt-5">
         <div class="col-11">
           <div class="row">

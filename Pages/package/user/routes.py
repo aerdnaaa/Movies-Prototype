@@ -61,3 +61,7 @@ def accountpage():
     db = shelve.open('storage.db','r')
     usersDict = db['Users']
     return render_template("User/accountpage.html", title="Account")
+
+@user_blueprint.route("/admin/admin_accounts")
+def admin_accounts():
+    return render_template("Admin/users/admins.html")

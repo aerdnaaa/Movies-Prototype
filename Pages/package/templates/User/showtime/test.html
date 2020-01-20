@@ -1,0 +1,118 @@
+<!-- 
+
+        If all movies is selected:
+
+          If all theatres is selected:
+            Loop through theatres:
+              Loop through showtimes:
+                If match with current theatre:
+                  Display movie
+          
+          Elif a specific theatre is selected:
+            Loop through showtimes:
+              If match with theatre selected:
+                Display movie
+        
+        Elif specific movie is selected:
+           
+          If all theatres is selected:
+            Loop through all showtimes:
+              If match with movie:
+                Display theatre it matched with (and movie? i think)
+          
+          Elif specific theatres is selected:
+            Loop through all showtimes:
+              If match with movie and theatre:
+                Display theatre and movie 
+      -->
+
+
+{% for theatre in theatre_movie_showtime_dict %}
+      <div class="row mt-5">
+        <div class="col-11">
+          <div class="row">
+            <div class="col">
+              <div class="heading">
+                <h3>{{ theatre }}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            {% for showtime_class in theatre_movie_showtime_dict[theatre] %}
+            <div class="col-lg-5 col-sm-5 col-md-6 table">
+              <div class="movies_ct-item clearfix">
+                <a class="block-img p-t-0 " href="#">
+                  <img src="{{ url_for('static', filename='images/movie poster/' + showtime_class.get_movie_class().get_poster()) }}">
+                </a>
+                <div class="info">
+                  <div class="title"><a href="">{{ showtime_class.get_movie_class().get_movie_name() }}</a></div>
+                  <p>
+                    <span class="guidance">
+                      <span class="guidance-svg">
+                        <img src="{{ url_for('static', filename='svgs/PG.svg') }}" alt="">
+                      </span>
+                    </span>
+                    <span class="duration">| {{ showtime_class.get_movie_class().get_duration() }} </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-7 col-sm-7 col-md-6">
+              {% for timeslot in showtime_class.get_timeslot() %}
+              <div class="showtimes-block ">
+                <a href="{{ url_for('showtime.bookmovieseats', showtime_id=showtime_class.get_id() ) }}  ">{{ timeslot }}<sup>+</sup></a>
+              </div>          
+              {% endfor %}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+
+
+
+<!-- Backup (Old) -->      
+      <!-- {% for theatre in theatre_movie_showtime_dict %}
+      <div class="row mt-5">
+        <div class="col-11">
+          <div class="row">
+            <div class="col">
+              <div class="heading">
+                <h3>{{ theatre }}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            {% for showtime_class in theatre_movie_showtime_dict[theatre] %}
+            <div class="col-lg-5 col-sm-5 col-md-6 table">
+              <div class="movies_ct-item clearfix">
+                <a class="block-img p-t-0 " href="#">
+                  <img src="{{ url_for('static', filename='images/movie poster/' + showtime_class.get_movie_class().get_poster()) }}">
+                </a>
+                <div class="info">
+                  <div class="title"><a href="">{{ showtime_class.get_movie_class().get_movie_name() }}</a></div>
+                  <p>
+                    <span class="guidance">
+                      <span class="guidance-svg">
+                        <img src="{{ url_for('static', filename='svgs/PG.svg') }}" alt="">
+                      </span>
+                    </span>
+                    <span class="duration">| {{ showtime_class.get_movie_class().get_duration() }} </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-7 col-sm-7 col-md-6">
+              {% for timeslot in showtime_class.get_timeslot() %}
+              <div class="showtimes-block ">
+                <a href="{{ url_for('showtime.bookmovieseats', showtime_id=showtime_class.get_id() ) }}  ">{{ timeslot }}<sup>+</sup></a>
+              </div>          
+              {% endfor %}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endfor %} -->

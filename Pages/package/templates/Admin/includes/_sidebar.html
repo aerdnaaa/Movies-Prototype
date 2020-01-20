@@ -11,12 +11,14 @@
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <a href="#" class="d-block">
         <div class="image">
           <img src="" class="img-circle elevation-2" alt="User Image" height="160" width="160">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Admin</a>
+          Admin
         </div>
+        </a>
       </div>
 
       <!-- Sidebar Menu -->
@@ -33,6 +35,15 @@
                 </a>
               </li>
             </ul>
+          </li> 
+          <li class="nav-item">
+            <a href="{{ url_for('user.admin_accounts') }}" class="nav-link">              
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Admin
+                <!-- <span class="badge badge-info right"></span> -->
+              </p>
+            </a>
           </li>
           <li class="nav-item">
             <a href="{{ url_for('carousel.admin_carousel') }}" class="nav-link">              
