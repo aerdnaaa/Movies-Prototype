@@ -17,7 +17,7 @@ color: #CDE0F5;
     <div class="col">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="{{ url_for('carousel. home') }}">HOME</a></li>
+          <li class="breadcrumb-item"><a href="{{ url_for('carousel.home') }}">HOME</a></li>
           <li class="breadcrumb-item active" aria-current="page">SEATS SELECTION</li>
         </ol>
       </nav>
@@ -78,7 +78,23 @@ color: #CDE0F5;
               </div>
               <div class="row seats">
                 <div class="col">
-                  <div class="row row-1">
+                  {% for row_letter in seats_dict %}
+                    <div class="row row-{{ loop.index }}">
+                      <div class="col">
+                        <h4>{{ row_letter }}</h4>
+                      </div>
+                      {% for seat in seats_dict[row_letter] %}
+                      <div class="col">
+                        {% if seat == avail %}
+                          <img src="{{ url_for('static', filename='images/seats/seat-curr-' + seat) }}" alt="" class="{{ seat }}-seats"  onclick="selectSeat(this)" id="{{ row_letter }}{{ loop.index }}">
+                        {% else %}
+                          <img src="{{ url_for('static', filename='images/seats/seat-curr-' + seat) }}" alt="" class="{{ seat }}-seats" >
+                        {% endif %}
+                      </div>
+                      {% endfor %}
+                    </div>
+                  {% endfor %}
+                  <!-- <div class="row row-1">
                     <div class="col">
                       <h4>A</h4>
                     </div>
@@ -287,7 +303,7 @@ color: #CDE0F5;
                         class="available-seats"  onclick=" selectSeat(this)"
                          >
                     </div>
-                  </div>
+                  </div> -->
                   <div class="row row-num">
                     <div class="col"></div>
                     <div class="col">

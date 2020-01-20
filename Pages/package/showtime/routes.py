@@ -68,7 +68,9 @@ def bookmovieseats(showtime_id):
 
     showtime_class = Showtime_dict[showtime_id]
 
-    return render_template("User/showtime/bookmovieseats.html", title="Buying Seats", showtime_class=showtime_class)
+    seats_dict = showtime_class.get_seats_dicts()
+
+    return render_template("User/showtime/bookmovieseats.html", title="Buying Seats", showtime_class=showtime_class, seats_dict=seats_dict)
 
 
 @showtime_blueprint.route("/admin/showtime")

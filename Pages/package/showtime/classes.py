@@ -8,6 +8,7 @@ class Showtime:
         self.__show_period = show_period
         self.__timeslot = timeslot
         self.__hall_number = hall_number
+        self.__seats_dict = {"A":["avail","avail","avail","avail","avail"],"B":["avail","avail","avail","avail","avail"],"C":["avail","avail","avail","avail","avail"],"D":["avail","avail","avail","avail","avail"]}
 
     def get_id(self):
         return self.__id
@@ -27,6 +28,9 @@ class Showtime:
     def get_hall_number(self):
         return self.__hall_number
 
+    def get_seats_dict(self):
+        return self.__seats_dict
+
     def set_theatre_class(self, theatre_class):
         self.__theatre_class = theatre_class
 
@@ -41,6 +45,9 @@ class Showtime:
 
     def set_hall_number(self, hall_number):
         self.__hall_number = hall_number
+
+    def set_seats_dict(self, seats_dict):
+        self.__seats_dict = seats_dict
 
     def set_all_attributes(self, theatre_class, movie_class, show_period, timeslot, hall_number):
         self.set_theatre_class(theatre_class)
