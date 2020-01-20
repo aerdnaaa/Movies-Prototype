@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, validators, SubmitField, SelectField, SelectMultipleField,PasswordField
-from wtforms.validators import DataRequired, Length, EqualTo,Email
+from wtforms.validators import DataRequired, Length, EqualTo, Email
 from flask_wtf.file import FileField, FileAllowed
 from wtforms.fields.html5 import EmailField,DateField
 
@@ -22,7 +22,19 @@ class LoginForm(FlaskForm):
      login = SubmitField('Login')
 
 class CreateAdminForm(FlaskForm):
-    username = StringField("Username",[Length(min=1, max=30), DataRequired()])
-    password = PasswordField("Password", [Length(min=8), DataRequired()])
-    confirm_password = PasswordField("Confirm Password", [Length(min=8), DataRequired(), EqualTo('password', message="Passwords must match.")])
+    username = StringField("Username",[Length(min=1, max=30), DataRequired()], default="Admin")
+    email = EmailField("Email", [DataRequired(), Email()])
+    administrative_rights = SelectField("Administrative Rights", choices=[("Super Admin", "Super Admin"), ("Manage admins", "Manage admins"), ("Carousel", "Carousel")], default="Super Admin")    
     submit = SubmitField("Add Admin")
+
+class ModifyAdminForm(FlaskForm):
+    username = StringField("Username",[Length(min=1, max=30), DataRequired()], default="Admin")
+    email = EmailField("Email", [DataRequired(), Email()])
+    administrative_rights = SelectField("Administrative Rights", choices=[("Super Admin", "Super Admin"), ("Manage admins", "Manage admins"), ("Carousel", "Carousel")], default="Super Admin")    
+    submit = SubmitField("Modify Admin")
+
+    # username = StringField("Username",[Length(min=1, max=30), DataRequired()])
+    # email = EmailField("Email", [DataRequired(), Email()])
+    # password = PasswordField("Password", [Length(min=8), DataRequired()])
+    # confirm_password = PasswordField("Confirm Password", [Length(min=8), DataRequired(), EqualTo('password', message="Passwords must match.")])        
+    # submit = SubmitField("Modify Admin")

@@ -1,21 +1,23 @@
 class Person:
-    def __init__(self, id, name, profile_picture):
+    def __init__(self, id, name, profile_picture, email, password):
         self.id = id
         self.name = name
         self.profile_picture = profile_picture
+        self.email = email        
+        self.password = password
 
 class Admin(Person):
     id = 0
-    def __init__(self, name, profile_picture, admininstrative_rights):
+    def __init__(self, username, email, administrative_rights, password):
         Admin.id += 1
-        Person.__init__(Admin.id, name, profile_picture)
-        self.admininstrative_rights = admininstrative_rights
+        Person.__init__(self, Admin.id, username, "default.png", email, password)
+        self.administrative_rights = administrative_rights        
 
 class User(Person):
     id = 0
     def __init__(self,firstname,lastname,email,password,username,gender,DateofBirth):
         User.id += 1
-        Person.__init__(self,User.id,0,0)
+        Person.__init__(self,User.id,0,0,0,0)
         self.__email = email
         self.__firstname = firstname
         self.__lastname = lastname

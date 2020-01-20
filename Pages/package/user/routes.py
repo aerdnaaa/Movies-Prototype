@@ -1,9 +1,9 @@
 from flask import Blueprint
 from flask import render_template,request,redirect,flash,url_for
-from package.user.forms import CreateUserForm,LoginForm
+from package.user.forms import CreateUserForm,LoginForm, CreateAdminForm, ModifyAdminForm
 import shelve
-from package.user.classes import User
-
+from package.user.classes import User, Admin
+from package import bcrypt
 
 user_blueprint = Blueprint("user", __name__)
 
@@ -64,4 +64,37 @@ def accountpage():
 
 @user_blueprint.route("/admin/admin_accounts")
 def admin_accounts():
-    return render_template("Admin/users/admins.html")
+    db = shelve.open('storage.db', 'c')
+    try:
+        Admin_dict = db['Admins']
+    except:
+        Admin_dict = {}
+        db['Admins'] = Admin_dict
+    return render_template("Admin/users/admins.html", title="Admin Accounts", Admin_dict=Admin_dict)
+
+@user_blueprint.route("/admin/admin_accounts/add_admin", methods=["GET","POST"])
+def add_admin():
+    form = CreateAdminForm()
+    db = shelve.open('storage.db', 'c')
+    try:
+        Admin_dict = db['Admins']
+        Admin.id = list(Admin_dict.values())[-1].id
+    except:
+        Admin_dict = {}
+        db['Admins'] = Admin_dict
+    if form.validate_on_submit():
+        username = form.username.data
+        email = form.email.data
+        administrative_rights = form.administrative_rights.data
+        hashed_password = bcrypt.generate_password_hash("admin").decode('utf-8')
+        admin_class = Admin(username, email, administrative_rights, hashed_password)
+        Admin_dict[admin_class.id] = admin_class
+        db["Admins"] = Admin_dict
+        db.close()
+        return redirect(url_for("user.admin_accounts"))
+    elif request.method == "GET":
+        form.username.data = "Admin"
+        form.email.data = ""
+        form.administrative_rights.data = "Super Admin"        
+        db.close()
+    return render_template("Admin/users/add_admin.html", title="Add Admin", form=form)

@@ -29,7 +29,7 @@
         
         <div class="ml-auto">            
           <button type="button" class="btn btn-success">
-            <a href="{{ url_for('showtime.add_showtime') }}">Add Admin</a>              
+            <a href="{{ url_for('user.add_admin') }}">Add Admin</a>              
           </button>
           <button type="submit" class="btn btn-danger" onclick="delete_showtime()">Delete</button>
         </div>
@@ -43,52 +43,40 @@
                     <input type="checkbox" class="form-check-input" onclick="select_all(this)">                    
                   </div>
                 </td>
-              <!-- <th scope="col">No.</th>
-              <th scope="col">Theatre Name</th>
-              <th scope="col">Movie Title</th>
-              <th scope="col">Show Period</th>
-              <th scope="col">TimeSlot</th>                
-              <th scope="col">Hall Number</th>                
-              <th scope="col">Modify</th> -->
+              <th scope="col">No.</th>
+              <th scope="col">Username</th>
+              <th scope="col">Email</th>
+              <th scope="col">Administrative Rights</th>             
+              <th scope="col">Modify</th>
             </tr>
           </thead>
           <tbody>
-            <!-- {% for key in Showtime_dict %}
+            {% for key in Admin_dict %}
             <tr>
               <td>
                   <div class="form-check">
-                    <input type="checkbox" class="form-check-input" name="{{ Showtime_dict[key].get_id() }}">                    
+                    <input type="checkbox" class="form-check-input" name="{{ Admin_dict[key].id }}">                    
                   </div>
                 </td>
               <td>
-                  {{ Showtime_dict[key].get_id() }}
+                  {{ Admin_dict[key].id }}
               </td>
               <td>
-                {{ Showtime_dict[key].get_theatre_class().get_theatre_name() }}
+                {{ Admin_dict[key].name }}
               </td>
               <td>
-                {{ Showtime_dict[key].get_movie_class().get_movie_name() }}
+                {{ Admin_dict[key].email }}
               </td>
               <td>
-                {{ Showtime_dict[key].get_show_period() }}
-              </td>
-              <td>
-                <ul>
-                {% for timeslot in Showtime_dict[key].get_timeslot() %}
-                  <li>{{ timeslot }}</li>
-                {% endfor %}
-                </ul>
-              </td>
-              <td>
-                {{ Showtime_dict[key].get_hall_number() }}
-              </td>               
+                {{ Admin_dict[key].administrative_rights }}
+              </td>              
               <td>
                 <button type="button" class="btn btn-primary">
-                  <a href="{{ url_for('showtime.modify_showtime', showtime_id= Showtime_dict[key].get_id()) }}">Modify Showtime</a>                    
+                  <a href="{{ url_for('showtime.modify_showtime', showtime_id= Admin_dict[key].id) }}">Modify Admin</a>                    
                 </button>           
               </td>
             </tr>
-            {% endfor %} -->
+            {% endfor %}
           </tbody>
         </table>
       </div>

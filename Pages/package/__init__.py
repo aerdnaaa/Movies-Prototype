@@ -1,8 +1,11 @@
 from flask import Flask
+from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = "73892748739"
+
+bcrypt = Bcrypt(app)
 
 from package.showtime.routes import showtime_blueprint
 from package.carousel.routes import carousel_blueprint
