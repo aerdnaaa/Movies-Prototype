@@ -33,11 +33,11 @@
             <p>{{ showtime_class.get_movie_class().get_poster() }}</p>
             <p>{{ showtime_class.get_movie_class().get_movie_name() }}</p>
             <p>{{ showtime_class.get_movie_class().get_duration() }}</p>
-            <div>
+            <ul>
               {% for timeslot in showtime_class.get_timeslot() %} 
-                <p>{{ timeslot }}</p>
+                <li>{{ timeslot }}</li>
               {% endfor %}
-            </div>
+            </ul>
           </div>
         {% endfor %}
       </div>

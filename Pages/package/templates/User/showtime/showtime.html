@@ -245,7 +245,7 @@
             </div> -->
           </div>
           <div class="row" id="display_showtime">
-            {% for showtime_class in theatre_movie_showtime_dict[theatre] %}
+            <!-- {% for showtime_class in theatre_movie_showtime_dict[theatre] %}
             <div class="col-lg-5 col-sm-5 col-md-6 table">
               <div class="movies_ct-item clearfix">
                 <a class="block-img p-t-0 " href="#">
@@ -271,7 +271,7 @@
               </div>          
               {% endfor %}
             </div>
-            {% endfor %}
+            {% endfor %} -->
           </div>
         </div>
       </div>
@@ -346,7 +346,7 @@
     </div>
 
 
-    <!-- Orion's best invention -->
+    <!-- Orion's best invention (The hidden database to transfer python variables into js) -->
     <div style="display:none" id="database">
       {% for theatre in theatre_movie_showtime_dict %}
       <div id="{{ theatre }}">
@@ -355,11 +355,11 @@
             <p>{{ showtime_class.get_movie_class().get_poster() }}</p>
             <p>{{ showtime_class.get_movie_class().get_movie_name() }}</p>
             <p>{{ showtime_class.get_movie_class().get_duration() }}</p>
-            <div>
+            <ul>
               {% for timeslot in showtime_class.get_timeslot() %} 
-                <p>{{ timeslot }}</p>
+                <li>{{ timeslot }}</li>
               {% endfor %}
-            </div>
+            </ul>
           </div>
         {% endfor %}
       </div>
@@ -429,13 +429,23 @@
         }
       } else {
         document.getElementById("display_current_theatre").innerHTML += "<div class='col'><div class='heading'><h3>" + theatres.options[theatres.selectedIndex].text + "</h3></div></div>";
-        theatre_showtime_list = document.getElementById(theatres.options[theatres.selectedIndex].text);
-        console.log(theatre_showtime_list);
+        theatre_showtime_list = document.getElementById(theatres.options[theatres.selectedIndex].text).getElementsByTagName("div");
         
         for (showtime of theatre_showtime_list) {
-          console.log(showtime)
-          // document.getElementById("display_showtime").innerHTML += "<div class='col-lg-5 col-sm-5 col-md-6 table'><div class=;'movies_ct-item clearfix'><a class='block-img p-t-0' href='#'>"
-          // document.getElementById("display_showtime").innerHTML += "<img src='{ url_for('static', filename='images/movie poster/' + showtime_class.get_movie_class().get_poster()) }}'>"
+          var movie_poster = showtime.getElementsByTagName("p")[0].innerText;
+          var movie_name = showtime.getElementsByTagName("p")[1].innerText;
+          var movie_duration = showtime.getElementsByTagName("p")[2].innerText;
+          // "<img src='{{ url_for('static', filename='images/movie poster/'" + movie_poster + ")}}'></a>"
+          document.getElementById("display_showtime").innerHTML += "<div class='row'><div class='col-lg-5 col-sm-5 col-md-6 table'><div class='movies_ct-item clearfix'><a class='block-img p-t-0 ' href='#'>"
+          document.getElementById("display_showtime").innerHTML += "<img src='/static/images/movie poster/" + movie_poster + "'></a>"
+          document.getElementById("display_showtime").innerHTML += "<div class='info'><div class='title'><a href=''>" + movie_name + "</a></div>"
+          document.getElementById("display_showtime").innerHTML += "<p><span class='guidance'><span class='guidance-svg'><img src='{{ url_for('static', filename='svgs/PG.svg') }}' alt=''></span></span>"
+          document.getElementById("display_showtime").innerHTML += "<span class='duration'>| " + movie_duration + "</span></p></div></div></div>"
+          document.getElementById("display_showtime").innerHTML += "<div class='col-lg-7 col-sm-7 col-md-6'>"
+          for (timeslot of showtime.getElementsByTagName("li")) {
+            document.getElementById("display_showtime").innerHTML += "<div class='showtimes-block'><a href='{{ url_for('showtime.bookmovieseats', showtime_id=" + parseInt(showtime.id) + ")}}'>" + timeslot.innerText + "<sup>+</sup></a></div>"
+          }
+          document.getElementById("display_showtime").innerHTML += "</div>"
         }
         
       } 
