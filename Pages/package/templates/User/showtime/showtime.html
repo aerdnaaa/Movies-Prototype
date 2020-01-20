@@ -36,7 +36,7 @@
       <div class="row">
         <!-- this is the dropdowns -->
         <div class="form-group col">
-          <select class="top_selector date-top-selector form-control" id="date">
+          <select class="top_selector date-top-selector form-control" id="selected_date" onchange="display_showtime()">
             {% for key in date_dict %}
               <option value="{{ key }}">
                 {{ date_dict[key] }}
@@ -46,7 +46,7 @@
         </div>
         <div class="form-group col">
           {% if movie_dict %}
-            <select class="top_selector movie-top-selector form-control" id="movie">
+            <select class="top_selector movie-top-selector form-control" id="selected_movie" onchange="display_showtime()">
               <option value="All">
                 All Movies
               </option>
@@ -56,7 +56,7 @@
                 </option>
               {% endfor %}
           {% else %}
-            <select class="top_selector movie-top-selector form-control" id="movie" disabled>
+            <select class="top_selector movie-top-selector form-control" onchange="display_showtime()" disabled>
               <option value="">No movies available</option>
           {% endif %}
               <!-- <option value="All">
@@ -162,7 +162,7 @@
         </div>
         <div class="form-group col">
           {% if theatre_dict %}
-            <select class="top_selector theatre-top-selector form-control" id="theatre" onchange="change_theatre()">
+            <select class="top_selector theatre-top-selector form-control" id="selected_theatre" onchange="display_showtime()">
                 <option value="All">
                   All Theatres
                 </option>
@@ -172,7 +172,7 @@
                 </option>
               {% endfor %}
           {% else %}
-            <select class="top_selector theatre-top-selector form-control" id="theatre" onchange="change_theatre()" disabled>
+            <select class="top_selector theatre-top-selector form-control" onchange="display_showtime()" disabled>
               <option value="">No theatres available</option>
           {% endif %}
               <!-- <option value="All">
@@ -233,57 +233,18 @@
         <!-- </div> -->
       </div>
 
-      <!-- 
-
-        If all movies is selected:
-
-          If all theatres is selected:
-            Loop through theatres:
-              Loop through showtimes:
-                If match with current theatre:
-                  Display movie
-          
-          Elif a specific theatre is selected:
-            Loop through showtimes:
-              If match with theatre selected:
-                Display movie
-        
-        Elif specific movie is selected:
-           
-          If all theatres is selected:
-            Loop through all showtimes:
-              If match with movie:
-                Display theatre it matched with (and movie? i think)
-          
-          Elif specific theatres is selected:
-            Loop through all showtimes:
-              If match with movie and theatre:
-                Display theatre and movie 
-      -->
-
       <!-- Showtimes -->
       {% for theatre in theatre_movie_showtime_dict %}
-      <div class="row mt-5" id="{{ theatre }}">
+      <div class="row mt-5">
         <div class="col-11">
-          <div class="row">
-            <div class="col">
+          <div class="row" id="display_current_theatre">
+            <!-- <div class="col">
               <div class="heading">
-                <h3 id="h3">{{ theatre }}</h3>
-                <script>
-                  function change_theatre() {
-                    var current_theatre = "{{ theatre }}";
-                    // if (document.getElementById("theatre").value == current_theatre) {
-                    //   document.getElementById("h3").innerHTML = current_theatre
-                    // }
-                    console.log(document.getElementById("theatre").value);
-                    
-                    document.getElementById("h3").innerHTML = document.getElementById("theatre").value;
-                  }
-                </script>
+                <h3 id="h3">   Theatre name  </h3>
               </div>
-            </div>
+            </div> -->
           </div>
-          <div class="row">
+          <div class="row" id="display_showtime">
             {% for showtime_class in theatre_movie_showtime_dict[theatre] %}
             <div class="col-lg-5 col-sm-5 col-md-6 table">
               <div class="movies_ct-item clearfix">
@@ -383,6 +344,27 @@
 
       </div>
     </div>
+
+
+    <!-- Orion's best invention -->
+    <div style="display:none" id="database">
+      {% for theatre in theatre_movie_showtime_dict %}
+      <div id="{{ theatre }}">
+        {% for showtime_class in theatre_movie_showtime_dict[theatre] %}
+          <div id="{{ showtime_class.get_id() }}">
+            <p>{{ showtime_class.get_movie_class().get_poster() }}</p>
+            <p>{{ showtime_class.get_movie_class().get_movie_name() }}</p>
+            <p>{{ showtime_class.get_movie_class().get_duration() }}</p>
+            <div>
+              {% for timeslot in showtime_class.get_timeslot() %} 
+                <p>{{ timeslot }}</p>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
 {% endblock %}
 
 
@@ -431,6 +413,32 @@
       });
 
 
-    });
+    }); 
+
+    function display_showtime() {
+      var theatres = document.getElementById("selected_theatre");
+      var theatre_id = theatres.value;
+      
+      if (theatre_id == "All") {
+        for (theatre of theatres.options) {
+          if (theatre.value == "All") { continue };
+          document.getElementById("display_current_theatre").innerHTML += "<div class='col'><div class='heading'><h3>" + theatre.text + "</h3></div></div>";
+          // for (showtime of theatre.options) {
+          //    
+          // }
+        }
+      } else {
+        document.getElementById("display_current_theatre").innerHTML += "<div class='col'><div class='heading'><h3>" + theatres.options[theatres.selectedIndex].text + "</h3></div></div>";
+        theatre_showtime_list = document.getElementById(theatres.options[theatres.selectedIndex].text);
+        console.log(theatre_showtime_list);
+        
+        for (showtime of theatre_showtime_list) {
+          console.log(showtime)
+          // document.getElementById("display_showtime").innerHTML += "<div class='col-lg-5 col-sm-5 col-md-6 table'><div class=;'movies_ct-item clearfix'><a class='block-img p-t-0' href='#'>"
+          // document.getElementById("display_showtime").innerHTML += "<img src='{ url_for('static', filename='images/movie poster/' + showtime_class.get_movie_class().get_poster()) }}'>"
+        }
+        
+      } 
+    }
     </script>
 {% endblock %}

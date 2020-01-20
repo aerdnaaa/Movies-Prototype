@@ -24,6 +24,25 @@
             Loop through all showtimes:
               If match with movie and theatre:
                 Display theatre and movie 
+
+    <div style="display:none" id="database">
+      {% for theatre in theatre_movie_showtime_dict %}
+      <div id="{{ theatre }}">
+        {% for showtime_class in theatre_movie_showtime_dict[theatre] %}
+          <div id="{{ showtime_class.get_id() }}">
+            <p>{{ showtime_class.get_movie_class().get_poster() }}</p>
+            <p>{{ showtime_class.get_movie_class().get_movie_name() }}</p>
+            <p>{{ showtime_class.get_movie_class().get_duration() }}</p>
+            <div>
+              {% for timeslot in showtime_class.get_timeslot() %} 
+                <p>{{ timeslot }}</p>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
       -->
 
 
