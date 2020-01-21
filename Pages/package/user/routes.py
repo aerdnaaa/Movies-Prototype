@@ -3,7 +3,7 @@ from flask import render_template,request,redirect,flash,url_for
 from package.user.forms import CreateUserForm,LoginForm, CreateAdminForm, ModifyAdminForm
 import shelve
 from package.user.classes import User, Admin
-from package import bcrypt
+from package import bcrypt, login_manager
 
 user_blueprint = Blueprint("user", __name__)
 

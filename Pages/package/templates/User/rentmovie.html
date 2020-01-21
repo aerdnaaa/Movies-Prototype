@@ -46,9 +46,9 @@ transition: all 0.4s ease-in-out 0s;
 .content:hover .content-overlay{
 opacity: 1;
 }
-
 .content-image{
-width: 100%;
+  width: 110%;
+  height: auto;
 }
 
 .content-details {
@@ -150,7 +150,7 @@ top: 80%;
     <div class="col-2 movie2">
       <div class="content">        
           <div class="content-overlay"></div>
-          <img class="content-image" src="{{ url_for('static', filename='images/interstellar.jpg') }}" height="100%">
+          <img class="content-image" src="{{ url_for('static', filename='images/interstellar.jpg') }}">
           <div class="content-details fadeIn-bottom">
             <h3 class="content-title">Interstellar</h3>
             <p class="content-text">This is a short description</p>
@@ -160,7 +160,7 @@ top: 80%;
     <div class="col-2 movie2">
         <div class="content">          
             <div class="content-overlay"></div>
-            <img class="content-image" src="{{ url_for('static', filename='images/doraCover.jpg') }}" height="100%">
+            <img class="content-image" src="{{ url_for('static', filename='images/doraCover.jpg') }}">
             <div class="content-details fadeIn-bottom">
               <h3 class="content-title">Dora</h3>
               <p class="content-text">This is a short description</p>

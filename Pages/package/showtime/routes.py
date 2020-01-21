@@ -140,6 +140,8 @@ def add_showtime():
         form.showtime_end_date.data = ""
         form.hall_number.data = ""
         db.close()
+    elif request.method == "POST" and request.json:
+        print(request.json)
     return render_template("Admin/showtime/add_showtime.html", title="Add Showtime", form=form)
 
 @showtime_blueprint.route("/admin/showtime/modify_showtime/<showtime_id>", methods=["GET","POST"])

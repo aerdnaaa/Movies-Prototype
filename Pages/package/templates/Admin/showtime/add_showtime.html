@@ -33,7 +33,7 @@
           {{ form.csrf_token }}
           <div class="form-group">
             {{ form.theatre_name.label(class="form-control-label") }}
-            {{ form.theatre_name(class="form-control form-control-lg") }}
+            {{ form.theatre_name(class="form-control form-control-lg", id="form_hall_number", onchange="change_hall_number()") }}
           </div>
           <div class="form-group">
             {{ form.movie_title.label(class="form-control-label") }}
@@ -73,5 +73,22 @@
 <!-- /.content-wrapper -->
 
 {% block scripts %}
-
+  <script>
+    function change_hall_number(){
+    theatre_name = document.getElementById("form_hall_number").value;
+    // var xhr = new XMLHttpRequest();
+    // xhr.open("POST", "showtime.add_showtime", true)
+    // xhr.setRequestHeader('Content-Type', 'application/json');
+    // xhr.onreadystatechange = function() { // Call a function when the state changes.
+    //     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+    //     // Request finished. Do processing here.
+    //     // location.reload();
+    //     }
+    // }
+    // xhr.send(JSON.stringify(theatre_name))
+    // console.log(theatre_name);
+    send_message("{{ url_for('showtime.delete_showtime') }}", theatre_name)
+  }
+  </script>
+  <script src="{{ url_for('static', filename='js/extension.js') }}"></script>
 {% endblock %}
