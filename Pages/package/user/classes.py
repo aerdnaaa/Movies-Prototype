@@ -1,3 +1,5 @@
+from flask_login import UserMixin
+
 class Person:
     def __init__(self, id, name, profile_picture, email, password):
         self.id = id
@@ -13,7 +15,7 @@ class Admin(Person):
         Person.__init__(self, Admin.id, username, "default.png", email, password)
         self.administrative_rights = administrative_rights        
 
-class User(Person):
+class User(Person, UserMixin):
     id = 0
     def __init__(self,firstname,lastname,email,password,username,gender,DateofBirth):
         User.id += 1

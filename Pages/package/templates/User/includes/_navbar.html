@@ -19,11 +19,17 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('promotion.promotion') }}">Promotions</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('user.register') }}"><i class="fa fa-user"></i> Sign Up</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('user.login') }}"><i class="fa fa-sign-in"></i> Log In</a>
-          </li>
+          {% if current_user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('user.logout') }}"><i class="fa fa-sign-out"></i> Log Out</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('user.register') }}"><i class="fa fa-user"></i> Sign Up</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('user.login') }}"><i class="fa fa-sign-in"></i> Log In</a>
+            </li>
+          {% endif %}
         </ul>
     </nav>

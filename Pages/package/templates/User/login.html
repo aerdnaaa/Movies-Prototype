@@ -4,7 +4,7 @@
 {% from "User/includes/_formHelper.html" import render_field %}
 <div class="container">
       <!--flash message ... not working atm-->
-      {%with messages = get_flashed_messages(with_categories=true)%}
+      <!-- {%with messages = get_flashed_messages(with_categories=true)%}
       {%if messages %}
         {% for category, message in messages %}
           <div class="alert alert-{{category}}">
@@ -12,13 +12,13 @@
           </div>
         {% endfor %}
       {%endif%}
-    {%endwith%}
+    {%endwith%} -->
     <!--flash message-->
 <br>
 <h1 class=" text-dark text-center  p-2">Login
 </h1>
 <hr class="new1" width="35%">
-<form class="col-lg-4 offset-lg-4 text-left p-2">
+<form class="col-lg-4 offset-lg-4 text-left p-2" method="POST">
   <div class="form-row my-1">
     <div class="col-lg-12 offset-lg">
       {{ render_field(form.Username, class="form-control") }}

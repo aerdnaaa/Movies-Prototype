@@ -4,67 +4,74 @@ from package.user.forms import CreateUserForm,LoginForm, CreateAdminForm, Modify
 import shelve
 from package.user.classes import User, Admin
 from package import bcrypt, login_manager
+from package.user.utilis import load_user, return_usernames, is_correct_password, return_user_id
+from flask_login import login_user, logout_user, login_required
 
 user_blueprint = Blueprint("user", __name__)
 
 @user_blueprint.route("/login", methods=['GET','POST'])
 def login():
-    form = LoginForm()
-    print('test')
-    usersDict = {}
-    db = shelve.open('storage.db','r')
-    usersDict = db['Users']
-    db.close()
-    if form.validate_on_submit() and request.method=='GET':
-        if form.Username.data == 'test' and form.password.data =='password':
+    form = LoginForm()        
+    db = shelve.open('shelve.db','c')
+    try:
+        userDict = db['Users']
+    except:
+        userDict = {}
+        db['Users'] = userDict
+        print("Error in retrieving Users from shelve.db.")
+    db.close()        
+    if request.method=='POST':
+        if form.Username.data in return_usernames(userDict) and is_correct_password(form.Username.data, form.password.data, userDict):
+            login_user(load_user(return_user_id(form.Username.data, userDict)))
             flash('You have been logged in!','success')
             return redirect(url_for('carousel.home'))
         else:
             flash('Invalid username or password. Please check both fields.','danger')
     return render_template("User/login.html", title="Login Page",form=form)
 
+@user_blueprint.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for('carousel.home'))
 
 @user_blueprint.route("/register",methods=['GET','POST'])
 def register():
     createUserForm = CreateUserForm(request.form)
+    db = shelve.open('shelve.db','c')
+    try:
+        userDict = db['Users']
+    except:
+        userDict = {}
+        db['Users'] = userDict
     if request.method=='POST' and createUserForm.validate():
-        flash(f'Account created for {createUserForm.Username.data}!','success')
-        userDict={}
-        db = shelve.open('storage.db','c')
-        try:
-            userDict = db['Users']
-        except:
-            userDict = {}
-            print("Error in retrieving Users from storage.db.")
-
+        flash(f'Account created for {createUserForm.Username.data}!','success')        
         user = User(createUserForm.firstName.data,createUserForm.lastName.data,
         createUserForm.email.data,createUserForm.password.data,createUserForm.Username.data,
         createUserForm.gender.data,createUserForm.DateofBirth.data)
         userDict[user.get_userID()] = user
         db['Users'] = userDict
-
-        userDict=db['Users']
-        user = userDict[user.get_userID()]
         print(f'Account for {user.get_username()} has been created with id number {user.get_userID()}')
         db.close()
-        return redirect(url_for('carousel.home'))
+        return redirect(url_for('carousel.home'))    
     return render_template("User/register.html", title="Register",form=createUserForm)
 
 @user_blueprint.route("/accountpage")
+@login_required
 def accountpage():
-    uDict = {}
-    user=User('r1','r2','r3','r4','r5','r6','r7')
-    uDict={
-        user.get_userID : user
-    }
-    userlist =  list(uDict.values())
-    db = shelve.open('storage.db','r')
-    usersDict = db['Users']
-    return render_template("User/accountpage.html", title="Account")
+    # uDict = {}
+    # user=User('r1','r2','r3','r4','r5','r6','r7')
+    # uDict={
+    #     user.get_userID : user
+    # }
+    # userlist =  list(uDict.values())
+    # db = shelve.open('shelve.db','r')
+    # usersDict = db['Users']
+    # return render_template("User/accountpage.html", title="Account")
+    return "Hi there!"
 
 @user_blueprint.route("/admin/admin_accounts")
 def admin_accounts():
-    db = shelve.open('storage.db', 'c')
+    db = shelve.open('shelve.db', 'c')
     try:
         Admin_dict = db['Admins']
     except:
@@ -75,7 +82,7 @@ def admin_accounts():
 @user_blueprint.route("/admin/admin_accounts/add_admin", methods=["GET","POST"])
 def add_admin():
     form = CreateAdminForm()
-    db = shelve.open('storage.db', 'c')
+    db = shelve.open('shelve.db', 'c')
     try:
         Admin_dict = db['Admins']
         Admin.id = list(Admin_dict.values())[-1].id

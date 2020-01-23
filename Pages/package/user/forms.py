@@ -17,8 +17,8 @@ class CreateUserForm(FlaskForm):
     submit = SubmitField('Register')
 
 class LoginForm(FlaskForm):
-     Username = StringField('Username', [validators.length(min=2, max=20), validators.DataRequired()])
-     password = PasswordField('Password', [validators.length(min=8), validators.DataRequired()])
+     Username = StringField('Username', [Length(min=2, max=20, message="Character length does not fufil requirements"), DataRequired(message="Username cannot be empty")])
+     password = PasswordField('Password', [DataRequired(message="Password cannot be empty")])
      login = SubmitField('Login')
 
 class CreateAdminForm(FlaskForm):
