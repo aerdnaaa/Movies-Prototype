@@ -9,16 +9,16 @@
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600%7CUbuntu:300,400,500,700" rel="stylesheet">
 
 	<!-- CSS -->
-	<link rel="stylesheet" href="css/bootstrap-reboot.min.css">
-	<link rel="stylesheet" href="css/bootstrap-grid.min.css">
-	<link rel="stylesheet" href="css/owl.carousel.min.css">
-	<link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
-	<link rel="stylesheet" href="css/nouislider.min.css">
-	<link rel="stylesheet" href="css/ionicons.min.css">
-	<link rel="stylesheet" href="css/plyr.css">
-	<link rel="stylesheet" href="css/photoswipe.css">
-	<link rel="stylesheet" href="css/default-skin.css">
-	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="{{ url_for('static' , filename='css/FlixGo/bootstrap-reboot.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static' , filename='css/FlixGo/bootstrap-grid.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static' , filename='css/FlixGo/owl.carousel.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static' , filename='css/FlixGo/jquery.mCustomScrollbar.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static' , filename='css/FlixGo/nouislider.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static' , filename='css/FlixGo/ionicons.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static' , filename='css/FlixGo/plyr.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static' , filename='css/FlixGo/photoswipe.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static' , filename='css/FlixGo/default-skin.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static' , filename='css/FlixGo/main.css') }}">
 
 	<!-- Favicons -->
 	<link rel="icon" type="image/png" href="icon/favicon-32x32.png" sizes="32x32">
@@ -36,7 +36,7 @@
 <body class="body">
 	
 	<!-- header -->
-	{% includes 'User/includes/_navbar.html' %}
+	{% include 'User 2/includes/_navbar.html' %}
 	<!-- end header -->
 
 	<!-- content -->
@@ -45,26 +45,26 @@
 	<!-- end content -->
 
 	<!-- partners -->
-    {% includes 'User/includes/_partners.html' %}
+    {% include 'User 2/includes/_partners.html' %}
 	<!-- end partners -->
 
 	<!-- footer -->
-	{% includes 'User 2/includes/_footer.html' %}
+	{% include 'User 2/includes/_footer.html' %}
 	<!-- end footer -->
 
 	<!-- JS -->
-	<script src="js/jquery-3.3.1.min.js"></script>
-	<script src="js/bootstrap.bundle.min.js"></script>
-	<script src="js/owl.carousel.min.js"></script>
-	<script src="js/jquery.mousewheel.min.js"></script>
-	<script src="js/jquery.mCustomScrollbar.min.js"></script>
-	<script src="js/wNumb.js"></script>
-	<script src="js/nouislider.min.js"></script>
-	<script src="js/plyr.min.js"></script>
-	<script src="js/jquery.morelines.min.js"></script>
-	<script src="js/photoswipe.min.js"></script>
-	<script src="js/photoswipe-ui-default.min.js"></script>
-    <script src="js/main.js"></script>
+	<script src="{{ url_for('static' , filename='js/FlixGo/jquery-3.3.1.min.js') }}"></script>
+	<script src="{{ url_for('static' , filename='js/FlixGo/bootstrap.bundle.min.js') }}"></script>
+	<script src="{{ url_for('static' , filename='js/FlixGo/owl.carousel.min.js') }}"></script>
+	<script src="{{ url_for('static' , filename='js/FlixGo/jquery.mousewheel.min.js') }}"></script>
+	<script src="{{ url_for('static' , filename='js/FlixGo/jquery.mCustomScrollbar.min.js') }}"></script>
+	<script src="{{ url_for('static' , filename='js/FlixGo/wNumb.js') }}"></script>
+	<script src="{{ url_for('static' , filename='js/FlixGo/nouislider.min.js') }}"></script>
+	<script src="{{ url_for('static' , filename='js/FlixGo/plyr.min.js') }}"></script>
+	<script src="{{ url_for('static' , filename='js/FlixGo/jquery.morelines.min.js') }}"></script>
+	<script src="{{ url_for('static' , filename='js/FlixGo/photoswipe.min.js') }}"></script>
+	<script src="{{ url_for('static' , filename='js/FlixGo/photoswipe-ui-default.min.js') }}"></script>
+    <script src="{{ url_for('static' , filename='js/FlixGo/main.js') }}"></script>
     
     {% block scripts %}
     {% endblock %}

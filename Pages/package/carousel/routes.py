@@ -12,8 +12,8 @@ carousel_blueprint = Blueprint("carousel", __name__)
 @carousel_blueprint.route("/")
 @carousel_blueprint.route("/home")
 def home():
-    # carousel list will be created from Admin
-    return render_template("User/home.html", title="Home", carousel_list=["carousel1.jpeg","carousel2.jpeg","carousel3.jpeg"])
+    db = shelve.open("shelve.db")
+    return render_template("User 2/index.html", title="Home", carousel_list=["carousel1.jpeg","carousel2.jpeg","carousel3.jpeg"], )
 
 #* Admin Carousel
 @carousel_blueprint.route("/admin/carousel")

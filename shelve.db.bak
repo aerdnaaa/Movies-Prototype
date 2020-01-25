@@ -1,1 +1,8 @@
 'Users', (0, 428)
+'Admins', (512, 6)
+'carousel', (1024, 6)
+'movies', (1536, 6)
+'movie_theatre', (2048, 6)
+'rental', (2560, 6)
+'showtime', (3072, 6)
+'promotion', (3584, 6)

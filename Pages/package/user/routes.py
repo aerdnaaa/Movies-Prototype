@@ -27,7 +27,7 @@ def login():
             return redirect(url_for('carousel.home'))
         else:
             flash('Invalid username or password. Please check both fields.','danger')
-    return render_template("User/login.html", title="Login Page",form=form)
+    return render_template("User 2/signin.html", title="Login Page",form=form)
 
 @user_blueprint.route("/logout")
 def logout():
@@ -53,7 +53,7 @@ def register():
         print(f'Account for {user.get_username()} has been created with id number {user.get_userID()}')
         db.close()
         return redirect(url_for('carousel.home'))    
-    return render_template("User/register.html", title="Register",form=createUserForm)
+    return render_template("User 2/signup.html", title="Register",form=createUserForm)
 
 @user_blueprint.route("/accountpage")
 @login_required
