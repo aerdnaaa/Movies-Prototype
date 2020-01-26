@@ -1,4 +1,5 @@
 {% extends "User 2/base.html" %}
+{% from "User 2/includes/_formHelper.html" import render_field %}
 
 {% block content %}
 <!-- sign in form -->
@@ -8,17 +9,17 @@
             <div class="col-12">
                 <div class="sign__content">
                     <!-- authorization form -->
-                    <form action="#" class="sign__form">
+                    <form action="#" class="sign__form" method="POST">
                         <a href="index.html" class="sign__logo">
                             <img src="img/logo.svg" alt="">
                         </a>
 
                         <div class="sign__group">
-                            <input type="text" class="sign__input" placeholder="Email">
+                            {{ render_field(form.email, class="sign__input", placeholder="Email", required=False) }}
                         </div>
 
                         <div class="sign__group">
-                            <input type="password" class="sign__input" placeholder="Password">
+                            {{ render_field(form.password, class="sign__input", placeholder="Password", required=False) }}
                         </div>
 
                         <div class="sign__group sign__group--checkbox">
@@ -26,7 +27,7 @@
                             <label for="remember">Remember Me</label>
                         </div>
                         
-                        <button class="sign__btn" type="button">Sign in</button>
+                        {{ form.login(class="sign__btn") }}                         
 
                         <span class="sign__text">Don't have an account? <a href="{{ url_for('user.register') }}">Sign up!</a></span>
 

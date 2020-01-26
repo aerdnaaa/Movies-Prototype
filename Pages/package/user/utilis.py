@@ -4,28 +4,28 @@ import shelve
 @login_manager.user_loader
 def load_user(user_id):
     userDict={}
-    db = shelve.open('storage.db','c')
+    db = shelve.open('shelve.db','c')
     try:
         userDict = db['Users']
     except:
         userDict = {}
-        print("Error in retrieving Users from storage.db.")
-    return userDict[int(user_id)]
+        
+    return userDict[user_id]
 
-def return_usernames(user_dict):
-    usernames = []
+def return_emails(user_dict):
+    emails = []
     for value in list(user_dict.values()):
-        usernames.append(value.get_username())
-    return usernames
+        emails.append(value.email)
+    return emails
 
-def is_correct_password(username, password, user_dict):    
+def is_correct_password(email, password, user_dict):    
     for value in list(user_dict.values()):
-        if value.get_username() == username:
-            if value.get_password() == password:
+        if value.email == email:
+            if value.password == password:
                 return True
     return False
 
-def return_user_id(username, user_dict):
+def return_user_id(email, user_dict):
     for value in list(user_dict.values()):
-        if value.get_username() == username:
-            return value.get_id()
+        if value.email == email:
+            return value.id

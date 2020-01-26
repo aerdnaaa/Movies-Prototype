@@ -35,5 +35,5 @@ import shelve
 db = shelve.open('shelve.db', 'c')
 userDict = db['Users']
 
-print()
+print(userDict)
 

@@ -1,12 +1,12 @@
 class Movie:
     id = 0
-    def __init__(self, movie_name, poster, description, genre, casts, director, fullvideo, trailer, duration, release_date, language, subtitles):
+    def __init__(self, movie_name, poster, description, genre_list, casts, director, fullvideo, trailer, duration, release_date, language, subtitles):
         Movie.id += 1
         self.__id = Movie.id
         self.__movie_name = movie_name
         self.__poster = poster
         self.__description = description
-        self.__genre = genre
+        self.__genre_list = genre_list
         self.__casts = casts
         self.__fullvideo = fullvideo
         self.__trailer = trailer
@@ -15,6 +15,7 @@ class Movie:
         self.__language = language
         self.__subtitles = subtitles
         self.__director = director
+        self.__rating = 0
 
     def get_id(self):
         return self.__id
@@ -28,8 +29,8 @@ class Movie:
     def get_description(self):
         return self.__description
 
-    def get_genre(self):
-        return self.__genre
+    def get_genre_list(self):
+        return self.__genre_list
 
     def get_casts(self):
         return self.__casts
@@ -55,6 +56,9 @@ class Movie:
     def get_director(self):
         return self.__director
 
+    def get_rating(self):
+        return self.__rating
+
     def set_movie_name(self, movie_name):
         self.__movie_name = movie_name
 
@@ -64,8 +68,8 @@ class Movie:
     def set_description(self, description):
         self.__description = description
 
-    def set_genre(self, genre):
-        self.__genre = genre
+    def set_genre(self, genre_list):
+        self.__genre_list = genre_list
 
     def set_casts(self, casts):
         self.__casts = casts
@@ -90,12 +94,15 @@ class Movie:
 
     def set_director(self, director):
         self.__director = director
+
+    def set_rating(self, rating):
+        self.__rating = rating
     
-    def set_all_attributes(self, movie_name, poster, description, genre, casts, fullvideo, trailer, duration, release_date, language, subtitles, director):        
+    def set_all_attributes(self, movie_name, poster, description, genre_list, casts, fullvideo, trailer, duration, release_date, language, subtitles, director):        
         self.__movie_name = movie_name
         self.__poster = poster
         self.__description = description
-        self.__genre = genre
+        self.__genre_list = genre_list
         self.__casts = casts
         self.__fullvideo = fullvideo
         self.__trailer = trailer

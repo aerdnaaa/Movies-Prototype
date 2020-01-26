@@ -1,5 +1,5 @@
 {% extends "User 2/base.html" %}
-
+{% from "User 2/includes/_formHelper.html" import render_field %}
 {% block content %}
 <!-- sign up form -->
 <div class="sign section--bg" data-bg="img/section/section.jpg">
@@ -8,33 +8,67 @@
             <div class="col-12">
                 <div class="sign__content">
                     <!-- registration form -->
-                    <form action="#" class="sign__form">
+                    <form action="#" class="sign__form" method="POST">
+                        {{form.hidden_tag()}}
                         <a href="index.html" class="sign__logo">
                             <img src="img/logo.svg" alt="">
                         </a>
-
                         <div class="sign__group">
-                            <input type="text" class="sign__input" placeholder="Name">
+                            {{ render_field(form.fullName, class="sign__input", placeholder="Full Name", required=False) }}                            
                         </div>
-
                         <div class="sign__group">
-                            <input type="text" class="sign__input" placeholder="Email">
+                            {{ render_field(form.username, class="sign__input", placeholder="Username", required=False) }}                            
                         </div>
-
+                        <div class="sign__group">                            
+                            {{ render_field(form.email, class="sign__input", placeholder="Email", required=False) }}
+                        </div>
                         <div class="sign__group">
-                            <input type="password" class="sign__input" placeholder="Password">
+                            {{ render_field(form.dateOfBirth, class="sign__input", required=False) }}
                         </div>
-
+                        <div class="sign__group">
+                            {{ render_field(form.gender, class="sign__input") }}
+                        </div>
+                        <div class="sign__group">
+                            {{ render_field(form.password, class="sign__input", placeholder="Password", required=False) }} 
+                        </div>
+                        <div class="sign__group">
+                            {{ render_field(form.confirmpassword, class="sign__input", placeholder="Confirm Password", required=False) }} 
+                        </div>
                         <div class="sign__group sign__group--checkbox">
                             <input id="remember" name="remember" type="checkbox" checked="checked">
                             <label for="remember">I agree to the <a href="#">Privacy Policy</a></label>
                         </div>
-                        
-                        <button class="sign__btn" type="button">Sign up</button>
+                                                
+                        {{ form.submit(class="sign__btn") }}
 
                         <span class="sign__text">Already have an account? <a href="{{ url_for('user.login') }}">Sign in!</a></span>
                     </form>
                     <!-- registration form -->
+                    <!-- <form class="sign__form" method="POST" action="#">
+                        <div class="form-row my-1">
+                          {{form.hidden_tag()}}
+                 
+                     
+                        
+                          <div class="form-row">
+                             <div class="col-lg-6 offset-lg">
+                                 {{ render_field(form.password, class="form-control") }}
+                             </div>
+                              <div class="col-lg-6 offset-lg">
+                                 {{ render_field(form.confirmpassword, class="form-control") }}
+                             </div>
+                         </div>
+                      <br>
+                          <div class="form-row">
+                              {{ form.submit(class="btn btn-outline-info col-lg-12") }}
+                          </div>
+                      <br>
+                          <div class="form-row">
+                              <small class="text-muted">
+                                  Already have an account?<a class="col-lg-6" href="{{url_for('user.login')}}">Login</a>
+                              </small>
+                          </div>
+                      </form> -->
                 </div>
             </div>
         </div>

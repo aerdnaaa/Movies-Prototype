@@ -16,6 +16,8 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/adminlte.min.css') }}">
+  <!-- SlimSelect css  -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/slimselect/slimselect.min.css') }}">
   {% block styles %}
   {% endblock %}
 </head>
@@ -43,6 +45,8 @@
 <script src="{{ url_for('static', filename='js/adminlte.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ url_for('static', filename='js/demo.js') }}"></script>
+<!-- SlimSelect js  -->
+<script src="{{ url_for('static', filename='js/slimselect/slimselect.min.js') }}"></script>
 {% block scripts %}
 {% endblock %}
 </body>

@@ -48,7 +48,7 @@
                 <th scope="col">Movie Name</th>
                 <th scope="col">Poster</th>
                 <th scope="col">Description</th>
-                <th scope="col">Genre</th>
+                <th scope="col">Genre(s)</th>
                 <th scope="col">Director</th>
                 <th scope="col">Casts</th>
                 <th scope="col">Movie</th>
@@ -81,7 +81,7 @@
                       {{ Movies_dict[key].get_description() }}
                     </td>
                     <td>
-                      {{ Movies_dict[key].get_genre() }}
+                      {{ Movies_dict[key].get_genre_list() }}
                     </td>
                     <td>
                       {{ Movies_dict[key].get_director() }}

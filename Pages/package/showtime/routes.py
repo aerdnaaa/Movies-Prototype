@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, jsonify
 from package.showtime.classes import Showtime
 from package.showtime.forms import CreateShowtime, ModifyShowtime
 import shelve, datetime
@@ -52,7 +52,8 @@ def bookmovie():
         theatre_movie_showtime_list = theatre_movie_showtime_dict.get(theatre_name, [])
         theatre_movie_showtime_list.append(showtime_class)
         theatre_movie_showtime_dict[theatre_name] = theatre_movie_showtime_list    
-    return render_template("User/showtime/showtime.html", title="Book Movie", date_dict=date_dict, movie_dict=movie_dict, theatre_dict=theatre_dict, theatre_movie_showtime_dict=theatre_movie_showtime_dict)
+        #, theatre_dict=theatre_dict, theatre_movie_showtime_dict=theatre_movie_showtime_dict
+    return render_template("User 2/showtime.html", title="Book Movie", date_dict=date_dict, Movies_dict=movie_dict) 
 
 @showtime_blueprint.route("/bookmovieseats/<showtime_id>")
 def bookmovieseats(showtime_id):
@@ -100,7 +101,7 @@ def add_showtime():
         # db["movie_theatre"] = Movie_theatre_dict    
         # Movies_dict = {}
         # db["movies"] = Movies_dict
-    theatres = [("","")]        
+    theatres = []        
     for value in list(Movie_theatre_dict.values()):
         theatres.append((value.get_id(), value.get_theatre_name()))
     form.theatre_name.choices = theatres    
@@ -110,8 +111,8 @@ def add_showtime():
     form.movie_title.choices = movies
     timeslots = [("1","9am to 12pm"), ("2", "12pm to 3pm"), ("3", "3pm to 6pm"), ("4", "6pm to 9pm"), ("5", "9pm to 12am")]
     form.timeslot.choices = timeslots
-    halls = [("","")]
-    for i in range(1,6):
+    halls = []
+    for i in range(1,list(Movie_theatre_dict.values())[0].get_number_of_halls()+1):
         halls.append((str(i),str(i)))
     form.hall_number.choices = halls
     timeslot_dict = {"1":"9am to 12pm", "2":"12pm to 3pm", "3":"3pm to 6pm", "4":"6pm to 9pm", "5":"9pm to 12am"}
@@ -215,3 +216,13 @@ def delete_showtime():
     db["deleted_showtime"] = Deleted_list
     db.close()
     return redirect(url_for("showtime.admin_showtime"))
+
+@showtime_blueprint.route("/admin/showtime_theatre/<theatre>", methods=["GET","POST"])
+def hall_number(theatre):
+    theatre = int(theatre)
+    db = shelve.open('shelve.db', 'c')
+    theatre_dict = db["movie_theatre"]
+
+    for value in theatre_dict.values():
+        if value.get_id() == theatre:
+            return jsonify({"hall_number":value.get_number_of_halls()})

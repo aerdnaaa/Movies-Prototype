@@ -45,7 +45,7 @@
           </div>
           <div class="form-group">
             {{ form.movie_genre.label(class="form-control-label") }}
-            {{ form.movie_genre(class="form-control form-control-lg") }}
+            {{ form.movie_genre(multiple=True) }}
           </div>
           <div class="form-group">
             {{ form.movie_casts.label(class="form-control-label") }}
@@ -95,5 +95,11 @@
 <!-- /.content-wrapper -->
 
 {% block scripts %}
-
+<script>
+  setTimeout(function() {
+    new SlimSelect({
+      select: '#movie_genre'
+    })
+  }, 700)
+</script>
 {% endblock %}

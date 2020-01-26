@@ -17,6 +17,7 @@ from package.other.routes import main_blueprint
 from package.promotion.routes import promotion_blueprint
 from package.rental.routes import rental_blueprint
 from package.user.routes import user_blueprint
+from package.error.handlers import errors_blueprint
 
 app.register_blueprint(showtime_blueprint)
 app.register_blueprint(carousel_blueprint)
@@ -26,3 +27,4 @@ app.register_blueprint(main_blueprint)
 app.register_blueprint(promotion_blueprint)
 app.register_blueprint(rental_blueprint)
 app.register_blueprint(user_blueprint)
+app.register_blueprint(errors_blueprint)

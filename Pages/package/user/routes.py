@@ -4,7 +4,7 @@ from package.user.forms import CreateUserForm,LoginForm, CreateAdminForm, Modify
 import shelve
 from package.user.classes import User, Admin
 from package import bcrypt, login_manager
-from package.user.utilis import load_user, return_usernames, is_correct_password, return_user_id
+from package.user.utilis import load_user, return_emails, is_correct_password, return_user_id
 from flask_login import login_user, logout_user, login_required
 
 user_blueprint = Blueprint("user", __name__)
@@ -18,11 +18,11 @@ def login():
     except:
         userDict = {}
         db['Users'] = userDict
-        print("Error in retrieving Users from shelve.db.")
     db.close()        
+    print(userDict)
     if request.method=='POST':
-        if form.Username.data in return_usernames(userDict) and is_correct_password(form.Username.data, form.password.data, userDict):
-            login_user(load_user(return_user_id(form.Username.data, userDict)))
+        if form.email.data in return_emails(userDict) and is_correct_password(form.email.data, form.password.data, userDict):
+            login_user(load_user(return_user_id(form.email.data, userDict)))
             flash('You have been logged in!','success')
             return redirect(url_for('carousel.home'))
         else:
@@ -40,19 +40,19 @@ def register():
     db = shelve.open('shelve.db','c')
     try:
         userDict = db['Users']
+        User.id = list(userDict.values())[-1].get_id()            
     except:
         userDict = {}
-        db['Users'] = userDict
+        db['Users'] = userDict   
     if request.method=='POST' and createUserForm.validate():
-        flash(f'Account created for {createUserForm.Username.data}!','success')        
-        user = User(createUserForm.firstName.data,createUserForm.lastName.data,
-        createUserForm.email.data,createUserForm.password.data,createUserForm.Username.data,
-        createUserForm.gender.data,createUserForm.DateofBirth.data)
+        flash(f'Account created for {createUserForm.username.data}!','success')        
+        user = User(createUserForm.fullName.data,
+        createUserForm.email.data,createUserForm.password.data,createUserForm.username.data,
+        createUserForm.gender.data,createUserForm.dateOfBirth.data)
         userDict[user.get_userID()] = user
-        db['Users'] = userDict
-        print(f'Account for {user.get_username()} has been created with id number {user.get_userID()}')
+        db['Users'] = userDict    
         db.close()
-        return redirect(url_for('carousel.home'))    
+        return redirect(url_for('user.login'))    
     return render_template("User 2/signup.html", title="Register",form=createUserForm)
 
 @user_blueprint.route("/accountpage")

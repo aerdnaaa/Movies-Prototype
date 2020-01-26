@@ -33,7 +33,7 @@
           {{ form.csrf_token }}
           <div class="form-group">
             {{ form.theatre_name.label(class="form-control-label") }}
-            {{ form.theatre_name(class="form-control form-control-lg", id="form_hall_number", onchange="change_hall_number()") }}
+            {{ form.theatre_name(class="form-control form-control-lg", onchange="change_hall_number()") }}
           </div>
           <div class="form-group">
             {{ form.movie_title.label(class="form-control-label") }}
@@ -41,7 +41,7 @@
           </div>
           <div class="form-group">
               {{ form.timeslot.label(class="form-control-label") }}
-              {{ form.timeslot(class="form-control form-control-lg", rows=3, multiple=True) }}
+              {{ form.timeslot(multiple=True) }}
           </div>
           <div class="form-row">
             <div class="form-group col">
@@ -59,6 +59,8 @@
           </div>
           {{ form.submit(class="btn btn-primary") }}
         </form>
+
+        
       </div>
       </div>
     </div>
@@ -75,7 +77,27 @@
 {% block scripts %}
   <script>
     function change_hall_number(){
-    theatre_name = document.getElementById("form_hall_number").value;
+    let theatre_name = document.getElementById("theatre_name");
+    let hall_number = document.getElementById("hall_number");
+
+    theatre_name.onchange = function() {
+      theatre = theatre_name.value;      
+
+      fetch('/admin/showtime_theatre/' + theatre).then(function(response){
+        response.json().then(function(data) {
+          let optionHTML = "";
+          
+          for (var i=1; i<=data.hall_number; i++){
+            optionHTML += '<option value="' + i + '">' + i + '</option>'
+          }
+
+          hall_number.innerHTML = optionHTML;
+        
+        });
+      });
+
+
+    }
     // var xhr = new XMLHttpRequest();
     // xhr.open("POST", "showtime.add_showtime", true)
     // xhr.setRequestHeader('Content-Type', 'application/json');
@@ -86,9 +108,15 @@
     //     }
     // }
     // xhr.send(JSON.stringify(theatre_name))
-    // console.log(theatre_name);
-    send_message("{{ url_for('showtime.delete_showtime') }}", theatre_name)
+    // console.log(theatre_name);    
   }
   </script>
   <script src="{{ url_for('static', filename='js/extension.js') }}"></script>
+  <script>
+    setTimeout(function() {
+      new SlimSelect({
+        select: '#timeslot'
+      })
+    }, 700)
+  </script>
 {% endblock %}

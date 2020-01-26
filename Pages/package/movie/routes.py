@@ -17,21 +17,9 @@ def movieslist():
     except:
         Movies_dict = {}
         db["movies"] = Movies_dict
-    sorted_dict = {}
-    id = 0
-    for key in Movies_dict:
-        if key % 6 == 1:
-            list_of_movies = []
-            id += 1
-            list_of_movies.append(Movies_dict[key])
-            sorted_dict[id] = list_of_movies
-                    
-        else:
-            list_of_movies.append(Movies_dict[key])
-            sorted_dict[id] = list_of_movies
-    print(sorted_dict)
 
-    return render_template("User/movieslist.html", title="Movies List", sorted_dict=sorted_dict)
+
+    return render_template("User 2/catalog.html", title="Movies List", Movies_dict=Movies_dict)
 
 
 
@@ -57,6 +45,8 @@ def add_movie():
     except:
         Movies_dict = {}
         db["movies"] = Movies_dict
+    genre_list = db["genre_list"]    
+    form.movie_genre.choices = genre_list
     if form.validate_on_submit():        
         movie_name = form.movie_name.data
         movie_poster = save_picture(form.movie_poster.data, "movie poster")
