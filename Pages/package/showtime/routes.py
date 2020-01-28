@@ -41,8 +41,10 @@ def bookmovie():
     except:
         Showtime_dict = {}
         db["showtime"] = Showtime_dict
+    
+    # Genre List
+    genre_list = db["genre_list"]
     db.close()
-
     theatre_movie_showtime_dict = {}
 
     for key in Showtime_dict:
@@ -53,7 +55,7 @@ def bookmovie():
         theatre_movie_showtime_list.append(showtime_class)
         theatre_movie_showtime_dict[theatre_name] = theatre_movie_showtime_list    
         #, theatre_dict=theatre_dict, theatre_movie_showtime_dict=theatre_movie_showtime_dict
-    return render_template("User 2/showtime.html", title="Book Movie", date_dict=date_dict, Movies_dict=movie_dict) 
+    return render_template("User 2/showtime.html", title="Book Movie", date_dict=date_dict, Movies_dict=movie_dict, genre_list=genre_list) 
 
 @showtime_blueprint.route("/bookmovieseats/<showtime_id>")
 def bookmovieseats(showtime_id):

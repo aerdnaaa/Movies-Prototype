@@ -8,13 +8,13 @@
             <div class="col-12">
                 <div class="section__wrap">
                     <!-- section title -->
-                    <h2 class="section__title">Catalog grid</h2>
+                    <h2 class="section__title">Movie List</h2>
                     <!-- end section title -->
 
                     <!-- breadcrumb -->
                     <ul class="breadcrumb">
-                        <li class="breadcrumb__item"><a href="#">Home</a></li>
-                        <li class="breadcrumb__item breadcrumb__item--active">Catalog grid</li>
+                        <li class="breadcrumb__item"><a href="{{ url_for('carousel.home') }}">Home</a></li>
+                        <li class="breadcrumb__item breadcrumb__item--active">Movie List</li>
                     </ul>
                     <!-- end breadcrumb -->
                 </div>
@@ -36,47 +36,22 @@
                             <span class="filter__item-label">GENRE:</span>
 
                             <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-genre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <input type="button" value="Action/Adventure">
+                                <input type="button" value="All Genres">
                                 <span></span>
                             </div>
 
                             <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">
-                                <li>Action</li>
-                                <li>Adventure</li>
-                                <li>Comedy</li>
-                                <li>Drama</li>
-                                <li>Fantasy</li>
-                                <li>History</li>
-                                <li>Horror</li>
-                                <li>Music</li>
-                                <li>Mystery/Crime</li>
-                                <li>Romance</li>
-                                <li>Sci-Fi</li>
-                            </ul>
-                        </div>
-                        <!-- end filter item -->
-
-                        <!-- filter item -->
-                        <div class="filter__item" id="filter__quality">
-                            <span class="filter__item-label">QUALITY:</span>
-
-                            <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-quality" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <input type="button" value="HD 1080">
-                                <span></span>
-                            </div>
-
-                            <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-quality">
-                                <li>HD 1080</li>
-                                <li>HD 720</li>
-                                <li>DVD</li>
-                                <li>TS</li>
+                                <li>All Genres</li>
+                                {% for genre in genre_list %}
+                                    <li>{{ genre[0] }}</li>
+                                {% endfor %}  
                             </ul>
                         </div>
                         <!-- end filter item -->
 
                         <!-- filter item -->
                         <div class="filter__item" id="filter__rate">
-                            <span class="filter__item-label">IMBd:</span>
+                            <span class="filter__item-label">Rating:</span>
 
                             <div class="filter__item-btn dropdown-toggle" role="button" id="filter-rate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="filter__range">
@@ -99,7 +74,7 @@
                             <div class="filter__item-btn dropdown-toggle" role="button" id="filter-year" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="filter__range">
                                     <div id="filter__years-start"></div>
-                                    <div id="filter__years-end"></div>
+                                    <div id="filter__years-end">2020</div>
                                 </div>
                                 <span></span>
                             </div>
@@ -136,8 +111,8 @@
                         </a>
                     </div>
                     <div class="card__content">
-                        <h3 class="card__title"><a href="#">{{ movie.get_movie_name() }}</a></h3>
-                        <span class="card__category">
+                        <h3 class="card__title"><a href="{{ url_for('movie.movie_detail', movie_id=movie.get_id()) }}">{{ movie.get_movie_name() }}</a></h3>
+                        <span class="card__category">                        
                             {% for genre in movie.get_genre_list() %}
                                 <a>{{ genre }}</a>
                             {% endfor  %}

@@ -30,3 +30,11 @@ def admin_calendar():
 @main_blueprint.route("/admin/mailbox")
 def admin_mailbox():
     return render_template("Admin/mailbox.html", title="Mailbox")
+    
+@main_blueprint.route("/legal")
+def legal_page():
+    return render_template("User 2/legal.html",title="legal")
+
+@main_blueprint.route("/aboutUs")
+def aboutUs():
+    return render_template("User 2/aboutUs.html",title="aboutUs")

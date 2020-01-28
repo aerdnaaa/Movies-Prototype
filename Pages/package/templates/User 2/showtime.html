@@ -51,7 +51,7 @@
                             <span class="filter__item-label">MOVIE:</span>
                             <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-movie" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {% if Movies_dict %}
-                                    <input type="button" value="{{ (Movies_dict.values()|list|first).get_movie_name() }}">
+                                    <input type="button" value="All Movies">
                                 {% else %}
                                     <input type="button" value="No theatres available">
                                 {% endif %}
@@ -69,31 +69,19 @@
                             </ul>
                         </div>
                         <!-- end filter item -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         <!-- filter item -->
                         <div class="filter__item" id="filter__genre">
                             <span class="filter__item-label">GENRE:</span>
 
                             <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-genre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <input type="button" value="Action/Adventure">
+                                <input type="button" value="All Genres">
                                 <span></span>
                             </div>                            
-                            <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">                               
+                            <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">  
+                                <li>All Genres</li>                             
+                                {% for genre in genre_list %}
+                                    <li>{{ genre[0] }}</li>
+                                {% endfor %}
                             </ul>
                         </div>
                         <!-- end filter item -->

@@ -81,7 +81,11 @@
                       {{ Movies_dict[key].get_description() }}
                     </td>
                     <td>
-                      {{ Movies_dict[key].get_genre_list() }}
+                      <ul>
+                      {% for genre in Movies_dict[key].get_genre_list() %}
+                        <li>{{ genre }}</li>
+                      {% endfor %}
+                      </ul>
                     </td>
                     <td>
                       {{ Movies_dict[key].get_director() }}

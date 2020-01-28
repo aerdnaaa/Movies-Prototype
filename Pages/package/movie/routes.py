@@ -15,12 +15,23 @@ def movieslist():
     try:
         Movies_dict = db["movies"]        
     except:
+        Movies_dict = {}    
+        db["movies"] = Movies_dict
+    genre_list = db["genre_list"]
+    db.close()
+    return render_template("User 2/catalog.html", title="Movies List", Movies_dict=Movies_dict, genre_list=genre_list)
+
+@movie_blueprint.route("/movie/<movie_id>")
+def movie_detail(movie_id):
+    movie_id = int(movie_id)
+    db = shelve.open('shelve.db', 'c')
+    try:
+        Movies_dict = db["movies"]        
+    except:
         Movies_dict = {}
         db["movies"] = Movies_dict
-
-
-    return render_template("User 2/catalog.html", title="Movies List", Movies_dict=Movies_dict)
-
+    movie_class = Movies_dict[movie_id]
+    return render_template("User 2/detail.html", title=movie_class.get_movie_name(), movie=movie_class)
 
 
 #* Admin Promotion
@@ -51,13 +62,17 @@ def add_movie():
         movie_name = form.movie_name.data
         movie_poster = save_picture(form.movie_poster.data, "movie poster")
         movie_description = form.movie_description.data
-        movie_genre = form.movie_genre.data
+        movie_genre = form.movie_genre.data        
         movie_casts = form.movie_casts.data
         movie_director = form.movie_director.data
         movie_fullvideo = save_video(form.movie_fullvideo.data, "movie fullvideo")
         movie_trailer = save_video(form.movie_trailer.data, "movie trailer")
         movie_duration = form.movie_duration.data
         movie_release_date = form.movie_release_date.data
+        # date
+        month_list = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        year, month, day = str(movie_release_date).split('-')
+        movie_release_date = day + " " + month_list[int(month)-1] + " " + year
         movie_language = form.movie_language.data
         movie_subtitles = form.movie_subtitles.data
         movie_class = Movie(movie_name, movie_poster, movie_description, movie_genre, movie_casts, movie_director, movie_fullvideo, movie_trailer, movie_duration, movie_release_date, movie_language, movie_subtitles)
@@ -100,6 +115,10 @@ def modify_movie(movie_id):
         movie_trailer = save_video(form.movie_trailer.data, "movie trailer")
         movie_duration = form.movie_duration.data
         movie_release_date = form.movie_release_date.data
+        # date
+        month_list = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        year, month, day = str(movie_release_date).split('-')
+        movie_release_date = day + " " + month_list[int(month)-1] + " " + year
         movie_language = form.movie_language.data
         movie_subtitles = form.movie_subtitles.data
         movie_class = Movies_dict[movie_id]
@@ -113,13 +132,16 @@ def modify_movie(movie_id):
         form.movie_name.data = movie_class.get_movie_name()
         image_source = movie_class.get_poster()
         form.movie_description.data = movie_class.get_description()
-        form.movie_genre.data = movie_class.get_genre()
+        form.movie_genre.data = movie_class.get_genre_list()
         form.movie_casts.data = movie_class.get_casts()
         form.movie_director.data = movie_class.get_director()
         fullvideo_source = movie_class.get_movie_fullvideo()
         trailer_source = movie_class.get_trailer()
         form.movie_duration.data = movie_class.get_duration()
-        form.movie_release_date.data = movie_class.get_release_date()
+        day, month, year = movie_class.get_release_date().split(" ")
+        month_list = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        movie_release_date = year + '-' + str(month_list.index(month)+1) + '-' + day
+        form.movie_release_date.data = movie_release_date
         form.movie_language.data = movie_class.get_language()
         form.movie_subtitles.data = movie_class.get_subtitles()
     return render_template("Admin/movie/modify_movie.html", title="Modify Movie Theatre", form=form, image_source=image_source, trailer_source=trailer_source, fullvideo_source=fullvideo_source)
