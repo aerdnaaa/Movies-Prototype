@@ -1,12 +1,46 @@
 {% extends "User 2/base.html" %}
 
 {% block content %}
-
-<h1>Terms and Conditions of Use<h1>
-    <h3>Last Updated on 28 Jan 2020</h3>
-    <h3><b>By using this website, you agree to the following terms, conditions and privacy policy. Please read them carefully before using this website.</b></h3>
-    <h3><b>General Provisions</b></h3>
-    <h4>This website is owned and operated by Saw Cinematics, a </h4>
+<!-- page title -->
+<section class="section section--first section--bg" data-bg="img/section/section.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section__wrap">
+                    <!-- section title -->
+                    <h2 class="section__title">Terms & Conditions</h2>
+                    <!-- end section title -->
+                    <!-- breadcrumb -->
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb__item"><a href="{{ url_for('carousel.home') }}">Home</a></li>
+                        <li class="breadcrumb__item breadcrumb__item--active">Terms & Conditions</li>
+                    </ul>
+                    <!-- end breadcrumb -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end page title -->
+<div class="container">
+    <div class="row">
+        <div class="col-12 comments__text">
+            <h1>Terms & Conditions of Use<h1>
+            <h3>Last Updated on 28 Jan 2020</h3>
+            <h4>By using this website, you agree to the following terms and conditions. Please read them carefully before using this website.</h4>
+            <h4>This website is owned and operated by Saw Cinematics.</h4>
+            <h3 style="text-decoration:underline;"><b>Terms & Conditions</b></h3>
+            <ol>
+                <li>You agree to abide by the House Rules set by Saw Cinematics when you patronize our products. The House Rules are displayed prominently in the vicinity of the box office, the entrance to the Saw Cinematics cinemas and the checkouts of any online purchase.</li>
+            <li>You agree that Saw Cinematics reserves the right to refuse entry to you or to remove you from our premises if you do not comply with the House Rules and/or at its discretion without giving any reason whatsoever. In such event, Saw Cinematics reserves the right to refund the price of tickets and online movies at our own discretion without giving any reason whatsoever.</li>
+            <li>You agree that Saw Cinematics reserves the right to change or cancel the show times of any movie at any time without prior notice to you and that Saw Cinematics shall not be liable to you or any third party for such cancellation or change. In such event, Saw Cinematics shall refund to you an amount not exceeding the ticket price.</li>
+            <li>You agree that Saw Cinematics reserves the right to change or cancel the movies allowed for rent at any time without prior notice to you and that Saw Cinematics shall not be liable to you or any third party for such cancellation or change. In such event, Saw Cinematics shall refund to you an amount not exceeding the renting price.</li>
+            <li>Both you and Saw Cinematics agree that this contract is governed by laws of the Republic of Singapore and both parties agree that all disputes are to be referred to arbitration.</ol>
+            </ol>
+   
+        </div>
+    </div>
+</div>
 
 
 {% endblock %}

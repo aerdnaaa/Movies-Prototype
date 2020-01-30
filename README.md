@@ -52,8 +52,8 @@ when commiting, if you finished a certain task say, finished tasks: e.g. H1, P1
     5. Have related images downloaded and implemented
     6. pages such as about page,privacy policy etc to be done or removed. 
     7. Handling errors √
-    8. Legal page
-    9. About Us page
+    8. Legal page (Terms and conditons to be put at the checkouts of any online purchases******)
+    9. About Us page    
 
                                 
 ## Admin
@@ -66,6 +66,11 @@ when commiting, if you finished a certain task say, finished tasks: e.g. H1, P1
     6. When initializing a movie, rating is nil and people can change its value by up voting or otherwise (50%)
     7. When choosing timeslot, multiple options  √
     8. Generate Pdf
+    9. Change IDs to have letter. 
+    10. Carousel revamp. getting information from  promotion and movies dictionary to be parse into the carousel dictionary.*******
+    11. All forms require proper validation
+        * Rental: cannot upload duplicate rental 
+    
 ## Useful Links
 * Multiselect link -> https://www.cssscript.com/multi-select-dropdown-component-javascript-slim-select/
 

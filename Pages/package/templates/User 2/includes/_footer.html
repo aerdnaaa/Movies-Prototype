@@ -16,7 +16,7 @@
                 <h6 class="footer__title">Resources</h6>
                 <ul class="footer__list">
                     <li><a href="{{ url_for('other.aboutUs') }}">About Us</a></li>
-                    <li><a href="{{ url_for('other.aboutUs') }}">Help</a></li>
+                    <li><a href="{{ url_for('other.faq') }}">F.A.Q</a></li>
                 </ul>
             </div>
             <!-- end footer list -->
@@ -25,8 +25,8 @@
             <div class="col-6 col-sm-4 col-md-3">
                 <h6 class="footer__title">Legal</h6>
                 <ul class="footer__list">
-                    <li><a href="{{ url_for('other.legal_page') }}">Terms of Use</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="{{ url_for('other.legal_page') }}">Terms & Conditions</a></li>
+                    <li><a href="{{ url_for('other.pp_page') }}">Privacy Policy</a></li>
                 </ul>
             </div>
             <!-- end footer list -->
@@ -52,8 +52,8 @@
                     <small>© Copyright Sawcinematics 2020</a></small>
 
                     <ul>
-                        <li><a href="#">Terms of Use</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="{{ url_for('other.legal_page') }}">Terms & Conditions</a></li>
+                        <li><a href="{{ url_for('other.pp_page') }}">Privacy Policy</a></li>
                     </ul>
                 </div>
             </div>

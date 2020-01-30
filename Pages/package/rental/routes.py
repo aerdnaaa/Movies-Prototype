@@ -10,7 +10,14 @@ rental_blueprint = Blueprint("rental", __name__)
 #* Home Page contains rental
 @rental_blueprint.route("/rentmovie")
 def rentmovie():
-    return render_template("User/rentmovie.html", title="Rent Movie", genreList = ["Action","Adventure","Comedy","Horror"], rentMovieList=[[]])
+    db = shelve.open('shelve.db', 'c')
+    try:
+        Rental_dict = db["rental"]
+    except:        
+        Rental_dict = {}
+        db["rental"] = Rental_dict
+    genre_list = db["genre_list"]
+    return render_template("User 2/rentmovie.html", title="Rent Movie",  Rental_dict=Rental_dict, genre_list=genre_list)
 
 
 #* Admin Rental
@@ -50,7 +57,7 @@ def add_rental():
         Rental_dict[rental_id] = rental_class
         db["rental"] = Rental_dict
         db.close()        
-        return redirect(url_for("admin_rental"))
+        return redirect(url_for("rental.admin_rental"))
     elif request.method == "GET":
         form.movie_title.data = ""
         form.rent_start_date.data = ""
@@ -84,7 +91,7 @@ def modify_rental(rental_id):
         Rental_dict[rental_id] = rental_class
         db["rental"] = Rental_dict
         db.close()
-        return redirect(url_for("admin_rental"))
+        return redirect(url_for("rental.admin_rental"))
     elif request.method == "GET":
         rental_class = Rental_dict[rental_id]
         form.movie_title.data = str(rental_class.get_movie_class().get_id())        

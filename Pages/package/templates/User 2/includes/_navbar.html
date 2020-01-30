@@ -36,21 +36,9 @@
                             </li>
 
                             <li class="header__nav-item">
-                                <a href="faq.html" class="header__nav-link">Help</a>
+                                <a href="{{ url_for('other.faq') }}" class="header__nav-link">F.A.Q</a>
                             </li>
 
-                            <!-- dropdown -->
-                            <li class="dropdown header__nav-item">
-                                <a class="dropdown-toggle header__nav-link header__nav-link--more" href="#" role="button" id="dropdownMenuMore" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icon ion-ios-more"></i></a>
-
-                                <ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuMore">
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="{{ url_for('user.login') }}">Sign In</a></li>
-                                    <li><a href="{{ url_for('user.register') }}">Sign Up</a></li>
-                                    <li><a href="">404 Page</a></li>
-                                </ul>
-                            </li>
-                            <!-- end dropdown -->
                         </ul>
                         <!-- end header nav -->
 
@@ -59,7 +47,9 @@
                             <button class="header__search-btn" type="button">
                                 <i class="icon ion-ios-search"></i>
                             </button>
-                            {% if current_user.is_authenticated %}
+                            {% if current_user.is_authenticated %} 
+                            <p>&nbsp&nbsp&nbsp&nbsp&nbsp</p>                           
+                            <img src="{{ url_for('static', filename='images/profile_pictures/' + current_user.profile_picture) }}" style="border-radius:50%;" width="80" height="auto" alt="">
                             <a href="{{ url_for('user.logout') }}" class="header__sign-in">
                                 <i class="icon ion-ios-log-in"></i>
                                 <span>sign out</span>

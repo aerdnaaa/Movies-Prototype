@@ -19,7 +19,7 @@ class User(Person, UserMixin):
     id = "U0"
     def __init__(self,fullname,email,password,username,gender,DateofBirth):
         User.id = User.id[0] + str(int(User.id[1:]) + 1)
-        Person.__init__(self,User.id,0,0,email,password)
+        Person.__init__(self,User.id,0,"default.png",email,password)
         self.__email = email
         self.__fullname= fullname
         self.__password = password

@@ -16,26 +16,8 @@ def promotion():
     except:        
         Promotion_dict = {}
         db["promotion"] = Promotion_dict
-    promotion_list = []
-    promotion_sub_list = []
-    index = 0
-    main_index = 0
-    list_of_promotion_classes = list(Promotion_dict.values())
-    for promotion_class in list_of_promotion_classes:
-        main_index += 1
-        if index <= 5:
-            promotion_sub_list.append(promotion_class)
-            if index == 5 or main_index == len(list_of_promotion_classes):
-                promotion_list.append(promotion_sub_list)
-            index += 1        
-            print(promotion_sub_list)
-        else:
-            promotion_sub_list = []
-            promotion_sub_list.append(promotion_class)
-            index = 1
-
     # promotion_list needs a list in a list. Outer list for rows, inner list for promotions in 1 row
-    return render_template("User/promotion.html", title="Promotions", promotion_list=promotion_list)
+    return render_template("User 2/promotion.html", title="Promotions", Promotion_dict=Promotion_dict)
 
 @promotion_blueprint.route("/promotion/<id_of_promo>")
 def promotionDetail(id_of_promo):

@@ -33,8 +33,16 @@ def admin_mailbox():
     
 @main_blueprint.route("/legal")
 def legal_page():
-    return render_template("User 2/legal.html",title="legal")
+    return render_template("User 2/legal.html",title="Terms&Condition")
 
 @main_blueprint.route("/aboutUs")
 def aboutUs():
-    return render_template("User 2/aboutUs.html",title="aboutUs")
+    return render_template("User 2/aboutUs.html",title="AboutUs")
+
+@main_blueprint.route("/faq")
+def faq():
+    return render_template("User 2/faq.html", title="FAQ")
+
+@main_blueprint.route("/pp")
+def pp_page():
+    return render_template("User 2/pp.html",title="Privacy Policy")

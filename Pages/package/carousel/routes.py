@@ -13,7 +13,12 @@ carousel_blueprint = Blueprint("carousel", __name__)
 @carousel_blueprint.route("/home")
 def home():
     db = shelve.open("shelve.db")
-    return render_template("User 2/index.html", title="Home", carousel_list=["carousel1.jpeg","carousel2.jpeg","carousel3.jpeg"], )
+    try:
+        Carousel_dict = db['carousel']
+    except:
+        Carousel_dict = {}
+        db['carousel'] = Carousel_dict
+    return render_template("User 2/index.html", title="Home", Carousel_dict=Carousel_dict )
 
 #* Admin Carousel
 @carousel_blueprint.route("/admin/carousel")

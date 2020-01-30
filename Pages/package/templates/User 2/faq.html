@@ -1,0 +1,88 @@
+{% extends "User 2/base.html" %}
+
+{% block content %}
+<!-- page title -->
+<section class="section section--first section--bg" data-bg="img/section/section.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section__wrap">
+                    <!-- section title -->
+                    <h2 class="section__title">F.A.Q</h2>
+                    <!-- end section title -->
+
+                    <!-- breadcrumb -->
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb__item"><a href="{{ url_for('carousel.home') }}">Home</a></li>
+                        <li class="breadcrumb__item breadcrumb__item--active">F.A.Q</li>
+                    </ul>
+                    <!-- end breadcrumb -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end page title -->
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+        
+        <h2 class="comments__text">Frequenctly Asked Questions</h2>
+        </div>        
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <p class="comments__text">Why can't i select seats by leaving a seat in between?
+            <i data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" class="fas fa-sort-down" style="font-size:30px;color:#ff55a5"></i>      
+            </p>                
+              <div class="collapse" id="collapseExample">
+                <div class="comments__text">
+                    The purpose is to optimize seating arrangements in the cinema hall so that patrons in group will not have to be separated especially when the occupancy is high.
+                </div>
+              </div>
+        </div>
+
+        <div class="col-12">
+            <p class="comments__text">What should I do if I lose my tickets or make a wrong booking?
+            <i data-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample" class="fas fa-sort-down" style="font-size:30px;color:#ff55a5"></i>      
+            </p>                
+              <div class="collapse" id="collapseExample1">
+                <div class="comments__text">
+                    Please proceed to the booking cinema at least 1 hour before the movie session to seek assistance from staff. Alternatively, if the movie haven't start yet you may email our Customer Service team (we will response to you within 4 working days) at customersvc@sawcinematics.com or call 1-800-8700-7417 (during Customer Service Operating Hours) for further assistance.
+                </div>
+              </div>
+        </div>
+
+        <div class="col-12">
+            <p class="comments__text">What do the different film classifications mean? (G, PG, PG13, NC16, M18 and R21) ?
+             <i data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample" class="fas fa-sort-down" style="font-size:30px;color:#ff55a5"></i>      
+            </p>                
+              <div class="collapse" id="collapseExample2">
+                <div class="comments__text">
+                    Films in Singapore are rated according to the following ratings<br>
+
+                        General (G)
+                        Suitable for all ages.<br>
+
+                        Parental Guidance (PG)
+                        Suitable for all but parents should guide their young.<br>
+
+                        Parental Guidance 13 (PG13)
+                        Suitable for persons aged 13 and above but parental guidance is advised for children below 13.<br>
+
+                        No Children under 16 (NC16)
+                        Restricted to persons aged 16 and above.<br>
+
+                        Mature 18 (M18)
+                        Restricted to persons aged 18 and above.<br>
+
+                        Restricted 21 (R21)
+                        Restricted to persons aged 21 and above.<br>            
+</div>
+              </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
