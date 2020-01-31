@@ -5,7 +5,7 @@ import shelve
 from package.user.classes import User, Admin
 from package import bcrypt, login_manager
 from package.user.utilis import load_user, return_emails, is_correct_password, return_user_id
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 import datetime
 
 user_blueprint = Blueprint("user", __name__)
@@ -13,19 +13,21 @@ user_blueprint = Blueprint("user", __name__)
 @user_blueprint.route("/login", methods=['GET','POST'])
 def login():
     form = LoginForm()        
-    db = shelve.open('shelve.db','c')
+    db = shelve.open('shelve.db','c')    
     try:
         userDict = db['Users']
     except:
         userDict = {}
         db['Users'] = userDict
-    db.close()        
-    print(userDict)
+    db.close()            
     if request.method=='POST':
         if form.email.data in return_emails(userDict) and is_correct_password(form.email.data, form.password.data, userDict):
-            login_user(load_user(return_user_id(form.email.data, userDict)))
+            login_user(load_user(return_user_id(form.email.data, userDict)), remember=form.rememberMe.data)            
             flash('You have been logged in!','success')
-            return redirect(url_for('carousel.home'))
+            if current_user.get_id()[0] == "U":
+                return redirect(url_for('carousel.home'))
+            else:
+                return redirect(url_for('other.admin_home'))
         else:
             flash('Invalid username or password. Please check both fields.','danger')
     return render_template("User 2/signin.html", title="Login Page",form=form)
@@ -74,10 +76,10 @@ def accountpage():
 def admin_accounts():
     db = shelve.open('shelve.db', 'c')
     try:
-        Admin_dict = db['Admins']
+        Admin_dict = db['Users']
     except:
         Admin_dict = {}
-        db['Admins'] = Admin_dict
+        db['Users'] = Admin_dict
     for key in Admin_dict:
         print(key)
     return render_template("Admin/users/admins.html", title="Admin Accounts", Admin_dict=Admin_dict)
@@ -87,11 +89,11 @@ def add_admin():
     form = CreateAdminForm()
     db = shelve.open('shelve.db', 'c')
     try:
-        Admin_dict = db['Admins']
+        Admin_dict = db['Users']
         Admin.id = list(Admin_dict.values())[-1].get_adminID()
     except:
         Admin_dict = {}
-        db['Admins'] = Admin_dict    
+        db['Users'] = Admin_dict    
     if form.validate_on_submit():
         username = form.username.data
         email = form.email.data
@@ -99,7 +101,7 @@ def add_admin():
         hashed_password = bcrypt.generate_password_hash("admin").decode('utf-8')
         admin_class = Admin(username, email, administrative_rights, hashed_password)
         Admin_dict[admin_class.get_adminID()] = admin_class
-        db["Admins"] = Admin_dict
+        db["Users"] = Admin_dict
         db.close()
         return redirect(url_for("user.admin_accounts"))
     elif request.method == "GET":
@@ -114,10 +116,10 @@ def modify_admin(admin_id):
     form = ModifyAdminForm()
     db = shelve.open('shelve.db', 'c')
     try:
-        Admin_dict = db["Admins"]
+        Admin_dict = db["Users"]
     except:        
         Admin_dict = {}
-        db["Admins"] = Admin_dict
+        db["Users"] = Admin_dict
     admin_class = Admin_dict[admin_id]
     administrative_rights_dict = {"1":"Super Admin", "2":"Manage admins", "3":"Carousel"}
     if form.validate_on_submit():
@@ -130,7 +132,7 @@ def modify_admin(admin_id):
         admin_class.set_username(admin_username)
         admin_class.set_email(admin_email)
         admin_class.set_administrative_rights(admin_rights_data)
-        db["Admins"] = Admin_dict
+        db["Users"] = Admin_dict
         return redirect(url_for("user.admin_accounts"))
     elif request.method == "GET":
         pass
@@ -141,19 +143,19 @@ def modify_admin(admin_id):
 def delete_admin():
     db = shelve.open('shelve.db', 'c')
     try:
-        Admin_dict = db["Admins"]
+        Admin_dict = db["Users"]
         Deleted_list = db["deleted_Admins"]
     except:
         Admin_dict = {}
         Deleted_list = []
-        db["Admins"] = Admin_dict
+        db["Users"] = Admin_dict
         db["deleted_Admins"] = Deleted_list
     list_of_to_be_deleted_admins = request.json
     for admin_id in list_of_to_be_deleted_admins:
         delete_admin = Admin_dict[admin_id]        
         Deleted_list.append([delete_admin, datetime.date.today()])
         del Admin_dict[admin_id]
-    db["Admins"] = Admin_dict
+    db["Users"] = Admin_dict
     db["deleted_Admins"] = Deleted_list
     db.close()
     return redirect(url_for("user.admin_accounts"))

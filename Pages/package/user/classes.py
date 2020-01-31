@@ -7,11 +7,20 @@ class Person:
         self.__profile_picture = profile_picture
         self.__email = email        
         self.__password = password
-    
+    def get_id(self):
+        return self.__id
+    def get_name(self):
+        return self.__name
     def get_email(self):
         return self.__email
     def get_password(self):
         return self.__password
+    def get_profile_picture(self):
+        return self.__profile_picture
+    def set_name(self, name):
+        self.__name = name
+    def set_profile_picture(self, profile_picture):
+        self.__profile_picture = profile_picture
     def set_email(self,email):
         self.__email = email
     def set_password(self,password):
@@ -19,15 +28,14 @@ class Person:
 
 
 class Admin(Person, UserMixin):
-    id = "A0"
+    id = "A-1"
     def __init__(self, username, email, administrative_rights, password):
         Admin.id = Admin.id[0] + str(int(Admin.id[1:]) + 1)
-        Person.__init__(self, "", username, "default.png", email, password)
+        Person.__init__(self, Admin.id  , username, "default.png", email, password)
         self.__username = username
         self.__email = email
         self.__administrative_rights = administrative_rights
-        self.__password = password
-        self.__id = Admin.id   
+        self.__password = password         
 
     def set_username(self, username):
         self.__username = username
@@ -38,8 +46,6 @@ class Admin(Person, UserMixin):
         return self.__username
     def get_administrative_rights(self):
         return self.__administrative_rights
-    def get_adminID(self):
-        return self.__id
 
 class User(Person, UserMixin):
     id = "U0"

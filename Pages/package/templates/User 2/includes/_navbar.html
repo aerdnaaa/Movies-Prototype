@@ -49,7 +49,7 @@
                             </button>
                             {% if current_user.is_authenticated %} 
                             <p>&nbsp&nbsp&nbsp&nbsp&nbsp</p>                           
-                            <img src="{{ url_for('static', filename='images/profile_pictures/' + current_user.profile_picture) }}" style="border-radius:50%;" width="80" height="auto" alt="">
+                            <img src="{{ url_for('static', filename='images/profile_pictures/' + current_user.get_profile_picture()) }}" style="border-radius:50%;" width="80" height="auto" alt="">
                             <a href="{{ url_for('user.logout') }}" class="header__sign-in">
                                 <i class="icon ion-ios-log-in"></i>
                                 <span>sign out</span>

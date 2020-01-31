@@ -1,10 +1,13 @@
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from package.user.classes import Admin
+import datetime, shelve
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = "73892748739"
+app.config['REMEMBER_COOKIE_DURATION'] = datetime.timedelta(minutes=5)
 
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
@@ -28,3 +31,27 @@ app.register_blueprint(promotion_blueprint)
 app.register_blueprint(rental_blueprint)
 app.register_blueprint(user_blueprint)
 app.register_blueprint(errors_blueprint)
+
+db = shelve.open("shelve.db", "c")
+# creating admin account / ensuring a super admin account exists
+
+# creating genre list
+try:
+    genre_list = db["genre_list"]
+    if genre_list == []:
+        genre_list = [("Action","Action"),("Adventure","Adventure"),("Comedy","Comedy"),("Drama","Drama"),("Fantasy","Fantasy"),("History","History"),("Horror","Horror"),("Music","Music"),("Mystery/Crime","Mystery/Crime"),("Romance","Romance"),("Sci-fi","Sci-fi")]
+        db["genre_list"] = genre_list
+
+except:
+    genre_list = [("Action","Action"),("Adventure","Adventure"),("Comedy","Comedy"),("Drama","Drama"),("Fantasy","Fantasy"),("History","History"),("Horror","Horror"),("Music","Music"),("Mystery/Crime","Mystery/Crime"),("Romance","Romance"),("Sci-fi","Sci-fi")]
+    db["genre_list"] = genre_list
+
+try:
+    super_admin_dict = db['Users']    
+    super_admin_dict["A0"] = Admin("Super Admin", "superadmin@saw.com", "Super Admin", "Admin" )    
+except:        
+    super_admin_dict = {}
+    super_admin_dict["A0"] = Admin("Super Admin", "superadmin@saw.com", "Super Admin", "Admin" )
+    db["Users"] = super_admin_dict
+# bcrypt.generate_password_hash("admin").decode('utf-8')
+db.close()

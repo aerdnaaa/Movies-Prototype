@@ -32,13 +32,18 @@ import shelve
 
 # print(promotion_list)
 db = shelve.open("shelve.db", "c")
-try:
-    genre_list = db["genre_list"]
-    if genre_list == []:
-        genre_list = [("Action","Action"),("Adventure","Adventure"),("Comedy","Comedy"),("Drama","Drama"),("Fantasy","Fantasy"),("History","History"),("Horror","Horror"),("Music","Music"),("Mystery/Crime","Mystery/Crime"),("Romance","Romance"),("Sci-fi","Sci-fi")]
-        db["genre_list"] = genre_list
+# try:
+#     genre_list = db["genre_list"]
+#     if genre_list == []:
+#         genre_list = [("Action","Action"),("Adventure","Adventure"),("Comedy","Comedy"),("Drama","Drama"),("Fantasy","Fantasy"),("History","History"),("Horror","Horror"),("Music","Music"),("Mystery/Crime","Mystery/Crime"),("Romance","Romance"),("Sci-fi","Sci-fi")]
+#         db["genre_list"] = genre_list
 
-except:
-    genre_list = [("Action","Action"),("Adventure","Adventure"),("Comedy","Comedy"),("Drama","Drama"),("Fantasy","Fantasy"),("History","History"),("Horror","Horror"),("Music","Music"),("Mystery/Crime","Mystery/Crime"),("Romance","Romance"),("Sci-fi","Sci-fi")]
-    db["genre_list"] = genre_list
+# except:
+#     genre_list = [("Action","Action"),("Adventure","Adventure"),("Comedy","Comedy"),("Drama","Drama"),("Fantasy","Fantasy"),("History","History"),("Horror","Horror"),("Music","Music"),("Mystery/Crime","Mystery/Crime"),("Romance","Romance"),("Sci-fi","Sci-fi")]
+#     db["genre_list"] = genre_list
 
+# db = shelve.open('shelve.db','c')
+# super_admin_dict = db["Users"]
+# super_admin_dict["S0"] = Admin("Super Admin", "superadmin@saw.com", "Super Admin", "Admin" )
+# print(super_admin_dict["S0"])
+# print(userDict)

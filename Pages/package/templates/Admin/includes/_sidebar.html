@@ -2,7 +2,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ url_for('other.admin_home') }}" class="brand-link">
-      <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">Saw Cinematics</span>
     </a>
@@ -13,10 +13,10 @@
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <a href="#" class="d-block">
         <div class="image">
-          <img src="" class="img-circle elevation-2" alt="User Image" height="160" width="160">
+          <img src="{{ url_for('static', filename='images/admin_profile_pictures/' + current_user.get_profile_picture()) }}" class="img-circle elevation-2" alt="User Image" height="160" width="160">
         </div>
         <div class="info">
-          Admin
+          {{ current_user.get_username() }}
         </div>
         </a>
       </div>

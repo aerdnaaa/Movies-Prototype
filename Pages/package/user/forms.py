@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, validators, SubmitField, SelectField, SelectMultipleField, PasswordField
+from wtforms import StringField, validators, SubmitField, SelectField, SelectMultipleField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, EqualTo, Email
 from flask_wtf.file import FileField, FileAllowed
 from wtforms.fields.html5 import EmailField,DateField
@@ -18,6 +18,7 @@ class CreateUserForm(FlaskForm):
 class LoginForm(FlaskForm):
      email = EmailField('Email', [Length(min=2, max=20, message="Character length does not fufil requirements"), DataRequired(message="Email cannot be empty")])
      password = PasswordField('Password', [DataRequired(message="Password cannot be empty")])
+     rememberMe = BooleanField('Remember Me')
      login = SubmitField('Sign In')
 
 class CreateAdminForm(FlaskForm):
