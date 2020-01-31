@@ -1,7 +1,7 @@
 class Promotion:
-    id = 0
+    id = "P0"
     def __init__(self, title, promotion_image, description, terms_and_conditions, valid_period, applicable_to):
-        Promotion.id += 1
+        Promotion.id = Promotion.id[0] + str(int(Promotion.id[1:])+1)
         self.__id = Promotion.id
         self.__title = title
         self.__promotion_image = promotion_image

@@ -23,8 +23,18 @@ def promotion():
 def promotionDetail(id_of_promo):
     db = shelve.open("shelve.db", "c")
     Promotion_dict = db["promotion"]
-    promo = Promotion_dict[int(id_of_promo)]
-    return render_template("User/promotionDetail.html", promo=promo, title=promo.get_title().capitalize() + " Promo")
+    promo = Promotion_dict[id_of_promo]
+    raw_valid_period = promo.get_valid_period().split(" - ")
+    valid_period = []
+    for date in raw_valid_period:
+        date = date.split("-")
+        mth = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        valid_period.append(f"{int(date[2])} {mth[int(date[1]) - 1]} {date[0]}")
+    
+    
+    valid_period_str = f"{valid_period[0]} - {valid_period[1]}"
+
+    return render_template("User 2/promotionDetail.html", promo=promo, period=valid_period_str, title=promo.get_title().capitalize() + " Promo")
 
 
 #* Admin Promotion
@@ -73,7 +83,6 @@ def add_promotion():
 
 @promotion_blueprint.route("/admin/promotion/modify_promotion/<promotion_id>", methods=["POST","GET"])
 def modify_promotion(promotion_id):
-    promotion_id = int(promotion_id)
     form = ModifyPromotion()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -121,9 +130,9 @@ def delete_promotion():
     
     list_of_to_be_deleted_promotions = request.json       
     for promotion_id in list_of_to_be_deleted_promotions:                              
-        delete_promotion = Promotion_dict[int(promotion_id)]                    
+        delete_promotion = Promotion_dict[promotion_id]                    
         Deleted_list.append([delete_promotion, datetime.date.today()])
-        del Promotion_dict[int(promotion_id)]
+        del Promotion_dict[promotion_id]
     db["promotion"] = Promotion_dict
     db["deleted_promotion"] = Deleted_list
     db.close()

@@ -144,7 +144,7 @@
                         <img src="{{ url_for('static', filename='images/movie poster/' + movie.get_poster()) }}" alt="">
                     </div>
                     <div class="card__content">
-                        <h3 class="card__title"><a href="#">{{ movie.get_movie_name() }}</a></h3>
+                        <h3 class="card__title"><a href="{{ url_for('movie.movie_detail', movie_id=movie.get_id()) }}">{{ movie.get_movie_name() }}</a></h3>
                         <span class="card__category">
                             {% for genre in movie.get_genre_list() %}
                                 <a>{{ genre }}</a>

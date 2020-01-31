@@ -23,7 +23,7 @@ when commiting, if you finished a certain task say, finished tasks: e.g. H1, P1
     6. add related images such as logo etc.
 
 * P - promotion page
-    1. promotion page revamp: design
+    1. promotion page revamp: design √
 
 * B - booking movie page
     1. Booking movies page revamp: UI will need to suit our needs
@@ -60,16 +60,18 @@ when commiting, if you finished a certain task say, finished tasks: e.g. H1, P1
 * A - admin
     1. Change design of Admin pages: showing of details looks weird and not appealing
     2. Modify dash board to suit our needs
-    3. Login for admin staff
+    3. Login for admin staff (50%)
     4. Create a page to manage multiple admin
     5. When choosing genre for a movie, you can choose multiple genres link √
     6. When initializing a movie, rating is nil and people can change its value by up voting or otherwise (50%)
-    7. When choosing timeslot, multiple options  √
+    7. When choosing timeslot, multiple options √  
     8. Generate Pdf
     9. Change IDs to have letter. 
     10. Carousel revamp. getting information from  promotion and movies dictionary to be parse into the carousel dictionary.*******
     11. All forms require proper validation
         * Rental: cannot upload duplicate rental 
+    12. modify movie > routes.py > genre list missing √
+    
     
 ## Useful Links
 * Multiselect link -> https://www.cssscript.com/multi-select-dropdown-component-javascript-slim-select/

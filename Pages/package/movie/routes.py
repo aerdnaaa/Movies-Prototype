@@ -23,7 +23,7 @@ def movieslist():
 
 @movie_blueprint.route("/movie/<movie_id>")
 def movie_detail(movie_id):
-    movie_id = int(movie_id)
+    movie_id = movie_id
     db = shelve.open('shelve.db', 'c')
     try:
         Movies_dict = db["movies"]        
@@ -96,7 +96,7 @@ def add_movie():
 
 @movie_blueprint.route("/admin/movies/modify_movie/<movie_id>", methods=["POST", "GET"])
 def modify_movie(movie_id):
-    movie_id = int(movie_id)
+    movie_id = movie_id
     form = ModifyMovieForm()
     db = shelve.open('shelve.db', 'c')
     try:

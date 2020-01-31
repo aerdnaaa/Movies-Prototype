@@ -1,7 +1,7 @@
 class Theatre:
-    id = 0
+    id = "T0"
     def __init__(self, theatre_name, theatre_image, number_of_halls):
-        Theatre.id += 1
+        Theatre.id = Theatre.id[0] + str(int(Theatre.id[1:])+1)
         self.__id = Theatre.id
         self.__theatre_name = theatre_name
         self.__theatre_image = theatre_image

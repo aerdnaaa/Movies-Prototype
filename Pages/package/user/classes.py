@@ -2,18 +2,44 @@ from flask_login import UserMixin
 
 class Person:
     def __init__(self, id, name, profile_picture, email, password):
-        self.id = id
-        self.name = name
-        self.profile_picture = profile_picture
-        self.email = email        
-        self.password = password
+        self.__id = id
+        self.__name = name
+        self.__profile_picture = profile_picture
+        self.__email = email        
+        self.__password = password
+    
+    def get_email(self):
+        return self.__email
+    def get_password(self):
+        return self.__password
+    def set_email(self,email):
+        self.__email = email
+    def set_password(self,password):
+        self.__password = password
+
 
 class Admin(Person, UserMixin):
     id = "A0"
     def __init__(self, username, email, administrative_rights, password):
         Admin.id = Admin.id[0] + str(int(Admin.id[1:]) + 1)
-        Person.__init__(self, Admin.id, username, "default.png", email, password)
-        self.administrative_rights = administrative_rights        
+        Person.__init__(self, "", username, "default.png", email, password)
+        self.__username = username
+        self.__email = email
+        self.__administrative_rights = administrative_rights
+        self.__password = password
+        self.__id = Admin.id   
+
+    def set_username(self, username):
+        self.__username = username
+    def set_administrative_rights(self, administrative_rights):
+        self.__administrative_rights= administrative_rights
+
+    def get_username(self):
+        return self.__username
+    def get_administrative_rights(self):
+        return self.__administrative_rights
+    def get_adminID(self):
+        return self.__id
 
 class User(Person, UserMixin):
     id = "U0"
@@ -35,10 +61,6 @@ class User(Person, UserMixin):
     #     return self.profile_picture
     def get_fullname(self):
         return self.__fullname
-    def get_email(self):
-        return self.__email
-    def get_password(self):
-        return self.__password
     def get_username(self):
         return self.__username
     def get_gender(self):
@@ -52,10 +74,6 @@ class User(Person, UserMixin):
     #     self.__profile_picture = profile_picture
     def set_fullname(self,fullname):
         self.__fullname=fullname
-    def set_email(self,email):
-        self.__email = email
-    def set_password(self,password):
-        self.__password=password
     def set_username(self,username):
         self.__username = username
     def set_gender(self,gender):

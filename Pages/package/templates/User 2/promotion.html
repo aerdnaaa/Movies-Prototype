@@ -50,21 +50,32 @@
                         <!-- end filter item -->
 
                         <!-- filter item -->
-                        <div class="filter__item" id="filter__rate">
-                            <span class="filter__item-label">Rating:</span>
-
-                            <div class="filter__item-btn dropdown-toggle" role="button" id="filter-rate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <div class="filter__range">
-                                    <div id="filter__imbd-start"></div>
-                                    <div id="filter__imbd-end"></div>
-                                </div>
+                        <div class="filter__item" id="filter__condition">
+                            <span class="filter__item-label">Applicable to:</span>
+                            <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-genre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {% if Promotion_dict %}
+                                    <input type="button" value="All Promotions">
+                                {% else %}
+                                    <input type="button" value="No Promotions Available">
+                                {% endif %}
                                 <span></span>
                             </div>
+
+                            <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">
+                            {% if Promotion_dict %}
+                                {% for id_of_promo in Promotion_dict %}
+                                <li>{{ Promotion_dict[id_of_promo].get_applicable_to() }}</li>
+                                {% endfor %}
+                            {% else %}
+                                <li>All</li>
+                            {% endif %}
+                
+                            </ul>
+                        </div>
 
                             <div class="filter__item-menu filter__item-menu--range dropdown-menu" aria-labelledby="filter-rate">
                                 <div id="filter__imbd"></div>
                             </div>
-                        </div>
                         <!-- end filter item -->
 
                         <!-- filter item -->

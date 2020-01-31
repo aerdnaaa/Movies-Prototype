@@ -211,9 +211,9 @@ def delete_showtime():
         db["deleted_showtime"] = Deleted_list
     list_of_to_be_deleted_showtimes = request.json
     for showtime_id in list_of_to_be_deleted_showtimes:
-        showtime_class = Showtime_dict[int(showtime_id)]
+        showtime_class = Showtime_dict[showtime_id]
         Deleted_list.append([showtime_class, datetime.date.today()])
-        del Showtime_dict[int(showtime_id)]
+        del Showtime_dict[showtime_id]
     db["showtime"] = Showtime_dict
     db["deleted_showtime"] = Deleted_list
     db.close()

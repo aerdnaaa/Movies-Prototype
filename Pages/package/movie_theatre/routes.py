@@ -48,7 +48,7 @@ def add_movie_theatre():
 
 @theatre_blueprint.route("/admin/movie_theatre/modify_movie_theatre/<movie_theatre_id>", methods=["GET","POST"])
 def modify_movie_theatre(movie_theatre_id):
-    movie_theatre_id = int(movie_theatre_id)
+    movie_theatre_id = movie_theatre_id
     form = ModifyMovieTheatre()
     db = shelve.open('shelve.db', 'c')    
     try:
@@ -88,9 +88,9 @@ def delete_movie_theatre():
 
     list_of_to_be_deleted_theatres = request.json       
     for theatre_id in list_of_to_be_deleted_theatres: 
-        delete_theatre = Movie_theatre_dict[int(theatre_id)]                    
+        delete_theatre = Movie_theatre_dict[theatre_id]                    
         Deleted_list.append([delete_theatre, datetime.date.today()])
-        del Movie_theatre_dict[int(theatre_id)]
+        del Movie_theatre_dict[theatre_id]
     db["movie_theatre"] = Movie_theatre_dict
     db["deleted_movie_theatre"] = Deleted_list
     db.close()    

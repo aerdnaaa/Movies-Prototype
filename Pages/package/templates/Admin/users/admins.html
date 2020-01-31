@@ -31,7 +31,7 @@
           <button type="button" class="btn btn-success">
             <a href="{{ url_for('user.add_admin') }}">Add Admin</a>              
           </button>
-          <button type="submit" class="btn btn-danger" onclick="delete_showtime()">Delete</button>
+          <button type="submit" class="btn btn-danger" onclick="delete_admin()">Delete</button>
         </div>
       </div>
       <div class="row">
@@ -56,24 +56,28 @@
               <tr>
                 <td>
                     <div class="form-check">
-                      <input type="checkbox" class="form-check-input" name="{{ Admin_dict[key].id }}">                    
+                      <input type="checkbox" class="form-check-input" name="{{ Admin_dict[key].get_adminID() }}">                    
                     </div>
                   </td>
                 <td>
-                    {{ Admin_dict[key].id }}
+                    {{ Admin_dict[key].get_adminID() }}
                 </td>
                 <td>
-                  {{ Admin_dict[key].name }}
+                  {{ Admin_dict[key].get_username() }}
                 </td>
                 <td>
-                  {{ Admin_dict[key].email }}
+                  {{ Admin_dict[key].get_email() }}
                 </td>
                 <td>
-                  {{ Admin_dict[key].administrative_rights }}
+                  <ul>
+                    {% for administrative_rights Admin_dict[key].get_administrative_rights() %}
+                      <li>{{ administrative_rights }}</li>
+                    {% endfor %}
+                  </ul>
                 </td>              
                 <td>
                   <button type="button" class="btn btn-primary">
-                    <a href="{{ url_for('showtime.modify_showtime', showtime_id= Admin_dict[key].id) }}">Modify Admin</a>                    
+                    <a href="{{ url_for('showtime.modify_showtime', showtime_id= Admin_dict[key].get_adminID()) }}">Modify Admin</a>                    
                   </button>           
                 </td>
               </tr>
@@ -96,16 +100,16 @@
 
 {% block scripts %}
   <script>
-    function delete_showtime() {
-      var list_of_to_be_deleted_rentals = [];
+    function delete_admin() {
+      var list_of_to_be_deleted_admins = [];
       var list_of_checkboxes = document.getElementsByClassName("form-check-input");        
       for (var index=1;index<list_of_checkboxes.length;index++){                    
         var checkbox = list_of_checkboxes[index];                    
         if (checkbox.checked){
-          list_of_to_be_deleted_rentals.push(checkbox.name);
+          list_of_to_be_deleted_admins.push(checkbox.name);
         }          
       }        
-      send_message("{{ url_for('showtime.delete_showtime') }}", list_of_to_be_deleted_rentals)
+      send_message("{{ url_for('user.delete_admin') }}", list_of_to_be_deleted_admins)
     }             
   </script>
   <script src="{{ url_for('static', filename='js/extension.js') }}"></script>

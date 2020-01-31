@@ -1,6 +1,8 @@
 from flask import Blueprint
 from flask import render_template, request, redirect, url_for, Markup
 from package.other.forms import CreateContactUsForm
+from flask_login import login_required
+# from package.utilis import check_admin
 
 main_blueprint = Blueprint("other", __name__)
 
@@ -12,7 +14,9 @@ def contactUs():
 # admin routes
 @main_blueprint.route("/admin")
 @main_blueprint.route("/admin/home")
+@login_required
 def admin_home():
+    
     return render_template("Admin/index.html", title="Dashboard")
 
 @main_blueprint.route("/admin/composeMail")

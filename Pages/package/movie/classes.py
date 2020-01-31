@@ -1,7 +1,7 @@
 class Movie:
-    id = 0
+    id = "M0"
     def __init__(self, movie_name, poster, description, genre_list, casts, director, fullvideo, trailer, duration, release_date, language, subtitles):
-        Movie.id += 1
+        Movie.id = Movie.id[0] + str(int(Movie.id[1:])+1)
         self.__id = Movie.id
         self.__movie_name = movie_name
         self.__poster = poster

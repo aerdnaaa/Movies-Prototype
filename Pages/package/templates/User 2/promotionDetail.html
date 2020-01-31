@@ -1,0 +1,53 @@
+{% extends 'User 2/base.html' %}
+
+{% block content %}
+<!-- page title -->
+<section class="section section--first section--bg" data-bg="img/section/section.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section__wrap">
+                    <!-- section title -->
+                    <h2 class="section__title">Promotions</h2>
+                    <!-- end section title -->
+
+                    <!-- breadcrumb -->
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb__item"><a href="{{ url_for('carousel.home') }}">Home</a></li>
+                        <li class="breadcrumb__item breadcrumb__item--active">Promotion</li>
+                    </ul>
+                    <!-- end breadcrumb -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end page title -->
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-5">
+            <img src="{{ url_for('static', filename='images/promotion/' + promo.get_promotion_image()) }}" alt="" width="100%">
+        </div>
+        <div class="col-7" >
+            <h1 style="color: lightskyblue;">{{ promo.get_title() }}</h1>        
+            <h3 style="color: whitesmoke;">Description</h3>
+            <p class="comments__text">{{ promo.get_description() }}</p>                       
+            <h3 style="color: whitesmoke;">Valid Period</h3>
+            <p class="comments__text">{{ period }}</p class="comments__text">
+
+            <h3 style="color: white">Terms and Conditions</h3>
+            <ul class="comments__text">
+                {% for condition in promo.get_terms_and_conditions() %}
+                    <li>{{ condition }}</li>
+                <!-- <li>Not valid with other offers, privileges, promotions or voucher redemptions.</li>
+                <li>Not valid for group/corporate bookings.</li>
+                <li>Not exchangeable or refundable for cash, products or other services.</li>
+                <li>In the event of any dispute, the decision of Saw Cinematics is final. No correspondence will be entertained.</li>
+                <li>Saw Cinematics reserves the right to terminate, suspend or cancel (in whole or in part) this promotion.</li>
+                <li>Saw Cinematics reserves the right to amend these terms and conditions of the promotion from time to time without prior notice and without any liability.</li> -->
+                {% endfor %}
+            </ul c>
+        </div>
+    </div>
+</div>
+{% endblock %}

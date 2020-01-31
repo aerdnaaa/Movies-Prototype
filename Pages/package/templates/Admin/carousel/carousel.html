@@ -47,7 +47,6 @@
               </td>
               <th scope="col">Id</th>
               <th scope="col">Carousel Title</th>
-              <th scope="col">Category</th>
               <th scope="col">Image</th>
               <th scope="col">Modify Carousel</th>
             </tr>
@@ -63,14 +62,12 @@
                 <td>
                   {{ Carousel_dict[key].get_id() }}
                 </td>
+
                 <td>
                   {{ Carousel_dict[key].get_title() }}
                 </td>
                 <td>
-                  {{ Carousel_dict[key].get_category() }}
-                </td>
-                <td>
-                  <img src="{{ url_for('static', filename='images/Carousel/' + Carousel_dict[key].get_carousel_image() ) }}" alt="{{ Carousel_dict[key].get_title() }} Img" width="200px">
+                  <img src="{{ url_for('static', filename='images/' + Carousel_dict[key].get_carousel_image() ) }}" alt="{{ Carousel_dict[key].get_title() }} Img" width="200px">
                 </td>
                 <td>
                   <button type="button" class="btn btn-primary">

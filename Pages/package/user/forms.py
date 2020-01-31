@@ -23,13 +23,13 @@ class LoginForm(FlaskForm):
 class CreateAdminForm(FlaskForm):
     username = StringField("Username",[Length(min=1, max=30), DataRequired()], default="Admin")
     email = EmailField("Email", [DataRequired(), Email()])
-    administrative_rights = SelectField("Administrative Rights", choices=[("Super Admin", "Super Admin"), ("Manage admins", "Manage admins"), ("Carousel", "Carousel")], default="Super Admin")    
+    administrative_rights = SelectMultipleField("Administrative Rights", choices=[("Super Admin", "Super Admin"), ("Manage admins", "Manage admins"), ("Carousel", "Carousel")], default="Super Admin")    
     submit = SubmitField("Add Admin")
 
 class ModifyAdminForm(FlaskForm):
     username = StringField("Username",[Length(min=1, max=30), DataRequired()], default="Admin")
     email = EmailField("Email", [DataRequired(), Email()])
-    administrative_rights = SelectField("Administrative Rights", choices=[("Super Admin", "Super Admin"), ("Manage admins", "Manage admins"), ("Carousel", "Carousel")], default="Super Admin")    
+    administrative_rights = SelectMultipleField("Administrative Rights", choices=[("Super Admin", "Super Admin"), ("Manage admins", "Manage admins"), ("Carousel", "Carousel")], default="Super Admin")    
     submit = SubmitField("Modify Admin")
 
     # username = StringField("Username",[Length(min=1, max=30), DataRequired()])

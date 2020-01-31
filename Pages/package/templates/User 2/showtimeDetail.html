@@ -1,0 +1,58 @@
+{% extends 'User 2/base.html' %}
+
+{% block content %}
+<!-- page title -->
+<section class="section section--first section--bg" data-bg="img/section/section.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section__wrap">
+                    <!-- section title -->
+                    <h2 class="section__title">Movies</h2>
+                    <!-- end section title -->
+
+                    <!-- breadcrumb -->
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb__item"><a href="{{ url_for('carousel.home') }}">Home</a></li>
+                        <li class="breadcrumb__item breadcrumb__item--active">Movies</li>
+                    </ul>
+                    <!-- end breadcrumb -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end page title -->
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-5">
+            <img style ="width: 450px; height:auto;"src="{{ url_for('static', filename='images/movie poster/' + movie.get_poster()) }}" alt="">
+        </div>
+        <div class="col-7" >
+            <h1 style="color: lightskyblue;">{{ movie.get_movie_name() }}</h1>        
+            <h3 style="color: whitesmoke;">Description</h3>
+            <p class="comments__text">{{ movie.get_description() }}</p>   
+            <h3 style="color: white">Genre(s)</h3>                    
+            <ul>
+                {% for genre in Movies_dict.items().get_genre_list() %}
+                  <li>{{ genre }}</li>
+                {% endfor %}
+                </ul>
+            <h3 style="color: white">Director</h3>
+            <p class="comments__text">{{ movie.get_director() }}</p>
+            <h3 style="color: white">Cast(s)</h3>
+            <p class="comments__text">{{ movie.get_casts() }}</p>
+            <h3 style="color: white">Duration</h3>
+            <p class="comments__text">{{ movie.get_duration() }}</p>
+            <h3 style="color: white">Release Date</h3>
+            <p> class="comments__text">{{ movie.get_release_date() }}</p>
+            <h3 style="color: white">Language</h3>
+            <p> class="comments__text">{{ movie.get_language() }}</p>
+            <h3 style="color: white">Subtitles</h3>
+            <p> class="comments__text">{{ movie.get_subtitles() }}</p>
+        
+        
+            </div>
+    </div>
+</div>
+{% endblock %}
