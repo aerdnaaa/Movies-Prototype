@@ -48,9 +48,26 @@
                                 <div class="card__description card__description--details">
                                     {{ movie.get_description() }}
                                 </div>
+
                             </div>
                         </div>
                         <!-- end card content -->
+                        <form action="#">
+                            {% if user_logged %}
+                                <!-- Maybe a modal? how do -->
+                                <button style="margin-left:15px" type="button" class="form__btn">Book</button>
+                                <button style="margin-left:15px" type="button" class="form__btn">Rent</button>
+                            {% else %}
+                                <!-- Maybe there will be no rent / book button,
+                                 just a text that says 'Sign up' to book / rent (where the 'Sign up' is a link -->
+                                <a href="{{ url_for('user.login') }}">
+                                    <button style="margin-left:15px" type="button" class="form__btn">Book</button>
+                                </a>
+                                <a href="{{ url_for('user.login') }}">
+                                    <button style="margin-left:15px" type="button" class="form__btn">Rent</button>
+                                </a>
+                            {% endif %}
+                        </form>
                     </div>
                 </div>
             </div>

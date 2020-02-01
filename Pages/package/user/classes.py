@@ -31,7 +31,7 @@ class Admin(Person, UserMixin):
     id = "A-1"
     def __init__(self, username, email, administrative_rights, password):
         Admin.id = Admin.id[0] + str(int(Admin.id[1:]) + 1)
-        Person.__init__(self, Admin.id  , username, "default.png", email, password)
+        Person.__init__(self, Admin.id, username, "default.png", email, password)
         self.__username = username
         self.__email = email
         self.__administrative_rights = administrative_rights
@@ -40,7 +40,7 @@ class Admin(Person, UserMixin):
     def set_username(self, username):
         self.__username = username
     def set_administrative_rights(self, administrative_rights):
-        self.__administrative_rights= administrative_rights
+        self.__administrative_rights = administrative_rights
 
     def get_username(self):
         return self.__username

@@ -53,9 +53,11 @@
             </thead>
             <tbody>
               {% for key in Admin_dict %}
+              {% if Admin_dict[key].get_id()[0] == "U" %}
+              {% else %}
               <tr>
                 <td>
-                    {% if loop.index == 1 %}                    
+                    {% if Admin_dict[key].get_id() == "A0" %}                    
                     {% else %}
                     <div class="form-check">
 
@@ -85,6 +87,7 @@
                   </button>           
                 </td>
               </tr>
+              {% endif %}
               {% endfor %}
             </tbody>
           </table>

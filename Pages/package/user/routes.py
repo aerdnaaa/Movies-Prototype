@@ -91,11 +91,14 @@ def admin_accounts():
 def add_admin():
     form = CreateAdminForm()
     db = shelve.open('shelve.db', 'c')
-    Admin_dict = db['Users']   
+    Admin_dict = db['Users']
+    Admin.id = list(Admin_dict.values())[-1].get_id()   
     if form.validate_on_submit():
         username = form.username.data
         email = form.email.data
         administrative_rights = form.administrative_rights.data
+        if not administrative_rights:
+            administrative_rights = []  # In case no rights is assigned to an admin
         # hashed_password = bcrypt.generate_password_hash("admin").decode('utf-8')
         admin_class = Admin(username, email, administrative_rights, "Admin")
         Admin_dict[admin_class.get_id()] = admin_class
@@ -123,6 +126,8 @@ def modify_admin(admin_id):
         admin_username = form.username.data
         admin_email = form.email.data
         admin_rights_list = form.administrative_rights.data
+        if not admin_rights_list:
+            admin_rights_list = []  # In case no rights is assigned to an admin
         admin_class.set_username(admin_username)
         admin_class.set_email(admin_email)
         admin_class.set_administrative_rights(admin_rights_list)

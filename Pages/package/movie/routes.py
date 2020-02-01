@@ -1,7 +1,9 @@
 from flask import Blueprint
 from flask import render_template, request, redirect, url_for, Markup
+from flask_login import current_user
 from package.movie.forms import CreateMovieForm, ModifyMovieForm
 from package.movie.classes import Movie
+from package.user.classes import Admin
 from package.movie.utilis import save_picture, save_video
 import shelve, datetime
 
@@ -31,7 +33,12 @@ def movie_detail(movie_id):
         Movies_dict = {}
         db["movies"] = Movies_dict
     movie_class = Movies_dict[movie_id]
-    return render_template("User 2/detail.html", title=movie_class.get_movie_name(), movie=movie_class)
+    try:
+        current_user.get_email()
+        user_logged = True
+    except:
+        user_logged = False
+    return render_template("User 2/detail.html", title=movie_class.get_movie_name(), movie=movie_class, user_logged=user_logged)
 
 
 #* Admin Promotion
