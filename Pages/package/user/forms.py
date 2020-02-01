@@ -16,11 +16,12 @@ class CreateUserForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
 class LoginForm(FlaskForm):
-     email = EmailField('Email', [Length(min=2, max=20, message="Character length does not fufil requirements"), DataRequired(message="Email cannot be empty")])
-     password = PasswordField('Password', [DataRequired(message="Password cannot be empty")])
+     email = EmailField('Email address', [validators.DataRequired(), validators.Email(message="Please enter valid email.")])
+     password = PasswordField('Password', validators=[DataRequired(message="Password cannot be empty")])
      rememberMe = BooleanField('Remember Me')
      login = SubmitField('Sign In')
 
+#  rememberMe = BooleanField('Remember Me')
 class CreateAdminForm(FlaskForm):
     username = StringField("Username",[Length(min=1, max=30), DataRequired()], default="Admin")
     email = EmailField("Email", [DataRequired(), Email()])

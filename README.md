@@ -71,6 +71,7 @@ when commiting, if you finished a certain task say, finished tasks: e.g. H1, P1
     11. All forms require proper validation
         * Rental: cannot upload duplicate rental 
     12. modify movie > routes.py > genre list missing √
+    13. modify function for pages doesnt have validation when certain features are not selected
     
     
 ## Useful Links

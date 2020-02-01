@@ -10,6 +10,7 @@
                 <div class="sign__content">
                     <!-- authorization form -->
                     <form action="#" class="sign__form" method="POST">
+                        {{form.hidden_tag()}}
                         <a href="{{ url_for('carousel.home') }}" class="sign__logo">
                             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="">
                         </a>
@@ -21,9 +22,8 @@
                             {{ render_field(form.password, class="sign__input", placeholder="Password", required=False) }}
                         </div>
 
-                        <div class="sign__group sign__group--checkbox" style="">                            
-                            {{ render_field(form.rememberMe) }}
-                            <label for="rememberMe">Remember Me</label>
+                        <div class="sign__group sign__group--checkbox" style="">                                                        
+                            
                         </div>
                         
                         {{ form.login(class="sign__btn") }}                         

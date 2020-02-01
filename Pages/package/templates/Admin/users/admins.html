@@ -55,12 +55,16 @@
               {% for key in Admin_dict %}
               <tr>
                 <td>
+                    {% if loop.index == 1 %}                    
+                    {% else %}
                     <div class="form-check">
-                      <input type="checkbox" class="form-check-input" name="{{ Admin_dict[key].get_adminID() }}">                    
+
+                      <input type="checkbox" class="form-check-input" name="{{ Admin_dict[key].get_id() }}">                    
                     </div>
+                    {% endif %}
                   </td>
                 <td>
-                    {{ Admin_dict[key].get_adminID() }}
+                    {{ Admin_dict[key].get_id() }}
                 </td>
                 <td>
                   {{ Admin_dict[key].get_username() }}
@@ -68,16 +72,16 @@
                 <td>
                   {{ Admin_dict[key].get_email() }}
                 </td>
-                <td>
+                <td>                  
                   <ul>
-                    {% for administrative_rights Admin_dict[key].get_administrative_rights() %}
-                      <li>{{ administrative_rights }}</li>
+                    {% for admin_rights in Admin_dict[key].get_administrative_rights() %}
+                      <li>{{ admin_rights }}</li>
                     {% endfor %}
                   </ul>
                 </td>              
                 <td>
                   <button type="button" class="btn btn-primary">
-                    <a href="{{ url_for('showtime.modify_showtime', showtime_id= Admin_dict[key].get_adminID()) }}">Modify Admin</a>                    
+                    <a href="{{ url_for('user.modify_admin', admin_id= Admin_dict[key].get_id()) }}">Modify Admin</a>                    
                   </button>           
                 </td>
               </tr>

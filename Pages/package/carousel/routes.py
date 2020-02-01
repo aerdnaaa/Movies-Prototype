@@ -13,13 +13,13 @@ carousel_blueprint = Blueprint("carousel", __name__)
 @carousel_blueprint.route("/")
 @carousel_blueprint.route("/home")
 def home():
-    db = shelve.open("shelve.db")
+    db = shelve.open("shelve.db", "c")
     try:
         Carousel_dict = db['carousel']
     except:
         Carousel_dict = {}
         db['carousel'] = Carousel_dict
-    return render_template("User 2/index.html", title="Home", Carousel_dict=Carousel_dict )
+    return render_template("User 2/index.html", title="Home", Carousel_dict=Carousel_dict)
 
 #* Admin Carousel
 @login_required
@@ -56,9 +56,9 @@ def add_carousel():
         for key in carousel_title_list:
             value = title_dict[key]
             if category == "movies":
-                carousel_class = Carousel(value.get_movie_name(), "movie poster/" + value.get_poster())
+                carousel_class = Carousel(category, value.get_movie_name(), "movie poster/" + value.get_poster())
             else:
-                carousel_class = Carousel(value.get_title(), "promotion/" + value.get_promotion_image())
+                carousel_class = Carousel(category, value.get_title(), "promotion/" + value.get_promotion_image())
             carousel_id = carousel_class.get_id()
             Carousel_dict[carousel_id] = carousel_class
         db["carousel"] = Carousel_dict

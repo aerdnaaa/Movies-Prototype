@@ -58,7 +58,7 @@ def add_movie():
         db["movies"] = Movies_dict
     genre_list = db["genre_list"]    
     form.movie_genre.choices = genre_list
-    if form.validate_on_submit():        
+    if request.method =="POST" and form.validate_on_submit():        
         movie_name = form.movie_name.data
         movie_poster = save_picture(form.movie_poster.data, "movie poster")
         movie_description = form.movie_description.data
@@ -91,7 +91,7 @@ def add_movie():
         form.movie_release_date.data = ""
         form.movie_language.data = "English"
         form.movie_subtitles.data = "Chinese"
-        db.close()
+        db.close()        
     return render_template("Admin/movie/add_movie.html", title="Add Movie", form=form)
 
 @movie_blueprint.route("/admin/movies/modify_movie/<movie_id>", methods=["POST", "GET"])

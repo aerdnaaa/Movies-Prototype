@@ -19,9 +19,9 @@ def login():
     except:
         userDict = {}
         db['Users'] = userDict
-    db.close()            
-    if request.method=='POST':
-        if form.email.data in return_emails(userDict) and is_correct_password(form.email.data, form.password.data, userDict):
+    db.close()                
+    if request.method=='POST':        
+        if form.email.data in return_emails(userDict) and is_correct_password(form.email.data, form.password.data, userDict):            
             login_user(load_user(return_user_id(form.email.data, userDict)), remember=form.rememberMe.data)            
             flash('You have been logged in!','success')
             if current_user.get_id()[0] == "U":
@@ -29,7 +29,9 @@ def login():
             else:
                 return redirect(url_for('other.admin_home'))
         else:
-            flash('Invalid username or password. Please check both fields.','danger')
+            flash('Invalid username or password. Please check both fields.','danger')  
+    print(form.email.errors)
+    print(form.validate_on_submit())          
     return render_template("User 2/signin.html", title="Login Page",form=form)
 
 @user_blueprint.route("/logout")
@@ -39,7 +41,7 @@ def logout():
 
 @user_blueprint.route("/register",methods=['GET','POST'])
 def register():
-    createUserForm = CreateUserForm(request.form)
+    createUserForm = CreateUserForm()
     db = shelve.open('shelve.db','c')
     try:
         userDict = db['Users']
@@ -47,6 +49,7 @@ def register():
     except:
         userDict = {}
         db['Users'] = userDict   
+    
     if request.method=='POST' and createUserForm.validate():
         flash(f'Account created for {createUserForm.username.data}!','success')        
         user = User(createUserForm.fullName.data,
@@ -55,7 +58,8 @@ def register():
         userDict[user.get_userID()] = user
         db['Users'] = userDict    
         db.close()
-        return redirect(url_for('user.login'))    
+        return redirect(url_for('user.login'))        
+    print(createUserForm.email.errors)
     return render_template("User 2/signup.html", title="Register",form=createUserForm)
 
 @user_blueprint.route("/accountpage")
@@ -70,6 +74,7 @@ def accountpage():
     # db = shelve.open('shelve.db','r')
     # usersDict = db['Users']
     # return render_template("User/accountpage.html", title="Account")
+    
     return "Hi there!"
 
 @user_blueprint.route("/admin/admin_accounts")
@@ -80,27 +85,20 @@ def admin_accounts():
     except:
         Admin_dict = {}
         db['Users'] = Admin_dict
-    for key in Admin_dict:
-        print(key)
     return render_template("Admin/users/admins.html", title="Admin Accounts", Admin_dict=Admin_dict)
 
 @user_blueprint.route("/admin/admin_accounts/add_admin", methods=["GET","POST"])
 def add_admin():
     form = CreateAdminForm()
     db = shelve.open('shelve.db', 'c')
-    try:
-        Admin_dict = db['Users']
-        Admin.id = list(Admin_dict.values())[-1].get_adminID()
-    except:
-        Admin_dict = {}
-        db['Users'] = Admin_dict    
+    Admin_dict = db['Users']   
     if form.validate_on_submit():
         username = form.username.data
         email = form.email.data
         administrative_rights = form.administrative_rights.data
-        hashed_password = bcrypt.generate_password_hash("admin").decode('utf-8')
-        admin_class = Admin(username, email, administrative_rights, hashed_password)
-        Admin_dict[admin_class.get_adminID()] = admin_class
+        # hashed_password = bcrypt.generate_password_hash("admin").decode('utf-8')
+        admin_class = Admin(username, email, administrative_rights, "Admin")
+        Admin_dict[admin_class.get_id()] = admin_class
         db["Users"] = Admin_dict
         db.close()
         return redirect(url_for("user.admin_accounts"))
@@ -121,22 +119,22 @@ def modify_admin(admin_id):
         Admin_dict = {}
         db["Users"] = Admin_dict
     admin_class = Admin_dict[admin_id]
-    administrative_rights_dict = {"1":"Super Admin", "2":"Manage admins", "3":"Carousel"}
     if form.validate_on_submit():
         admin_username = form.username.data
         admin_email = form.email.data
         admin_rights_list = form.administrative_rights.data
-        admin_rights_data = []
-        for rights in admin_rights_list:
-            admin_rights_data.append(administrative_rights_dict[rights])
         admin_class.set_username(admin_username)
         admin_class.set_email(admin_email)
-        admin_class.set_administrative_rights(admin_rights_data)
+        admin_class.set_administrative_rights(admin_rights_list)
         db["Users"] = Admin_dict
+        db.close()
         return redirect(url_for("user.admin_accounts"))
     elif request.method == "GET":
-        pass
-    return render_template("Admin/promotion/modify_promotion.html", title="Modify Promotion", form=form, image_source=image_source)
+        form.username.data = admin_class.get_username()
+        form.email.data = admin_class.get_email()
+        form.administrative_rights.data = admin_class.get_administrative_rights()
+        db.close()
+    return render_template("Admin/users/modify_admin.html", title="Modify Admin Account", form=form)
 
 
 @user_blueprint.route("/admin/admin_accounts/delete", methods=["POST","GET"])

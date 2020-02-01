@@ -46,6 +46,7 @@
                 </div>
               </td>
               <th scope="col">Id</th>
+              <th scope="col">Carosel Category</th>
               <th scope="col">Carousel Title</th>
               <th scope="col">Image</th>
               <th scope="col">Modify Carousel</th>
@@ -62,7 +63,9 @@
                 <td>
                   {{ Carousel_dict[key].get_id() }}
                 </td>
-
+                <td>
+                  {{  Carousel_dict[key].get_category() }}
+                </td>
                 <td>
                   {{ Carousel_dict[key].get_title() }}
                 </td>

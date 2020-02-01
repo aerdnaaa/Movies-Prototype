@@ -51,7 +51,7 @@ def add_rental():
     if request.method == "POST":        
         rent_period = form.rent_start_date.data + " - " + form.rent_end_date.data
         rent_price = int(form.rent_price.data)
-        movie_class = Movies_dict[int(form.movie_title.data)]
+        movie_class = Movies_dict[form.movie_title.data]
         rental_class = Rental(movie_class, rent_period, rent_price)
         rental_id = rental_class.get_id()
         Rental_dict[rental_id] = rental_class
@@ -67,7 +67,6 @@ def add_rental():
     
 @rental_blueprint.route("/admin/rental/modify_rental/<rental_id>", methods=["GET","POST"])
 def modify_rental(rental_id):
-    rental_id = int(rental_id)
     form = ModifyRental()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -85,7 +84,7 @@ def modify_rental(rental_id):
     if request.method == "POST":
         rent_period = form.rent_start_date.data + " - " + form.rent_end_date.data
         rent_price = int(form.rent_price.data)
-        movie_class = Movies_dict[int(form.movie_title.data)]
+        movie_class = Movies_dict[form.movie_title.data]
         rental_class = Rental_dict[rental_id]
         rental_class.set_all_attributes(movie_class, rent_period, rent_price)
         Rental_dict[rental_id] = rental_class
@@ -113,15 +112,13 @@ def delete_rental():
         db["deleted_rental"] = Deleted_list
     list_of_to_be_deleted_rentals = request.json
     for rental_id in list_of_to_be_deleted_rentals:
-        rental_class = Rental_dict[int(rental_id)]
+        rental_class = Rental_dict[rental_id]
         Deleted_list.append([rental_class, datetime.date.today()])
-        del Rental_dict[int(rental_id)]
+        del Rental_dict[rental_id]
     db["rental"] = Rental_dict
     db["deleted_rental"] = Deleted_list
     db.close()
     return redirect(url_for("rental.admin_rental"))
-
 @rental_blueprint.route("/admin/rental/rental_users")
 def rental_users():
     pass
-

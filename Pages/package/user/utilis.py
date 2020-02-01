@@ -3,15 +3,18 @@ import shelve
 
 @login_manager.user_loader
 def load_user(user_id):
-    userDict={}
+    userDict = {}
     db = shelve.open('shelve.db','c')
     try:
         userDict = db['Users']
     except:
         userDict = {}
-        
-    return userDict[user_id]
-
+    
+    try:
+        return userDict[user_id]
+    except:
+        return userDict
+ 
 def return_emails(user_dict):
     emails = []
     for value in list(user_dict.values()):
@@ -29,3 +32,5 @@ def return_user_id(email, user_dict):
     for value in list(user_dict.values()):
         if value.get_email() == email:
             return value.get_id()
+
+    

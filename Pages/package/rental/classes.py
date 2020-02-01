@@ -1,7 +1,7 @@
 class Rental:
-    id = 0
+    id = "R-1"
     def __init__(self, movie_class, rent_period, price):
-        Rental.id += 1
+        Rental.id = Rental.id[0] + str(int(Rental.id[1:]) + 1)
         self.__id = Rental.id
         self.__movie_class = movie_class
         self.__rent_period = rent_period
