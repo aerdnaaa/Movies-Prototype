@@ -28,10 +28,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           
-          <div class="ml-auto">            
-            <button type="button" class="btn btn-success">
-              <a href="{{ url_for('movie.add_movie') }}">Add Movies</a>              
+          <div class="ml-auto d-flex flex-row">
+            <form action="{{ url_for('movie.add_movie') }}" method="GET" class="ml-auto">            
+            <button type="submit" class="btn btn-success">
+              Add Movies
             </button>
+          </form>
+          <p>&nbsp&nbsp</p>
             <button type="submit" class="btn btn-danger"onclick="delete_movie()">Delete</button>
           </div>
         </div>
@@ -112,9 +115,14 @@
                       {{ Movies_dict[key].get_subtitles() }}
                     </td>
                     <td>
-                      <button type="button" class="btn btn-primary">
-                        <a href="{{ url_for('movie.modify_movie', movie_id=Movies_dict[key].get_id()) }}">Modify Movies</a>              
-                      </button>
+                  
+                      <div class="ml-auto d-flex flex-row">
+                        <form action="{{ url_for('movie.modify_movie', movie_id=Movies_dict[key].get_id()) }}" method="GET">
+                          <button type="submit" class="btn btn-primary">
+                            Modify Movies
+                          </button>
+                        </form>
+                      </div>
                     </td>
                 </tr>
               {% endfor %}

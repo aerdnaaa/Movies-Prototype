@@ -51,20 +51,12 @@ class User(Person, UserMixin):
     id = "U0"
     def __init__(self, fullname, email, password, username, gender, DateofBirth):
         User.id = User.id[0] + str(int(User.id[1:]) + 1)
-        Person.__init__(self,User.id,0,"default.png",email,password)
-        self.__email = email
+        Person.__init__(self,User.id,email,"default.png",email,password)        
         self.__fullname= fullname
         self.__password = password
         self.__username = username
         self.__gender = gender
-        self.___DateofBirth = DateofBirth
-        self.__userID = User.id
-
-    
-    def get_userID(self):
-        return self.__userID
-    # def get_profilepicture(self):
-    #     return self.profile_picture
+        self.___DateofBirth = DateofBirth        
     def get_fullname(self):
         return self.__fullname
     def get_username(self):
@@ -73,11 +65,6 @@ class User(Person, UserMixin):
         return self.__gender
     def get_DateofBirth(self):
         return self.__DateofBirth
-
-    def set_userID(self,userID):
-        self.__userID = userID
-    # def set_profilepicture(self,profile_picture):
-    #     self.__profile_picture = profile_picture
     def set_fullname(self,fullname):
         self.__fullname=fullname
     def set_username(self,username):

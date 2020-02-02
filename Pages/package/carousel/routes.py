@@ -77,6 +77,7 @@ def add_carousel():
             tuple_list.append((key, value.get_movie_name()))
 
         form.carousel_title.choices = tuple_list
+        db.close()
     return render_template("Admin/carousel/add_carousel.html", title="Add Carousel", form=form)
 
 @carousel_blueprint.route("/admin/carousel/modify_carousel/<carousel_id>", methods=["POST","GET"])
@@ -88,17 +89,42 @@ def modify_carousel(carousel_id):
     except:        
         Carousel_dict = {}
         db['carousel'] = Carousel_dict
-    if form.validate_on_submit():
+    carousel_class = Carousel_dict[carousel_id]
+    if request.method == "POST":
         carousel_title = form.carousel_title.data             
-        carousel_category = form.carousel_category.data
-        carousel_class = Carousel_dict[carousel_id]
-        carousel_class.set_all_attributes(carousel_title, carousel_category)        
+        carousel_category = form.carousel_category.data        
+        title_dict = db[carousel_category]
+        title_class = title_dict[carousel_title]
+        if carousel_category == "movies":
+            carousel_class.set_all_attributes(carousel_category, title_class.get_movie_name(), "movie poster/" + title_class.get_poster())        
+        else:
+            carousel_class.set_all_attributes(carousel_category, title_class.get_title(), "promotion/" + title_class.get_promotion_image())        
         Carousel_dict[carousel_id] = carousel_class
         db["carousel"] = Carousel_dict
         db.close()
         return redirect(url_for("carousel.admin_carousel"))
-    elif request.method == "GET":
-        pass
+    elif request.method == "GET":         
+        db = shelve.open("shelve.db", 'c')
+        try:
+            title_dict = db[carousel_class.get_category()]
+        except:
+            title_dict = {}
+            db[carousel_class.get_category()] = title_dict
+        tuple_list = []        
+        for key , value in title_dict.items():            
+            if carousel_class.get_category() == "movies":
+                tuple_list.append((key, value.get_movie_name()))
+                if value.get_movie_name() == carousel_class.get_title():
+                    carousel_title = key
+            else:
+                tuple_list.append((key, value.get_title()))          
+                if value.get_title() == carousel_class.get_title():
+                    carousel_title = key  
+        db.close()
+        form.carousel_title.choices = tuple_list
+        form.carousel_category.data= carousel_class.get_category()
+        form.carousel_title.data =  carousel_title
+        print(form.carousel_title.data)
     return render_template("Admin/carousel/modify_carousel.html", title="Modify Carousel", form=form)
 @carousel_blueprint.route("/admin/carousel/delete", methods=["GET","POST"])
 def delete_carousel():

@@ -26,11 +26,13 @@
   <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
-        
-        <div class="ml-auto">            
-          <button type="button" class="btn btn-success">
-            <a href="{{ url_for('showtime.add_showtime') }}">Add Show Timing</a>              
-          </button>
+        <div class="ml-auto d-flex flex-row">
+          <form action="{{ url_for('showtime.add_showtime') }}" method="GET">
+            <button type="submit" class="btn btn-success">
+              Add Show Timing 
+            </button>
+          </form>
+          <p>&nbsp&nbsp</p>
           <button type="submit" class="btn btn-danger" onclick="delete_showtime()">Delete</button>
         </div>
       </div>
@@ -83,9 +85,13 @@
                 {{ Showtime_dict[key].get_hall_number() }}
               </td>               
               <td>
+
+                <div class="ml-auto d-flex flex-row">
+                  <form action="{{ url_for('showtime.modify_showtime', showtime_id= Showtime_dict[key].get_id()) }}" method="GET">
                 <button type="button" class="btn btn-primary">
-                  <a href="{{ url_for('showtime.modify_showtime', showtime_id= Showtime_dict[key].get_id()) }}">Modify Showtime</a>                    
-                </button>           
+                  Modify Showtime                  
+                </button>  
+              </form>         
               </td>
             </tr>
             {% endfor %}

@@ -21,7 +21,6 @@ class LoginForm(FlaskForm):
      rememberMe = BooleanField('Remember Me')
      login = SubmitField('Sign In')
 
-#  rememberMe = BooleanField('Remember Me')
 class CreateAdminForm(FlaskForm):
     username = StringField("Username",[Length(min=1, max=30), DataRequired()], default="Admin")
     email = EmailField("Email", [DataRequired(), Email()])
@@ -34,8 +33,10 @@ class ModifyAdminForm(FlaskForm):
     administrative_rights = SelectMultipleField("Administrative Rights", choices=[("Super Admin", "Super Admin"), ("Manage admins", "Manage admins"), ("Carousel", "Carousel")], default="Super Admin")    
     submit = SubmitField("Modify Admin")
 
-    # username = StringField("Username",[Length(min=1, max=30), DataRequired()])
-    # email = EmailField("Email", [DataRequired(), Email()])
-    # password = PasswordField("Password", [Length(min=8), DataRequired()])
-    # confirm_password = PasswordField("Confirm Password", [Length(min=8), DataRequired(), EqualTo('password', message="Passwords must match.")])        
-    # submit = SubmitField("Modify Admin")
+class ModifyAdminAccount(FlaskForm):
+    username = StringField("Username",[Length(min=1, max=30), DataRequired()])
+    email = EmailField("Email")
+    new_password = PasswordField("Password", [Length(min=8)])
+    confirm_password = PasswordField("Confirm Password", [Length(min=8), EqualTo('new_password', message="Passwords must match.")]) 
+    profile_picture = FileField("Insert New Image" )
+    submit = SubmitField("Update")

@@ -1,0 +1,69 @@
+{% extends "Admin/baseAdmin.html" %}
+<!-- Content Wrapper. Contains page content -->
+{% block links %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/master.css') }}">
+{% endblock %}
+{% block content %}
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>My Account</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="{{ url_for('other.admin_home') }}" class="homeButton">Home</a></li>
+            <li class="breadcrumb-item active">My Account</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content-header">
+    <div class="container-fluid">  
+      <div class="row">
+        <div class="col-6">
+          <form action="" method="GET">
+            <div class="form-row d-flex align-items-end">
+                <div class="form-col image">
+                    <img src="{{ url_for('static', filename='images/admin_profile_pictures/' + current_user.get_profile_picture()) }}" class="img-circle elevation-2" alt="User Image" height="160" width="160">
+                </div>            
+                <div class="form-col ml-2">
+                    {{ form.profile_picture.label(class="form-control-label") }}
+                    {{ render_field(form.profile_picture, class="form-control-file") }}
+                </div>
+            </div>
+            <div class="form-group col-8 mt-2">
+                {{ form.username.label(class="form-control-label") }}
+                {{ render_field(form.username, class="form-control") }}
+            </div>
+            <div class="form-group col-8">
+              {{ form.email.label(class="form-control-label") }}
+              {{ render_field(form.email, class="form-control", disabled=True) }}
+            </div>
+            <div class="form-group col-8">
+              {{ form.new_password.label(class="form-control-label") }}
+              {{ render_field(form.new_password, class="form-control") }}
+            </div>
+            <div class="form-group col-8">
+              {{ form.confirm_password.label(class="form-control-label") }}
+              {{ render_field(form.confirm_password, class="form-control") }}
+            </div>
+            &nbsp&nbsp{{ form.submit(class="btn btn-primary") }}
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </a>
+</div>
+{% endblock %}
+<!-- /.content-wrapper -->

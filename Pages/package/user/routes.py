@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask import render_template,request,redirect,flash,url_for
-from package.user.forms import CreateUserForm,LoginForm, CreateAdminForm, ModifyAdminForm
+from package.user.forms import CreateUserForm,LoginForm, CreateAdminForm, ModifyAdminForm, ModifyAdminAccount
 import shelve
 from package.user.classes import User, Admin
 from package import bcrypt, login_manager
@@ -18,7 +18,7 @@ def login():
         userDict = db['Users']
     except:
         userDict = {}
-        db['Users'] = userDict
+        db['Users'] = userDict        
     db.close()                
     if request.method=='POST':        
         if form.email.data in return_emails(userDict) and is_correct_password(form.email.data, form.password.data, userDict):            
@@ -29,9 +29,7 @@ def login():
             else:
                 return redirect(url_for('other.admin_home'))
         else:
-            flash('Invalid username or password. Please check both fields.','danger')  
-    print(form.email.errors)
-    print(form.validate_on_submit())          
+            flash('Invalid username or password. Please check both fields.','danger')      
     return render_template("User 2/signin.html", title="Login Page",form=form)
 
 @user_blueprint.route("/logout")
@@ -45,21 +43,24 @@ def register():
     db = shelve.open('shelve.db','c')
     try:
         userDict = db['Users']
-        User.id = list(userDict.values())[-1].get_id()            
+        user_key_list = []
+        for key in userDict:
+            if key[0] == "U":
+                user_key_list.append(key)
+        User.id = user_key_list[-1].get_id()            
     except:
         userDict = {}
-        db['Users'] = userDict   
-    
+        db['Users'] = userDict       
     if request.method=='POST' and createUserForm.validate():
         flash(f'Account created for {createUserForm.username.data}!','success')        
         user = User(createUserForm.fullName.data,
         createUserForm.email.data,createUserForm.password.data,createUserForm.username.data,
         createUserForm.gender.data,createUserForm.dateOfBirth.data)
-        userDict[user.get_userID()] = user
+        userDict[user.get_id()] = user
         db['Users'] = userDict    
         db.close()
+        print(user.get_id())
         return redirect(url_for('user.login'))        
-    print(createUserForm.email.errors)
     return render_template("User 2/signup.html", title="Register",form=createUserForm)
 
 @user_blueprint.route("/accountpage")
@@ -115,12 +116,8 @@ def add_admin():
 @user_blueprint.route("/admin/admin_accounts/modify_admin/<admin_id>", methods=["POST","GET"])
 def modify_admin(admin_id):
     form = ModifyAdminForm()
-    db = shelve.open('shelve.db', 'c')
-    try:
-        Admin_dict = db["Users"]
-    except:        
-        Admin_dict = {}
-        db["Users"] = Admin_dict
+    db = shelve.open('shelve.db', 'c')    
+    Admin_dict = db["Users"]    
     admin_class = Admin_dict[admin_id]
     if form.validate_on_submit():
         admin_username = form.username.data
@@ -162,3 +159,15 @@ def delete_admin():
     db["deleted_Admins"] = Deleted_list
     db.close()
     return redirect(url_for("user.admin_accounts"))
+
+@user_blueprint.route("/admin/my_account", methods=["POST","GET"])
+def my_admin_account():
+    form = ModifyAdminAccount()
+
+    if request.method == "POST":
+        pass
+    elif request.method == "GET":
+        form.username.data = current_user.get_username()
+        form.email.data = current_user.get_email()        
+
+    return render_template("Admin/users/admin_account.html", title="My Admin Account", form=form)

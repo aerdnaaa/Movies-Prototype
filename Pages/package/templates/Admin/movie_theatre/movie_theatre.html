@@ -27,11 +27,14 @@
     <div class="container-fluid">
       <div class="row mb-2">
         
-        <div class="ml-auto">            
-          <button type="button" class="btn btn-success">
-            <a href="{{ url_for('movie_theatre.add_movie_theatre') }}">Add Movie Theatre</a>              
-          </button>
-          <button type="submit" class="btn btn-danger" onclick="delete_movie_theatre()">Delete</button>
+        <div class="ml-auto d-flex flex-row">            
+          <form action="{{ url_for('movie_theatre.add_movie_theatre') }}" method="GET" class="ml-auto"> 
+            <button type="submit" class="btn btn-success">
+              Add Movie Theatre  
+            </button>
+          </form>
+            <p>&nbsp&nbsp</p>
+            <button type="submit" class="btn btn-danger" onclick="delete_movie_theatre()">Delete</button>
         </div>
       </div>
       <div class="row">
@@ -72,9 +75,14 @@
                 {{ Movie_theatre_dict[key].get_number_of_halls() }}
               </td>
               <td>
-                <button type="button" class="btn btn-primary">
-                  <a href="{{ url_for('movie_theatre.modify_movie_theatre', movie_theatre_id=Movie_theatre_dict[key].get_id()) }}">Modify Movie Theatre</a>              
-                </button>
+
+                <div class="ml-auto d-flex flex-row">
+                  <form action="{{ url_for('movie_theatre.modify_movie_theatre', movie_theatre_id=Movie_theatre_dict[key].get_id()) }}" method="GET">
+                    <button type="submit" class="btn btn-primary">
+                      Modify Movie Theatre
+                    </button>
+                  </form>
+                </div>                
               </td>
             </tr>
             {% endfor %}

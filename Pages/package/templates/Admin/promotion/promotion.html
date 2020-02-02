@@ -28,14 +28,18 @@
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-
-          <div class="ml-auto">
             <!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addPromoModal">
               Add Promotion
             </button> -->
-            <button type="button" class="btn btn-success">
-              <a href="{{ url_for('promotion.add_promotion') }}">Add Promotion</a>              
+
+            <div class="ml-auto d-flex flex-row">
+             <form action="{{ url_for('promotion.add_promotion') }}" method="GET" class="ml-auto">
+            <button type="submit" class="btn btn-success">
+            Add Promotion              
             </button>
+          </form>
+          <p>&nbsp&nbsp</p>
+
             <button type="submit" class="btn btn-danger"onclick="delete_promotion()">Delete</button>
           </div>
         </div>
@@ -92,9 +96,16 @@
                     </ul>
                   </td>
                   <td>
-                    <button type="button" class="btn btn-primary">
+                    <div class="ml-auto d-flex flex-row">
+                      <form action="{{ url_for('promotion.modify_promotion', promotion_id=Promotion_dict[key].get_id()) }}" method="GET">
+                        <button type="submit" class="btn btn-primary">
+                          Modify Promotion
+                        </button>
+                      </form>
+                    </div>
+                    <!-- <button type="button" class="btn btn-primary">
                       <a href="{{ url_for('promotion.modify_promotion', promotion_id=Promotion_dict[key].get_id()) }}">Modify Promotion</a>              
-                    </button>
+                    </button> -->
                   </td>
                 </tr>
               {% endfor %}

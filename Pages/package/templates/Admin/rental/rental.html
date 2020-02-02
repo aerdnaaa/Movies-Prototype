@@ -29,8 +29,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           
-          <div class="ml-auto">            
-            <button type="button" class="btn btn-success"><a href="{{ url_for('rental.add_rental') }}">Add Rent Movies</a></button>
+          <div class="ml-auto d-flex flex-row">
+            <form action="{{ url_for('rental.add_rental') }}" method="GET" class="ml-auto">          
+            <button type="submit" class="btn btn-success">
+              Add Rent Movies
+            </button>
+          </form>
+          <p>&nbsp&nbsp</p>
             <button type="submit" class="btn btn-danger" onclick="delete_rental()">Delete</button>
           </div>
         </div>
@@ -72,14 +77,24 @@
                     {{ Rental_dict[key].get_price() }}
                   </td>         
                   <td>
-                    <button type="button" class="btn btn-primary">
-                      <a href="{{ url_for('rental.modify_rental', rental_id=Rental_dict[key].get_id()) }}">Modify Rent</a>              
-                    </button>
+
+                    <div class="ml-auto d-flex flex-row">
+                      <form action="{{ url_for('rental.modify_rental', rental_id=Rental_dict[key].get_id()) }}" method="GET">
+                        <button type="submit" class="btn btn-primary">
+                          Modify Rent
+                        </button>
+                      </form>
+                    </div>
                   </td>
                   <td>
-                    <button type="button" class="btn btn-primary">
-                      <a href="{{ url_for('rental.rental_users', rental_id=Rental_dict[key].get_id()) }}">Rental User(s)</a>              
-                    </button>
+
+                    <div class="ml-auto d-flex flex-row">
+                      <form action="{{ url_for('rental.rental_users', rental_id=Rental_dict[key].get_id()) }}" method="GET">
+                        <button type="submit" class="btn btn-primary">
+                          Rental User(s)
+                        </button>
+                      </form>
+                    </div>
                   </td>
               </tr>
               {% endfor %}

@@ -29,16 +29,12 @@
           <form method="POST" enctype="multipart/form-data">
             {{ form.csrf_token }}
             <div class="form-group">
-              {{ form.carousel_title.label(class="form-control-label") }}
-              {{ form.carousel_title(class="form-control form-control-lg") }}
-            </div>
-            <div class="form-group">
-              {{ form.carousel_category.label(class="form-control-label") }}
-              {{ form.carousel_category(class="form-control form-control-lg") }}
+              {{ form.carousel_category.label(class="form-control-label") }}              
+              {{ render_field(form.carousel_category, class="form-control", required=False, onchange="change_carousel_title()") }}
             </div>            
             <div class="form-group">
-              {{ form.carousel_image.label(class="form-control-label") }}
-              {{ form.carousel_image(class="form-control-file") }}
+              {{ form.carousel_title.label(class="form-control-label") }}              
+              {{ render_field(form.carousel_title, class="form-control") }}
             </div>
             {{ form.submit(class="btn btn-primary") }}
           </form>
@@ -54,3 +50,26 @@
 </div>
 {% endblock %}
 <!-- /.content-wrapper -->
+
+{% block scripts %}
+<script>
+  function change_carousel_title(){
+  let carousel_category = document.getElementById("carousel_category");
+  let carousel_title = document.getElementById("carousel_title");
+
+  category = carousel_category.value;      
+
+  fetch('/admin/carousel_title/' + category).then(function(response){
+    response.json().then(function(data) {
+      let optionHTML = "";
+      for (var key in data.carousel_title){
+        var value = data.carousel_title[key];
+        optionHTML += '<option value="' + key + '">' + value + '</option>'
+      }
+
+      carousel_title.innerHTML = optionHTML;
+    });
+  });
+}  
+</script>
+{% endblock %}

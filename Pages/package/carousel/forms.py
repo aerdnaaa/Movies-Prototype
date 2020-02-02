@@ -6,11 +6,9 @@ from flask_wtf.file import FileField, FileAllowed
 class CreateCarousel(FlaskForm):
     carousel_category = SelectField(label='Carousel Category', choices=[("movies","Movie"), ("promotion", "Promotion")])
     carousel_title = SelectMultipleField(label='Carousel Title', validators=[DataRequired()], choices=[])
-    submit = SubmitField("Add carousel")
-    
+    submit = SubmitField("Add carousel")         
 
 class ModifyCarousel(FlaskForm):
-
     carousel_category = SelectField(label='Carousel Category', choices=[("movies","Movie"), ("promotion", "Promotion")])
-    carousel_title = SelectMultipleField(label='Carousel Title', validators=[DataRequired()], choices=[])        
+    carousel_title = SelectField(label='Carousel Title', validators=[DataRequired()], choices=[])        
     submit = SubmitField("Modify carousel")

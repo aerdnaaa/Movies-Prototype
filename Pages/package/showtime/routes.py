@@ -121,7 +121,7 @@ def add_showtime():
     if request.method == "POST":
         theatre_name = int(form.theatre_name.data)
         theatre_class = Movie_theatre_dict[theatre_name]
-        movie_title = int(form.movie_title.data)
+        movie_title = form.movie_title.data
         movie_class = Movies_dict[movie_title]
         timeslot_list = form.timeslot.data
         timeslot_data = []
@@ -149,7 +149,7 @@ def add_showtime():
 
 @showtime_blueprint.route("/admin/showtime/modify_showtime/<showtime_id>", methods=["GET","POST"])
 def modify_showtime(showtime_id):
-    showtime_id = int(showtime_id)
+    showtime_id = showtime_id
     form = ModifyShowtime()
     db = shelve.open('shelve.db', 'c')
     try:

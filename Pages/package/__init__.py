@@ -20,12 +20,13 @@ except:
     db["genre_list"] = genre_list
 
 try:
-    super_admin_dict = db['Users']    
-    super_admin_dict["A0"] = Admin("Super Admin", "superadmin@saw.com", ["Super Admin"], "Admin" )        
+    user_dict = db['Users']      
+    if user_dict["A0"] == None:
+        user_dict["A0"] = Admin("Super Admin", "superadmin@saw.com", ["Super Admin"], "Admin" )
 except:        
-    super_admin_dict = {}
-    super_admin_dict["A0"] = Admin("Super Admin", "superadmin@saw.com", ["Super Admin"], "Admin" )
-    db["Users"] = super_admin_dict    
+    user_dict = {}
+    user_dict["A0"] = Admin("Super Admin", "superadmin@saw.com", ["Super Admin"], "Admin" )
+    db["Users"] = user_dict    
 # bcrypt.generate_password_hash("admin").decode('utf-8')
 db.close()
 
@@ -56,4 +57,6 @@ app.register_blueprint(rental_blueprint)
 app.register_blueprint(user_blueprint)
 app.register_blueprint(errors_blueprint)
 
-
+@app.route("/<path:url_path>")
+def admin_routes(url_path):
+    return "hi"

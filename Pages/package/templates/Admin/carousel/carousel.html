@@ -29,10 +29,13 @@
     <div class="container-fluid">
       <div class="row mb-2">
 
-        <div class="ml-auto">
-          <button type="button" class="btn btn-success">
-            <a href="{{ url_for('carousel.add_carousel') }}">Add Carousel</a>              
-          </button>
+        <div class="ml-auto d-flex flex-row">
+          <form action="{{ url_for('carousel.add_carousel') }}" method="GET">
+            <button type="submit" class="btn btn-success">
+              Add Carousel    
+            </button>
+          </form>
+          <p>&nbsp&nbsp</p>
           <button type="submit" class="btn btn-danger"onclick="delete_carousel()">Delete</button>
         </div>
       </div>
@@ -73,9 +76,14 @@
                   <img src="{{ url_for('static', filename='images/' + Carousel_dict[key].get_carousel_image() ) }}" alt="{{ Carousel_dict[key].get_title() }} Img" width="200px">
                 </td>
                 <td>
-                  <button type="button" class="btn btn-primary">
-                    <a href="{{ url_for('carousel.modify_carousel', carousel_id=Carousel_dict[key].get_id()) }}">Modify Carousel</a>              
-                  </button>
+                  <div class="ml-auto d-flex flex-row">
+                    <form action="{{ url_for('carousel.modify_carousel', carousel_id=Carousel_dict[key].get_id()) }}" method="GET">
+                      <button type="submit" class="btn btn-primary">
+                        Modify Carousel
+                      </button>
+                    </form>
+                  </div>
+
                 </td>
               </tr>
             {% endfor %}
