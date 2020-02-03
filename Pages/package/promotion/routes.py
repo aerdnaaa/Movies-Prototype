@@ -1,8 +1,10 @@
 from flask import Blueprint
 from flask import render_template, request, redirect, url_for, Markup
+from flask_login import current_user, login_required
 from package.promotion.forms import CreatePromotion, ModifyPromotion
 from package.promotion.classes import Promotion
 from package.promotion.utilis import save_picture
+from package.utilis import check_admin
 import shelve, datetime
 
 promotion_blueprint = Blueprint("promotion", __name__)
@@ -40,7 +42,9 @@ def promotionDetail(id_of_promo):
 
 #* Admin Promotion
 @promotion_blueprint.route("/admin/promotion")
+@login_required
 def admin_promotion():    
+    check_admin()
     db = shelve.open('shelve.db', 'c')
     try:
         Promotion_dict = db["promotion"]
@@ -51,7 +55,9 @@ def admin_promotion():
     return render_template("Admin/promotion/promotion.html", title="Promotion", Promotion_dict=Promotion_dict)
 
 @promotion_blueprint.route("/admin/promotion/add_promotion", methods=["POST","GET"])
+@login_required
 def add_promotion():
+    check_admin()
     form = CreatePromotion()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -83,7 +89,9 @@ def add_promotion():
     return render_template("Admin/promotion/add_promotion.html", title="Add Promotion", form=form)
 
 @promotion_blueprint.route("/admin/promotion/modify_promotion/<promotion_id>", methods=["POST","GET"])
+@login_required
 def modify_promotion(promotion_id):
+    check_admin()
     form = ModifyPromotion()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -118,7 +126,9 @@ def modify_promotion(promotion_id):
     return render_template("Admin/promotion/modify_promotion.html", title="Modify Promotion", form=form, image_source=image_source)
 
 @promotion_blueprint.route("/admin/promotion/delete", methods=["GET","POST"])
+@login_required
 def delete_promotion():
+    check_admin()
     db = shelve.open('shelve.db', 'c')
     try:
         Promotion_dict = db["promotion"]

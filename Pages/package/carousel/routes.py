@@ -1,9 +1,10 @@
 from flask import Blueprint, jsonify
 from flask import render_template, request, redirect, url_for
+from flask_login import current_user, login_required
 from package.carousel.forms import CreateCarousel, ModifyCarousel
 from package.carousel.classes import Carousel
 from package.carousel.utilis import save_picture
-from flask_login import login_required
+from package.utilis import check_admin
 import shelve, datetime
 
 carousel_blueprint = Blueprint("carousel", __name__)
@@ -22,9 +23,10 @@ def home():
     return render_template("User 2/index.html", title="Home", Carousel_dict=Carousel_dict)
 
 #* Admin Carousel
-@login_required
 @carousel_blueprint.route("/admin/carousel")
+@login_required
 def admin_carousel():
+    check_admin()
     db = shelve.open('shelve.db', 'c')
     try:
         Carousel_dict = db['carousel']
@@ -35,7 +37,9 @@ def admin_carousel():
     return render_template("Admin/carousel/carousel.html", title="Carousel", Carousel_dict=Carousel_dict)
 
 @carousel_blueprint.route("/admin/carousel/add_carousel", methods=["POST","GET"])
+@login_required
 def add_carousel():
+    check_admin()
     form = CreateCarousel()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -81,7 +85,9 @@ def add_carousel():
     return render_template("Admin/carousel/add_carousel.html", title="Add Carousel", form=form)
 
 @carousel_blueprint.route("/admin/carousel/modify_carousel/<carousel_id>", methods=["POST","GET"])
+@login_required
 def modify_carousel(carousel_id):
+    check_admin()
     form = ModifyCarousel()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -126,8 +132,11 @@ def modify_carousel(carousel_id):
         form.carousel_title.data =  carousel_title
         print(form.carousel_title.data)
     return render_template("Admin/carousel/modify_carousel.html", title="Modify Carousel", form=form)
+
 @carousel_blueprint.route("/admin/carousel/delete", methods=["GET","POST"])
+@login_required
 def delete_carousel():
+    check_admin()
     db = shelve.open('shelve.db', 'c')
     try:
         Carousel_dict = db["carousel"]
@@ -149,7 +158,9 @@ def delete_carousel():
     return redirect(url_for('carousel.admin_carousel'))
 
 @carousel_blueprint.route("/admin/carousel_title/<category>")
+@login_required
 def return_carousel_title(category):
+    check_admin()
     db = shelve.open("shelve.db", 'c')
     try:
         title_dict = db[category]

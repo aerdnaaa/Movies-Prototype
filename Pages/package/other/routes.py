@@ -1,6 +1,8 @@
 from flask import Blueprint
 from flask import render_template, request, redirect, url_for, Markup
+from flask_login import current_user, login_required
 from package.other.forms import CreateContactUsForm
+from package.utilis import check_admin
 from flask_login import login_required
 import shelve
 # from package.utilis import check_admin
@@ -17,6 +19,7 @@ def contactUs():
 @main_blueprint.route("/admin/home")
 @login_required
 def admin_home():
+    check_admin()
     db = shelve.open("shelve.db", "c")
     try:
         Promotion_dict = db["promotion"]
@@ -54,19 +57,27 @@ def admin_home():
     return render_template("Admin/index.html", title="Dashboard", count_of_promotion=count_of_promotion, count_of_rental=count_of_rental, count_of_movie=count_of_movie, count_of_admin=count_of_admin)
 
 @main_blueprint.route("/admin/composeMail")
+@login_required
 def admin_composeMail():
+    check_admin()
     return render_template("Admin/compose.html", title="Compose Mail") 
 
 @main_blueprint.route("/admin/readMail")
+@login_required
 def admin_readMail():
+    check_admin()
     return render_template("Admin/read-mail.html", title="Read Mail")
 
 @main_blueprint.route("/admin/calendar")
+@login_required
 def admin_calendar():
+    check_admin()
     return render_template("Admin/calendar.html", title="Calendar")
 
 @main_blueprint.route("/admin/mailbox")
+@login_required
 def admin_mailbox():
+    check_admin()
     return render_template("Admin/mailbox.html", title="Mailbox")
     
 @main_blueprint.route("/legal")

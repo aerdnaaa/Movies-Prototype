@@ -1,10 +1,11 @@
 from flask import Blueprint
 from flask import render_template, request, redirect, url_for, Markup
-from flask_login import current_user
+from flask_login import current_user, login_required
 from package.movie.forms import CreateMovieForm, ModifyMovieForm
 from package.movie.classes import Movie
 from package.user.classes import Admin
 from package.movie.utilis import save_picture, save_video
+from package.utilis import check_admin
 import shelve, datetime
 
 movie_blueprint = Blueprint("movie", __name__)
@@ -43,7 +44,9 @@ def movie_detail(movie_id):
 
 #* Admin Promotion
 @movie_blueprint.route("/admin/movies")
+@login_required
 def admin_movies():
+    check_admin()
     db = shelve.open('shelve.db', 'c')
     try:
         Movies_dict = db["movies"]
@@ -54,7 +57,9 @@ def admin_movies():
     return render_template("Admin/movie/movies.html", title="Movies", Movies_dict=Movies_dict)
 
 @movie_blueprint.route("/admin/movies/add_movie", methods=["POST","GET"])
+@login_required
 def add_movie():
+    check_admin()
     form = CreateMovieForm()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -102,7 +107,9 @@ def add_movie():
     return render_template("Admin/movie/add_movie.html", title="Add Movie", form=form)
 
 @movie_blueprint.route("/admin/movies/modify_movie/<movie_id>", methods=["POST", "GET"])
+@login_required
 def modify_movie(movie_id):
+    check_admin()
     movie_id = movie_id
     form = ModifyMovieForm()
     db = shelve.open('shelve.db', 'c')
@@ -154,7 +161,9 @@ def modify_movie(movie_id):
     return render_template("Admin/movie/modify_movie.html", title="Modify Movie Theatre", form=form, image_source=image_source, trailer_source=trailer_source, fullvideo_source=fullvideo_source)
 
 @movie_blueprint.route("/admin/movies/delete", methods=["POST","GET"])
+@login_required
 def delete_movie():
+    check_admin()
     db = shelve.open('shelve.db', 'c')
     try:
         Movies_dict = db["movies"]

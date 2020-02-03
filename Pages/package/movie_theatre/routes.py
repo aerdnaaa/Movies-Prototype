@@ -1,8 +1,10 @@
 from flask import Blueprint
 from flask import render_template, request, redirect, url_for, Markup
+from flask_login import current_user, login_required
 from package.movie_theatre.forms import CreateMovieTheatre, ModifyMovieTheatre
 from package.movie_theatre.classes import Theatre
 from package.movie_theatre.utilis import save_picture
+from package.utilis import check_admin
 import shelve, datetime
 
 theatre_blueprint = Blueprint("movie_theatre", __name__)
@@ -10,7 +12,9 @@ theatre_blueprint = Blueprint("movie_theatre", __name__)
 
 #* Admin Movie Theatre
 @theatre_blueprint.route("/admin/movie_theatre", methods=["GET","POST"])
+@login_required
 def admin_movie_theatre():
+    check_admin()
     db = shelve.open('shelve.db', 'c')
     try:
         Movie_theatre_dict = db["movie_theatre"]
@@ -21,7 +25,9 @@ def admin_movie_theatre():
     return render_template("Admin/movie_theatre/movie_theatre.html", title="Movie Theatre", Movie_theatre_dict=Movie_theatre_dict)
 
 @theatre_blueprint.route("/admin/movie_theatre/add_movie_theatre", methods=["GET","POST"])
+@login_required
 def add_movie_theatre():
+    check_admin()
     form = CreateMovieTheatre()
     db = shelve.open('shelve.db', 'c')    
     try:
@@ -47,7 +53,9 @@ def add_movie_theatre():
     return render_template("Admin/movie_theatre/add_movie_theatre.html", title="Add Movie Theatre", form=form)
 
 @theatre_blueprint.route("/admin/movie_theatre/modify_movie_theatre/<movie_theatre_id>", methods=["GET","POST"])
+@login_required
 def modify_movie_theatre(movie_theatre_id):
+    check_admin()
     movie_theatre_id = movie_theatre_id
     form = ModifyMovieTheatre()
     db = shelve.open('shelve.db', 'c')    
@@ -75,7 +83,9 @@ def modify_movie_theatre(movie_theatre_id):
     return render_template("Admin/movie_theatre/modify_movie_theatre.html", title="Modify Movie Theatre", form=form, image_source=image_source)
 
 @theatre_blueprint.route("/admin/movie_theatre/delete", methods=["GET","POST"])
+@login_required
 def delete_movie_theatre():
+    check_admin()
     db = shelve.open('shelve.db', 'c')    
     try:
         Movie_theatre_dict = db["movie_theatre"]

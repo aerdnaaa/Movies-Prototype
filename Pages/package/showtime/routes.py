@@ -1,7 +1,9 @@
 from flask import Blueprint
 from flask import render_template, request, redirect, url_for, jsonify
+from flask_login import current_user, login_required
 from package.showtime.classes import Showtime
 from package.showtime.forms import CreateShowtime, ModifyShowtime
+from package.utilis import check_admin
 import shelve, datetime
 
 showtime_blueprint = Blueprint("showtime", __name__)
@@ -77,7 +79,9 @@ def bookmovieseats(showtime_id):
 
 
 @showtime_blueprint.route("/admin/showtime")
+@login_required
 def admin_showtime():
+    check_admin()
     db = shelve.open('shelve.db', 'c')
     try:
         Showtime_dict = db["showtime"]        
@@ -88,7 +92,9 @@ def admin_showtime():
     return render_template("Admin/showtime/showtime.html", title="Showtimes", Showtime_dict=Showtime_dict)
 
 @showtime_blueprint.route("/admin/showtime/add_showtime", methods=["GET","POST"])
+@login_required
 def add_showtime():
+    check_admin()
     form = CreateShowtime()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -148,7 +154,9 @@ def add_showtime():
     return render_template("Admin/showtime/add_showtime.html", title="Add Showtime", form=form)
 
 @showtime_blueprint.route("/admin/showtime/modify_showtime/<showtime_id>", methods=["GET","POST"])
+@login_required
 def modify_showtime(showtime_id):
+    check_admin()
     form = ModifyShowtime()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -200,7 +208,9 @@ def modify_showtime(showtime_id):
     return render_template("/Admin/showtime/modify_showtime.html", title="Modify Showtime", form=form)
 
 @showtime_blueprint.route("/admin/showtime/delete_showtime", methods=["GET","POST"])
+@login_required
 def delete_showtime():
+    check_admin()
     db = shelve.open('shelve.db', 'c')
     try:
         Showtime_dict = db["showtime"]
@@ -221,7 +231,9 @@ def delete_showtime():
     return redirect(url_for("showtime.admin_showtime"))
 
 @showtime_blueprint.route("/admin/showtime_theatre/<theatre>", methods=["GET","POST"])
+@login_required
 def hall_number(theatre):
+    check_admin()
     theatre = int(theatre)
     db = shelve.open('shelve.db', 'c')
     theatre_dict = db["movie_theatre"]

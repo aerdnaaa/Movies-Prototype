@@ -1,8 +1,10 @@
 from flask import Blueprint
 from flask import render_template, request, redirect, url_for
+from flask_login import current_user, login_required
 from package.rental.forms import CreateRental, ModifyRental
 from package.rental.classes import Rental
 from package.rental.utilis import save_picture
+from package.utilis import check_admin
 import shelve, datetime
 
 rental_blueprint = Blueprint("rental", __name__)
@@ -22,7 +24,9 @@ def rentmovie():
 
 #* Admin Rental
 @rental_blueprint.route("/admin/rental")
+@login_required
 def admin_rental():
+    check_admin()
     db = shelve.open('shelve.db', 'c')
     try:
         Rental_dict = db["rental"]
@@ -33,7 +37,9 @@ def admin_rental():
     return render_template("Admin/rental/rental.html", title="Rental", Rental_dict=Rental_dict)
 
 @rental_blueprint.route("/admin/rental/add_rental", methods=["GET","POST"])
+@login_required
 def add_rental():
+    check_admin()
     form = CreateRental()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -66,7 +72,9 @@ def add_rental():
     return render_template("Admin/rental/add_rental.html", title="Add Rental", form=form)    
     
 @rental_blueprint.route("/admin/rental/modify_rental/<rental_id>", methods=["GET","POST"])
+@login_required
 def modify_rental(rental_id):
+    check_admin()
     form = ModifyRental()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -99,7 +107,9 @@ def modify_rental(rental_id):
     return render_template("Admin/rental/modify_rental.html", title="Modify Rental", form=form)    
 
 @rental_blueprint.route("/admin/rental/delete", methods=["GET","POST"])
+@login_required
 def delete_rental():
+    check_admin()
     db = shelve.open('shelve.db', 'c')
     try:
         Rental_dict = db["rental"]
