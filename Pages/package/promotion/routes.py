@@ -10,6 +10,7 @@ promotion_blueprint = Blueprint("promotion", __name__)
 #* User Promotion
 @promotion_blueprint.route("/promotions")
 def promotion():
+    #opening shelve with create
     db = shelve.open("shelve.db", "c")
     try:
         Promotion_dict = db["promotion"]
@@ -58,7 +59,7 @@ def add_promotion():
         Promotion.id = list(Promotion_dict.values())[-1].get_id()
     except:        
         Promotion_dict = {}
-        db["promotion"] = Promotion_dict
+        db["promotion"] = Promotion_dict    
     if form.validate_on_submit():        
         promotion_title = form.promotion_title.data
         promotion_image = save_picture(form.promotion_image.data, "promotion")

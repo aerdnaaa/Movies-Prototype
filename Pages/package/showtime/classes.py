@@ -1,7 +1,7 @@
 class Showtime:
-    id = 0
+    id = "S-1"
     def __init__(self, theatre_class, movie_class, show_period, timeslot, hall_number):
-        Showtime.id += 1
+        Showtime.id = Showtime.id[0] + str(int(Showtime.id[1:]) + 1)
         self.__id = Showtime.id
         self.__theatre_class = theatre_class
         self.__movie_class = movie_class

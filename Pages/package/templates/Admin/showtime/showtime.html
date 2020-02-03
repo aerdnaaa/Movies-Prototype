@@ -84,14 +84,15 @@
               <td>
                 {{ Showtime_dict[key].get_hall_number() }}
               </td>               
-              <td>
+              <td>     
 
-                <div class="ml-auto d-flex flex-row">
-                  <form action="{{ url_for('showtime.modify_showtime', showtime_id= Showtime_dict[key].get_id()) }}" method="GET">
-                <button type="button" class="btn btn-primary">
-                  Modify Showtime                  
-                </button>  
-              </form>         
+              <div class="ml-auto d-flex flex-row">
+                <form action="{{ url_for('showtime.modify_showtime', showtime_id= Showtime_dict[key].get_id()) }}" method="GET">
+                  <button type="submit" class="btn btn-primary">
+                    Modify Showtime
+                  </button>
+                </form>
+              </div>
               </td>
             </tr>
             {% endfor %}

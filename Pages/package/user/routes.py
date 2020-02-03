@@ -4,7 +4,7 @@ from package.user.forms import CreateUserForm,LoginForm, CreateAdminForm, Modify
 import shelve
 from package.user.classes import User, Admin
 from package import bcrypt, login_manager
-from package.user.utilis import load_user, return_emails, is_correct_password, return_user_id
+from package.user.utilis import load_user, return_emails, is_correct_password, return_user_id, save_picture
 from flask_login import login_user, logout_user, login_required, current_user
 import datetime
 
@@ -29,7 +29,7 @@ def login():
             else:
                 return redirect(url_for('other.admin_home'))
         else:
-            flash('Invalid username or password. Please check both fields.','danger')      
+            flash('Invalid username or password. Please check both fields.','danger')         
     return render_template("User 2/signin.html", title="Login Page",form=form)
 
 @user_blueprint.route("/logout")
@@ -162,12 +162,24 @@ def delete_admin():
 
 @user_blueprint.route("/admin/my_account", methods=["POST","GET"])
 def my_admin_account():
-    form = ModifyAdminAccount()
+    form = ModifyAdminAccount()    
+    print(form.profile_picture.data)
+    print(form.profile_picture.data)    
+    print(form.profile_picture.data)
+    print(form.profile_picture.data)
+    print(form.profile_picture.data)
 
-    if request.method == "POST":
-        pass
+    if request.method == "POST" and form.username.errors == ():                        
+        db = shelve.open('shelve.db', 'c')        
+        user_dict = db["Users"]
+        print(form.profile_picture.data)
+        if form.profile_picture.data != None:
+            picture_path = save_picture(form.profile_picture.data, "admin_profile_pictures/")
+            print(picture_path)
+        else:
+            picture_path = ""
+
     elif request.method == "GET":
         form.username.data = current_user.get_username()
-        form.email.data = current_user.get_email()        
-
+        
     return render_template("Admin/users/admin_account.html", title="My Admin Account", form=form)

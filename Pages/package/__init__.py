@@ -56,7 +56,3 @@ app.register_blueprint(promotion_blueprint)
 app.register_blueprint(rental_blueprint)
 app.register_blueprint(user_blueprint)
 app.register_blueprint(errors_blueprint)
-
-@app.route("/<path:url_path>")
-def admin_routes(url_path):
-    return "hi"

@@ -45,13 +45,13 @@
           <!-- small box -->
           <div class="small-box bg-info">
             <div class="inner">
-              <h3>-</h3>
-              <p>Inbox</p>
+              <h3>{{ count_of_admin }}</h3>
+              <p>Admins</p>
             </div>
             <div class="icon">
-              <i class="ion ion-bag"></i>
+              <i class="fas fa-user"></i>
             </div>
-            <a href="{{ url_for('other.admin_mailbox') }}" class="small-box-footer">More info <i
+            <a href="{{ url_for('user.admin_accounts') }}" class="small-box-footer">More info <i
                 class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
@@ -60,12 +60,12 @@
           <!-- small box -->
           <div class="small-box bg-success">
             <div class="inner">
-              <h3>-</sup></h3>
+              <h3>{{ count_of_movie }}</sup></h3>
 
-              <p>Book Movies</p>
+              <p>Movies</p>
             </div>
             <div class="icon">
-              <i class="ion ion-stats-bars"></i>
+              <i class="fas fa-film"></i>
             </div>
             <a href="{{ url_for('showtime.admin_showtime') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
           </div>
@@ -75,11 +75,11 @@
           <!-- small box -->
           <div class="small-box bg-warning">
             <div class="inner">
-              <h3>-</h3>
+              <h3>{{ count_of_rental }}</h3>
               <p>Rent Movies</p>
             </div>
             <div class="icon">
-              <i class="ion ion-person-add"></i>
+              <i class="fas fa-video"></i>
             </div>
             <a href="{{ url_for('rental.admin_rental') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
           </div>
@@ -89,12 +89,11 @@
           <!-- small box -->
           <div class="small-box bg-danger">
             <div class="inner">
-              <h3>-</h3>
-
+              <h3>{{ count_of_promotion }}</h3>
               <p>Promotion</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="fas fa-tag"></i>
             </div>
             <a href="{{ url_for('promotion.admin_promotion') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
           </div>

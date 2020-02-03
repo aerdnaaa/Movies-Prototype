@@ -53,8 +53,8 @@ def bookmovie():
         theatre_name = theatre_class.get_theatre_name()
         theatre_movie_showtime_list = theatre_movie_showtime_dict.get(theatre_name, [])
         theatre_movie_showtime_list.append(showtime_class)
-        theatre_movie_showtime_dict[theatre_name] = theatre_movie_showtime_list    
-        #, theatre_dict=theatre_dict, theatre_movie_showtime_dict=theatre_movie_showtime_dict
+        theatre_movie_showtime_dict[theatre_name] = theatre_movie_showtime_list
+    print(theatre_movie_showtime_dict)            
     return render_template("User 2/showtime.html", title="Book Movie", date_dict=date_dict, Movies_dict=movie_dict, genre_list=genre_list, theatre_dict=theatre_dict, theatre_movie_showtime_dict=theatre_movie_showtime_dict) 
 
 @showtime_blueprint.route("/bookmovieseats/<showtime_id>")
@@ -119,7 +119,7 @@ def add_showtime():
     form.hall_number.choices = halls
     timeslot_dict = {"1":"9am to 12pm", "2":"12pm to 3pm", "3":"3pm to 6pm", "4":"6pm to 9pm", "5":"9pm to 12am"}
     if request.method == "POST":
-        theatre_name = int(form.theatre_name.data)
+        theatre_name = form.theatre_name.data
         theatre_class = Movie_theatre_dict[theatre_name]
         movie_title = form.movie_title.data
         movie_class = Movies_dict[movie_title]
@@ -149,7 +149,6 @@ def add_showtime():
 
 @showtime_blueprint.route("/admin/showtime/modify_showtime/<showtime_id>", methods=["GET","POST"])
 def modify_showtime(showtime_id):
-    showtime_id = showtime_id
     form = ModifyShowtime()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -186,15 +185,17 @@ def modify_showtime(showtime_id):
         form.showtime_start_date.data, form.showtime_end_date.data = showtime_class.get_show_period().split(" - ")
         form.hall_number.data = str(showtime_class.get_hall_number())
     elif request.method == "POST":
-        theatre_class = Movie_theatre_dict[int(form.theatre_name.data)]
-        movie_class = Movies_dict[int(form.movie_title.data)]
+        theatre_class = Movie_theatre_dict[form.theatre_name.data]
+        movie_class = Movies_dict[form.movie_title.data]
         timeslot_list = form.timeslot.data
         timeslot_data = []
         for timeslot in timeslot_list:
             timeslot_data.append(timeslot_dict[timeslot])
         show_period = form.showtime_start_date.data + " - " + form.showtime_end_date.data
         hall_number = form.hall_number.data
-        showtime_class.set_all_attributes(theatre_class, movie_class, timeslot_data, show_period, hall_number)
+        showtime_class.set_all_attributes(theatre_class, movie_class, show_period, timeslot_data, hall_number)
+        db["showtime"] = Showtime_dict
+        db.close()
         return redirect(url_for("showtime.admin_showtime"))
     return render_template("/Admin/showtime/modify_showtime.html", title="Modify Showtime", form=form)
 

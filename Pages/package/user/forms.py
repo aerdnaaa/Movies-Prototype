@@ -1,7 +1,7 @@
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, Form
 from wtforms import StringField, validators, SubmitField, SelectField, SelectMultipleField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, Length, EqualTo, Email
-from flask_wtf.file import FileField, FileAllowed
+from wtforms.validators import DataRequired, Length, EqualTo, Email, Optional
+from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms.fields.html5 import EmailField,DateField
 
 
@@ -34,9 +34,8 @@ class ModifyAdminForm(FlaskForm):
     submit = SubmitField("Modify Admin")
 
 class ModifyAdminAccount(FlaskForm):
-    username = StringField("Username",[Length(min=1, max=30), DataRequired()])
-    email = EmailField("Email")
-    new_password = PasswordField("Password", [Length(min=8)])
-    confirm_password = PasswordField("Confirm Password", [Length(min=8), EqualTo('new_password', message="Passwords must match.")]) 
-    profile_picture = FileField("Insert New Image" )
+    username = StringField("Username",[Length(min=1, max=30), DataRequired()])    
+    new_password = PasswordField("Password", [Optional(), Length(min=8)])
+    confirm_password = PasswordField("Confirm Password", [Length(min=8), EqualTo('new_password', message="Passwords must match."), Optional()]) 
+    profile_picture = FileField("Insert New Image", [FileRequired(), FileAllowed(["jpg", "png", "jpeg"], message="This file type is not allowed")])
     submit = SubmitField("Update")

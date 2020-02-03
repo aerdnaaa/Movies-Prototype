@@ -2,6 +2,7 @@ from flask import Blueprint
 from flask import render_template, request, redirect, url_for, Markup
 from package.other.forms import CreateContactUsForm
 from flask_login import login_required
+import shelve
 # from package.utilis import check_admin
 
 main_blueprint = Blueprint("other", __name__)
@@ -16,8 +17,41 @@ def contactUs():
 @main_blueprint.route("/admin/home")
 @login_required
 def admin_home():
-    
-    return render_template("Admin/index.html", title="Dashboard")
+    db = shelve.open("shelve.db", "c")
+    try:
+        Promotion_dict = db["promotion"]
+    except:        
+        Promotion_dict = {}
+        db["promotion"] = Promotion_dict 
+    count_of_promotion = 0
+    for key in Promotion_dict:
+        count_of_promotion += 1
+#For loop for rental data
+    try:
+        Rental_dict = db["rental"]
+    except:        
+        Rental_dict = {}
+        db["rental"] = Rental_dict
+    count_of_rental = 0
+    for key in Rental_dict:
+        count_of_rental += 1 
+
+    try:
+        Movies_dict = db["movies"]        
+    except:
+        Movies_dict = {}    
+        db["movies"] = Movies_dict
+    count_of_movie = 0
+    for key in Movies_dict:
+        count_of_movie += 1
+
+    admin_dict = db["Users"]
+    count_of_admin = 0
+    for key in admin_dict:
+        if key[0]== "A":
+            count_of_admin += 1
+        
+    return render_template("Admin/index.html", title="Dashboard", count_of_promotion=count_of_promotion, count_of_rental=count_of_rental, count_of_movie=count_of_movie, count_of_admin=count_of_admin)
 
 @main_blueprint.route("/admin/composeMail")
 def admin_composeMail():

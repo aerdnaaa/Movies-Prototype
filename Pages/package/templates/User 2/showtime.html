@@ -46,7 +46,22 @@
                             </ul>            
                         </div>
                         <!-- end filter item -->
+                        <!-- filter item -->
+                        <div class="filter__item" id="filter__genre">
+                            <span class="filter__item-label">THEATRES:</span>
 
+                            <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-theatre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <input type="button" value="All Theatres">
+                                <span></span>
+                            </div>                            
+                            <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-theatre">  
+                                <li>All Theatres</li>                             
+                                {% for theatre in theatre_dict.values() %}
+                                    <li>{{ theatre.get_theatre_name() }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- end filter item -->
                         <!-- filter item -->
                         <div class="filter__item" id="filter__movie">
                             <span class="filter__item-label">MOVIE:</span>
@@ -87,22 +102,6 @@
                         </div>
                         <!-- end filter item -->
                         <!-- filter item -->
-                        <div class="filter__item" id="filter__genre">
-                            <span class="filter__item-label">THEATRES:</span>
-
-                            <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-theatre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <input type="button" value="All Theatres">
-                                <span></span>
-                            </div>                            
-                            <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-theatre">  
-                                <li>All Theatres</li>                             
-                                {% for theatre in theatre_dict.values() %}
-                                    <li>{{ theatre.get_theatre_name() }}</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <!-- end filter item -->
-                        <!-- filter item -->
                         <div class="filter__item" id="filter__rate">
                             <span class="filter__item-label">IMBd:</span>
 
@@ -137,8 +136,9 @@
     <div class="container">
         <div class="row">
             {% for key, movie in Movies_dict.items() %}
+                
             <!-- card -->
-            <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+            <!-- <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
                 <div class="card">                    
                     <div class="card__cover">
                         <img src="{{ url_for('static', filename='images/movie poster/' + movie.get_poster()) }}" alt="">
@@ -153,18 +153,54 @@
                         <span class="card__rate"><i class="icon ion-ios-star"></i>{{ movie.get_rating() }}</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- end card -->
             {% endfor %}
-
+            <div class="col-12">
+                {% for theatre_name, showtime_list in theatre_movie_showtime_dict.items() %}
+                <table border="1" style="color:white">
+                    <thead>
+                        <th><h2>{{ theatre_name }}</h2></th>
+                        <th>
+                            <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
+                                {% for value in date_dict.values() %}
+                                {% if loop.index == 1 %}
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">{{ value[:-4] }}</a>
+                                </li>
+                                {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">{{ value[:-4] }}</a>
+                                </li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>   
+                        </th>
+                    </thead>
+                    <tbody>
+                        {% for showtime_class in showtime_list %}
+                        <tr>
+                            <td>{{ showtime_class.get_movie_class().get_movie_name()  }}</td>
+                            <td colspan="6">
+                                {% for timeslot in showtime_class.get_timeslot() %}                                
+                                <button class="filter__btn" type="button" style="display: inline-block;">{{ timeslot }}</button>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endfor %}
+            </div>
+    
             <!-- paginator -->
             <div class="col-12">
                 <ul class="paginator">
                     <li class="paginator__item paginator__item--prev">
                         <a href="#"><i class="icon ion-ios-arrow-back"></i></a>
                     </li>
-                    <li class="paginator__item"><a href="#">1</a></li>
-                    <li class="paginator__item paginator__item--active"><a href="#">2</a></li>
+                    <li class="paginator__item paginator__item--active"><a href="#">1</a></li>
+                    <li class="paginator__item"><a href="#">2</a></li>
                     <li class="paginator__item"><a href="#">3</a></li>
                     <li class="paginator__item"><a href="#">4</a></li>
                     <li class="paginator__item paginator__item--next">
@@ -178,3 +214,9 @@
 </div>
 <!-- end showtime -->
 {% endblock %}
+
+
+
+
+
+
