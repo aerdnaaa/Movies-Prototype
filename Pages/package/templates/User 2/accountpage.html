@@ -1,0 +1,581 @@
+{% extends "User 2/base.html" %}
+{% from "User 2/includes/_formHelper.html" import render_field %}
+{% block content %}
+
+<!-- <div class="container" style="background-color: white;">
+    <div class="container position-relative" id="content">
+        <div class="row h-100">
+            <aside class="col-md-3 bg-light" id="left">
+                <div class="mt-5 mb-3 sticky-top" id="side">
+                    
+                     <div class="display-4">Test User</div> -->
+                    <!-- <ul class="nav flex-md-column flex-row justify-content-between" id="sidenav"> -->
+                        <!-- Side bar -->
+                        <!-- <li class="nav-item"><a href="#tab-1-testing" class="nav-link active text-dark">Contact Details</a></li>
+                        <li class="nav-item collapsed active" data-toggle="collapse" data-target="#movies"> 
+                            <a href="#movies" class="nav-link text-dark">My Movies</a>
+                        </li>
+                            <ul class="sub-menu collapse" id="movies">
+                                    <li class="nav-item"><a href="#RML" class="nav-link">Rented Movies Library</a></li>
+                                    <li class="nav-item"><a href="#WL" class="nav-link">Watchlist</a></li>
+                                    <li class="nav-item"><a href="#PW" class="nav-link">Previously Watched</a></li>
+                            </ul>
+                        <li class="nav-item collapsed active" data-toggle="collapse" data-target="#billing">
+                            <a href="#billing" class="nav-link text-dark">Billing</a>
+                        </li>
+                            <ul class="sub-menu collapse" id="billing">
+                                    <li class="nav-item"><a href="#PH" class="nav-link">Payment History</a></li>
+                                    <li class="nav-item"><a href="#PM" class="nav-link">Payment Methods</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a href="#sec5" class="nav-link text-dark">Delete</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div> -->
+<section class="content">
+    <div class="content__head">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="mb-3 content__title">Account Information</h2>
+                    <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tab-1-testing" role="tab" aria-controls="tab-1-testing" aria-selected="true">Contact Details</a>
+                        </li>
+                
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab-2-testing" role="tab" aria-controls="tab-2-testing" aria-selected="false">Movies</a>
+                        </li>
+                
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab-3-testing" role="tab" aria-controls="tab-3-testing" aria-selected="false">Billing Information</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">                                                
+        <!-- content tabs -->
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="tab-1-testing" role="tabpanel" aria-labelledby="1-tab">
+                <div class="row">
+                    <div class="col contact-details">                      
+                        <img src="{{ url_for('static', filename='images/profile_pictures/' + current_user.get_profile_picture() ) }}" alt="..." style="border-radius: 50%;" width="150" height="auto">
+                        <div class="pl-4">
+                            <div class="row">
+                                <div class="col-lg-3 ">
+                                    <h3 class="card__title">Full Name</h3>
+                                    <div class="card__description">
+                                        <p>{{ current_user.get_fullname() }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <h3 class="card__title">Gender</h3>
+                                    <div class="card__description">
+                                        <p>{{ current_user.get_gender() }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <h3 class="card__title">Date Of Birth</h3>
+                                    <div class="card__description">
+                                        <p>{{ current_user.get_DateofBirth() }}</p>
+                                    </div>
+                                </div>
+                            </div>               
+                            <div class="row">
+                                    <div class="col-lg-3 ">
+                                    <h3 class="card__title">Username</h3>
+                                    <div class="card__description">
+                                        <p>{{ current_user.get_username() }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <h3 class="card__title">Email Address</h3>
+                                    <div class="card__description">
+                                        <p>{{ current_user.get_email() }}</p>
+                                    </div>
+                                </div>
+                            </div>        
+                            <div class="row">
+                                    <!---->
+                                <div class="col-lg-4">
+                                    <button type="button" class="sign__btn" data-toggle="modal" data-target="#UCDmodal">
+                                        Update Contact Details
+                                    </button>
+                                </div>
+                                <div class="col-lg-4">
+                                    <button type="button" class="sign__btn" data-toggle="modal" data-target="#UPmodal">
+                                        Change Password
+                                    </button>
+                                </div>
+                                <div class="col-lg-4">
+                                    <button type="button" class="sign__btn" data-toggle="modal" data-target="#UPPmodal">
+                                        Change Display Picture
+                                    </button>
+                                </div>
+                                    <!---->
+                            </div>                                       
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="tab-pane fade show" id="tab-2-testing" role="tabpanel" aria-labelledby="1-tab">
+                <div class="row">
+                    <div class="col movies">
+                        <div class="anchor" id="Movies"></div>
+                        <h3>My Movies</h3>
+                        <div class="pl-4">
+                            <div class="anchor" id="RML"></div>
+                            <table class="table table-striped table-light">
+                                <thead>
+                                    <tr>
+                                        <th scope="row" colspan="5" class="table-primary"><h5>Rented Movies Library</h5></th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Runtime</th>
+                                        <th scope="col">Genre</th>
+                                        <th scope="col">Date added</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr >
+                                        <th scope="row">1</th>
+                                        <td>Joker</td>
+                                        <td>2 hours 2 minutes</td>
+                                        <td>Drama/Thriller</td>
+                                        <td>20 November 2019</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Inception</td>
+                                        <td>2 hours 28 minutes</td>
+                                        <td>Sci-Fi/Thriller</td>
+                                        <td>20 November 2019</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Interstellar</td>
+                                        <td>2 hours 49 minutes</td>
+                                        <td>Drama/Mystery</td>
+                                        <td>20 November 2019</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" colspan="5"><button type="button" class="btn btn-sm btn-block">View more...</button></th>
+                                    </tr>                                                                                                                                                                  
+                                </tbody>
+                            </table>
+                            <table border="1" id="{{ theatre_name }}" style="color:white;width:1110px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="row" colspan="5" class="table-primary"><h5>Rented Movies Library</h5></th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Runtime</th>
+                                        <th scope="col">Genre</th>
+                                        <th scope="col">Date added</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr >
+                                        <th scope="row">1</th>
+                                        <td>Joker</td>
+                                        <td>2 hours 2 minutes</td>
+                                        <td>Drama/Thriller</td>
+                                        <td>20 November 2019</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>Inception</td>
+                                        <td>2 hours 28 minutes</td>
+                                        <td>Sci-Fi/Thriller</td>
+                                        <td>20 November 2019</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>Interstellar</td>
+                                        <td>2 hours 49 minutes</td>
+                                        <td>Drama/Mystery</td>
+                                        <td>20 November 2019</td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row" colspan="5"><button type="button" class="btn btn-sm btn-block"><p class="card__title">View more...</p></button></td>
+                                    </tr>
+                                </tbody>
+                                <hr style="margin: 45px auto 45px auto; visibility: hidden;">
+                            </table>
+
+                    
+                            <div class="anchor" id="WL"></div>
+                            <table class="table table-striped table-light">
+                                    <thead>
+                                        <tr>
+                                            <th scope="row" colspan="5" class="table-primary"><h5>Watchlist</h5></th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Runtime</th>
+                                            <th scope="col">Genre</th>
+                                            <th scope="col">Date added</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr >
+                                            <th scope="row">1</th>
+                                            <td>Joker</td>
+                                            <td>2 hours 2 minutes</td>
+                                            <td>Drama/Thriller</td>
+                                            <td>20 November 2019</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">2</th>
+                                            <td>Inception</td>
+                                            <td>2 hours 28 minutes</td>
+                                            <td>Sci-Fi/Thriller</td>
+                                            <td>20 November 2019</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">3</th>
+                                            <td>Interstellar</td>
+                                            <td>2 hours 49 minutes</td>
+                                            <td>Drama/Mystery</td>
+                                            <td>20 November 2019</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" colspan="5"><button type="button" class="btn btn-sm btn-block">View more...</button></th>
+                                        </tr>                                                                                                             
+                                    </tbody>
+                            </table>
+
+                            <div class="anchor" id="PW"></div>
+                            <table class="table table-striped table-light">
+                                    <thead>
+                                        <tr>
+                                            <th scope="row" colspan="5" class="table-primary"><h5>Previously Watched</h5></th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Runtime</th>
+                                            <th scope="col">Genre</th>
+                                            <th scope="col">Date Watched</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr >
+                                            <th scope="row">1</th>
+                                            <td>Joker</td>
+                                            <td>2 hours 2 minutes</td>
+                                            <td>Drama/Thriller</td>
+                                            <td>20 November 2019</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">2</th>
+                                            <td>Inception</td>
+                                            <td>2 hours 28 minutes</td>
+                                            <td>Sci-Fi/Thriller</td>
+                                            <td>20 November 2019</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">3</th>
+                                            <td>Interstellar</td>
+                                            <td>2 hours 49 minutes</td>
+                                            <td>Drama/Mystery</td>
+                                            <td>20 November 2019</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row" colspan="5"><button type="button" class="btn btn-sm btn-block">View more...</button></th>
+                                        </tr>                                                                                                                                                                      
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>                                        
+                </div>
+            </div>
+            <div class="tab-pane fade show" id="tab-3-testing" role="tabpanel" aria-labelledby="1-tab">
+                <div class="row">
+                    <div class="col billing-information">
+                        <div class="anchor" id="billing"></div>
+                        <h3>Billing Information</h3>
+                        <div class="pl-4">
+                                <div class="anchor" id="PH"></div>
+                                <table class="table table-striped table-light">
+                                        <thead>
+                                            <tr>
+                                                <th scope="row" colspan="5" class="table-primary"><h5>Payment History</h5></th>
+                                            </tr>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Method of Payment</th>
+                                                <th scope="col">Date Purchased</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr >
+                                                <th scope="row">1</th>
+                                                <td>Joker</td>
+                                                <td>$x</td>
+                                                <td>Credit Card</td>
+                                                <td>20 November 2019</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>Inception</td>
+                                                <td>$x</td>
+                                                <td>Credit Card</td>
+                                                <td>20 November 2019</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">3</th>
+                                                <td>Interstellar</td>
+                                                <td>$x</td>
+                                                <td>Credit Card</td>
+                                                <td>20 November 2019</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" colspan="5"><button type="button" class="btn btn-sm btn-block">View more...</button></th>
+                                            </tr>                                                                                                                                                                  
+                                        </tbody>
+                                    </table>
+
+                                <div class="anchor" id="PM">
+                                    <h5 class="text-left mt-1">Payment Methods</h5>
+                                    <hr width="100%">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <!-- place card logo next to the visa ending thing -->
+                                            <!-- maybe just make this a table? idk lol -->
+                                            <!-- <h5>Visa ending in 1234</h5>
+                                            <p class="text-muted">Expires Jan 2030</p>
+                                        </div> -->
+                                        <!-- <div class="col-lg-6">
+                                            <button type="button" class="btn btn-secondary btn-lg">Edit</button> -->
+                                        <!-- </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <h5>Visa ending in 1231</h5>
+                                            <p class="text-muted">Expires Jan 2020</p>
+                                        </div>
+                                        <div class="col-lg-6">
+                                                <button type="button" class="btn btn-secondary btn-lg">Edit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>                                                                                  
+                </div>
+            </div>
+        </div>
+                                        
+    </div>
+
+</section>
+
+    
+
+    
+
+    
+
+    <hr class="new1">
+    
+    <!--Delete Account option-->
+    <button type="button" class="sign__btn" data-toggle="modal" data-target="#deletemodal">
+        Terminate Account
+    </button>
+    
+    <!--Delete Account option end -->
+<main class="col py-5">
+    <div class="row position-relative">
+        <div class="col">
+            <div class="tab-content py-3 position-relative">
+                <!-- Content -->
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</div>
+</div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock%}
+    <!-- <div class="modal fade" id="UCDmodal" tabindex="-1" role="dialog" aria-labelledby="UCDmodaltitle" aria-hidden="true">
+        <!=end class="modal-dialog modal-dialog-centered" role="document">
+            <!=end class="modal-content">
+                <div class="modal-header">
+                    <h5>Update Contact Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+
+					<!-- content title -->
+					<!-- <h2 class="content__title">Account Details</h2> -->
+					<!--end content title -->
+                	<!-- content tabs nav -->
+					<!-- <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
+						<li class="nav-item">
+							<a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">Update Contact Details</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">Change Password</a>
+                        </li>
+                        
+                        <li class="nav-item">
+							<a class="nav-link" data-toggle="tab" href="#tab-3-testing" role="tab" aria-controls="tab-2" aria-selected="false">Change Display Picture</a>
+						</li>
+					</ul> -->
+                    <!-- end content tabs nav -->
+                    
+                    <!-- <div class="container"> -->
+                        <!-- content tabs -->
+                        <!-- <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
+                                <div class="row">
+                                    
+                                </div>
+                            </div>
+                        </div> -->
+<!-- 
+                <div class="modal-body">
+                    <h5 class="modal-title text-white" id="UCDmodaltitle">Update Contact Details</h5> -->
+                    <!--UCD form-->
+                    <!-- <form action="#" class="sign__form" method="POST"> -->
+                        <!-- {{ UCDform.hidden_tag() }} -->
+                        <!-- <div>
+                            <div class="sign__group">
+                                {{ render_field(UCDform.fullName, class="sign__input", placeholder="Full Name", required=False) }}
+                            </div>
+                            <div class="sign__group">
+                                {{ render_field(UCDform.username, class="sign__input", placeholder="Username", required=False) }}
+                            </div>
+                            <div class="sign__group">
+                                {{ render_field(UCDform.email, class="sign__input", placeholder="Email", required=False) }}
+                            </div>
+                            <div class="sign__group">
+                                {{ render_field(UCDform.dateOfBirth, class="sign__input", required=False) }}
+                            </div>
+                            <div class="sign__group">
+                                {{ render_field(UCDform.gender, class="sign__input") }}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button type="button" class="sign__btn" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="col-lg-6" data-dismiss="modal">
+                            {{ UCDform.submit(class="sign__btn") }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </!=end>
+    </!=end> -->
+    <!---Update Change Password modal-->    
+    <!-- <div class="modal fade" id="UPmodal" tabindex="-1" role="dialog" aria-labelledby="UPmodaltitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="UPmodaltitle">Update Change Password</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body"> -->
+                    <!--Change Password form-->
+                    <!-- <form action="#" class="sign__form" method="POST">
+                        {{ UPform.hidden_tag() }}
+                        <div>
+                            <div class="sign__group">
+                                {{ render_field(UPform.password, class="sign__input",placeholder="Password", required=False) }}
+                            </div>
+                            <div class="sign__group">
+                                {{ render_field(UPform.confirmpassword, class="sign__input",placeholder="Confirm Password", required=False) }}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <div class="col-lg-6" data-dismiss="modal">
+                            {{ UPform.submit() }}
+                        </div>
+                </div> -->
+            <!-- </div>
+        </div>
+    </div>
+    -Update Profile Picture modal -->
+    <!-- <div class="modal fade" id="UPPmodal" tabindex="-1" role="dialog" aria-labelledby="UPPmodaltitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="UPPtitle">Update Profile Picture</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        {{ render_field(UPPform.photo) }}
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- terminate account modal  -->
+    <!-- <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="deletemodaltitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div> -->
+                <!-- <div class="modal-body">
+                    <h5 class="modal-title text-dark" id="deletemodaltitle">Are you sure? This cannot be undone.</h5>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+                        </div>
+                        <div class="col-lg-3" data-dismiss="modal">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Yes,Terminate my account.</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- terminate account modal  -->
+
+
+

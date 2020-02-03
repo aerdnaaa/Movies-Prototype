@@ -49,7 +49,7 @@
               {{ form.rent_price.label(class="form-control-label") }}
               {{ form.rent_price(class="form-control form-control-lg", type="number") }}
           </div>
-          {{ form.submit(class="btn btn-primary") }}
+          {{ form.submit(class="btn btn-primary" , onclick="return confirm('Are you sure you want to add this rental entry?')") }}
         </form>
       </div>
       </div>

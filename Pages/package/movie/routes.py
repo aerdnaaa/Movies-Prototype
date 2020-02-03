@@ -118,6 +118,8 @@ def modify_movie(movie_id):
     except:
         Movies_dict = {}
         db["movies"] = Movies_dict
+    genre_list = db["genre_list"]
+    form.movie_genre.choices = genre_list
     if form.validate_on_submit():
         movie_name = form.movie_name.data
         movie_poster = save_picture(form.movie_poster.data, "movie poster")

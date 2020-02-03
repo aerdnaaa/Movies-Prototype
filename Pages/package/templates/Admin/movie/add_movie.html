@@ -83,7 +83,7 @@
               {{ render_field(form.movie_subtitles, class="form-control", required=False) }}
             </div>
           </div>
-          {{ form.submit(class="btn btn-primary") }}
+          {{ form.submit(class="btn btn-primary", onclick="return confirm('Are you sure you want to add this movie entry?')") }}
         </form>
       </div>
       </div>

@@ -57,7 +57,7 @@
             {{ form.hall_number.label(class="form-control-label") }}
             {{ form.hall_number(class="form-control form-control-lg") }}
           </div>
-          {{ form.submit(class="btn btn-primary") }}
+          {{ form.submit(class="btn btn-primary" , onclick="return confirm('Are you sure you want to add this showtime entry?')") }}
         </form>
 
         

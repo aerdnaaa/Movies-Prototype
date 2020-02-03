@@ -40,7 +40,7 @@
             {{ form.theatre_image.label(class="form-control-label") }}
             {{ form.theatre_image(class="form-control-file") }}
             </div>                
-            {{ form.submit(class="btn btn-primary") }}
+            {{ form.submit(class="btn btn-primary", onclick="return confirm('Are you sure you want to add this theatre entry?')") }}
         </form>
       </div>
     </div>

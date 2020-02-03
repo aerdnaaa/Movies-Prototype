@@ -39,3 +39,19 @@ class ModifyAdminAccount(FlaskForm):
     confirm_password = PasswordField("Confirm Password", [Length(min=8), EqualTo('new_password', message="Passwords must match."), Optional()]) 
     profile_picture = FileField("Insert New Image", [FileRequired(), FileAllowed(["jpg", "png", "jpeg"], message="This file type is not allowed")])
     submit = SubmitField("Update")
+
+class UpdateContactDetails(FlaskForm):
+    fullName = StringField('Full Name',[validators.Length(min=1,max=150), validators.DataRequired(message="This cannot be empty!")])
+    email = EmailField('Email address', [validators.DataRequired(), validators.Email(message="Please enter valid email.")])
+    dateOfBirth = DateField('Date of Birth', validators=[validators.DataRequired()], format="%Y-%m-%d",render_kw={"placeholder": "dd/mm/yyyy"})
+    username = StringField('Username', [validators.length(min=2, max=20), validators.DataRequired()])
+    gender = SelectField("Gender",validators=[DataRequired()],choices=[('Male','Male'),('Female','Female')])
+    submit = SubmitField('Save changes')
+
+class UpdatePassword(FlaskForm):
+    password = PasswordField('Password', [validators.length(min=8), validators.DataRequired()])
+    confirmpassword = PasswordField('Confirm Password',[validators.length(min=8),validators.EqualTo('password', message='Passwords must match')])
+    submit = SubmitField('Change Password')
+
+class UpdateProfilePicture(FlaskForm):
+    photo = FileField(validators=[FileRequired('File was empty!')])

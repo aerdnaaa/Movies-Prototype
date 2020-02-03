@@ -43,7 +43,7 @@
               {{ form.administrative_rights.label(class="form-control-label") }}
               {{ form.administrative_rights(multiple=True) }}
           </div>       
-          {{ form.submit(class="btn btn-primary") }}
+          {{ form.submit(class="btn btn-primary" , onclick="return confirm('Are you sure you want to proceed with this?')") }}
         </form>
       </div>
       </div>

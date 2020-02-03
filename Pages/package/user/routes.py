@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask import render_template,request,redirect,flash,url_for
-from package.user.forms import CreateUserForm,LoginForm, CreateAdminForm, ModifyAdminForm, ModifyAdminAccount
+from package.user.forms import CreateUserForm,LoginForm, CreateAdminForm, ModifyAdminForm, ModifyAdminAccount, UpdateContactDetails, UpdatePassword, UpdateProfilePicture
 import shelve
 from package.user.classes import User, Admin
 from package import bcrypt, login_manager
@@ -14,24 +14,24 @@ user_blueprint = Blueprint("user", __name__)
 @user_blueprint.route("/login", methods=['GET','POST'])
 def login():
     form = LoginForm()        
-    db = shelve.open('shelve.db','c')    
+    db = shelve.open('shelve.db','r')    
     try:
         userDict = db['Users']
     except:
         userDict = {}
-        db['Users'] = userDict     
-    print(db["Users"])
+        db['Users'] = userDict
+    print(db["Users"])             
     db.close()                
     if request.method=='POST':        
         if form.email.data in return_emails(userDict) and is_correct_password(form.email.data, form.password.data, userDict):            
             login_user(load_user(return_user_id(form.email.data, userDict)), remember=form.rememberMe.data)            
             flash('You have been logged in!','success')
             if current_user.get_id()[0] == "U":
-                return redirect(url_for('carousel.home'))
+                return redirect(url_for('user.accountpage'))
             else:
                 return redirect(url_for('other.admin_home'))
         else:
-            flash('Invalid username or password. Please check both fields.','danger')         
+            flash('Invalid username or password. Please check both fields.','danger')        
     return render_template("User 2/signin.html", title="Login Page",form=form)
 
 @user_blueprint.route("/logout")
@@ -59,7 +59,7 @@ def register():
     if request.method=='POST' and createUserForm.validate():
         flash(f'Account created for {createUserForm.username.data}!','success')        
         user = User(createUserForm.fullName.data,
-        createUserForm.email.data,createUserForm.password.data,createUserForm.username.data,
+        createUserForm.email.data,bcrypt.generate_password_hash(createUserForm.password.data).decode('utf-8'),createUserForm.username.data,
         createUserForm.gender.data,createUserForm.dateOfBirth.data)
         userDict[user.get_id()] = user
         db['Users'] = userDict    
@@ -70,17 +70,44 @@ def register():
 @user_blueprint.route("/accountpage")
 @login_required
 def accountpage():
-    # uDict = {}
-    # user=User('r1','r2','r3','r4','r5','r6','r7')
-    # uDict={
-    #     user.get_userID : user
-    # }
-    # userlist =  list(uDict.values())
-    # db = shelve.open('shelve.db','r')
-    # usersDict = db['Users']
-    # return render_template("User/accountpage.html", title="Account")
-    
-    return "Hi there!"
+    UCDform = UpdateContactDetails()
+    UPform = UpdatePassword()
+    UPPform = UpdateProfilePicture()
+    db = shelve.open('shelve.db', 'w')
+    try:
+        userDict = db["Users"]
+    except:
+        userDict = {}
+        db["Users"] = userDict
+    user_class = userDict[current_user.get_id()]
+    if request.method == 'POST' and UCDform.validate():
+        flash(f'You have successfully changed your contact details.', 'success')
+        user_fullName = UCDform.fullName.data
+        user_email = UCDform.email.data
+        user_dateOfBirth = UCDform.dateOfBirth.data
+        user_username = UCDform.username.data
+        user_gender = UCDform.gender.data
+
+        user_class.set_fullname(user_fullName)
+        user_class.set_email(user_email)
+        user_class.set_DateofBirth(user_dateOfBirth)
+        user_class.set_username(user_username)
+        user_class.set_gender(user_gender)
+
+        db["Users"] = userDict
+        db.close()
+        return redirect(url_for('user.accountpage'))
+    if request.method =='POST' and UPform.validate():
+        flash(f'You have successfully changed your password.','success')
+        user_password = UPform.password.data
+        user_class.set_password(user_password)
+        db['Users'] =userDict
+        db.close()
+        return redirect(url_for('user.accountpage'))
+    if request.method == 'POST' and UPPform.validate():
+        pass #need to set directory for uploaded images
+        return redirect(url_for('user.accountpage'))
+    return render_template("User 2/accountpage.html", UCDform=UCDform, UPform=UPform,UPPform=UPPform, title="My Account Page")
 
 @user_blueprint.route("/admin/admin_accounts")
 @login_required
@@ -92,6 +119,7 @@ def admin_accounts():
     except:
         Admin_dict = {}
         db['Users'] = Admin_dict
+    print(Admin_dict)
     return render_template("Admin/users/admins.html", title="Admin Accounts", Admin_dict=Admin_dict)
 
 @user_blueprint.route("/admin/admin_accounts/add_admin", methods=["GET","POST"])
@@ -101,7 +129,14 @@ def add_admin():
     form = CreateAdminForm()
     db = shelve.open('shelve.db', 'c')
     Admin_dict = db['Users']
-    Admin.id = list(Admin_dict.values())[-1].get_id()   
+    admin_list = []
+    for key in Admin_dict:
+        if key == "A":
+            admin_list.append(key)
+    try:
+        Admin.id = admin_list[-1].get_id()   
+    except:
+        Admin.id = "A0"
     if form.validate_on_submit():
         username = form.username.data
         email = form.email.data
@@ -109,7 +144,7 @@ def add_admin():
         if not administrative_rights:
             administrative_rights = []  # In case no rights is assigned to an admin
         # hashed_password = bcrypt.generate_password_hash("admin").decode('utf-8')
-        admin_class = Admin(username, email, administrative_rights, "Admin")
+        admin_class = Admin(username, email, administrative_rights, bcrypt.generate_password_hash("Admin").decode('utf-8'))
         Admin_dict[admin_class.get_id()] = admin_class
         db["Users"] = Admin_dict
         db.close()

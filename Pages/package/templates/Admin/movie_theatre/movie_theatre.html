@@ -103,6 +103,7 @@
 <!-- delete movie theatre -->
 <script>
   function delete_movie_theatre() {
+    confirm("Are you sure you want to delete these available movie theatre(s)?")
     var list_of_to_be_deleted_movie_theatres = [];
     var list_of_checkboxes = document.getElementsByClassName("form-check-input");        
     for (var index=1;index<list_of_checkboxes.length;index++){                    

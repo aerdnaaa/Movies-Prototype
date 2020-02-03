@@ -125,6 +125,7 @@
   {% block scripts %}
     <script>
       function delete_promotion() {
+        confirm("Are you sure you want to delete these few promotion(s)?")
         var list_of_to_be_deleted_promotions = [];
         var list_of_checkboxes = document.getElementsByClassName("form-check-input");        
         for (var index=1;index<list_of_checkboxes.length;index++){                    

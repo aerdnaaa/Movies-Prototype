@@ -26,12 +26,16 @@
   <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
-        
-        <div class="ml-auto">            
-          <button type="button" class="btn btn-success">
-            <a href="{{ url_for('user.add_admin') }}">Add Admin</a>              
-          </button>
-          <button type="submit" class="btn btn-danger" onclick="delete_admin()">Delete</button>
+
+          <div class="ml-auto d-flex flex-row">
+            <form action="{{ url_for('user.add_admin') }}" method="GET" class="ml-auto">            
+            <button type="submit" class="btn btn-success">
+              Add Admin
+            </button>
+          </form>
+          <p>&nbsp&nbsp</p>
+            <button type="submit" class="btn btn-danger"onclick="delete_movie()">Delete</button>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -82,9 +86,11 @@
                   </ul>
                 </td>              
                 <td>
-                  <button type="button" class="btn btn-primary">
-                    <a href="{{ url_for('user.modify_admin', admin_id= Admin_dict[key].get_id()) }}">Modify Admin</a>                    
-                  </button>           
+                  <form action="{{ url_for('user.modify_admin', admin_id= Admin_dict[key].get_id()) }}" method="GET">
+                    <button type="submit" class="btn btn-primary">
+                      Modify Admin
+                    </button>
+                  </form>
                 </td>
               </tr>
               {% endif %}
@@ -108,6 +114,7 @@
 {% block scripts %}
   <script>
     function delete_admin() {
+      confirm("Are you sure you want to delete these few admin accounts?")
       var list_of_to_be_deleted_admins = [];
       var list_of_checkboxes = document.getElementsByClassName("form-check-input");        
       for (var index=1;index<list_of_checkboxes.length;index++){                    

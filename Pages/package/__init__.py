@@ -5,9 +5,16 @@ from package.user.classes import Admin
 import datetime, shelve
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = "73892748739"
+app.config['REMEMBER_COOKIE_DURATION'] = datetime.timedelta(minutes=5)
+app.config['UPLOADED_FILES_ALLOW'] = ["jpg", "jpeg", "png", "mov", "mp4"]
+
+bcrypt = Bcrypt(app)
+login_manager = LoginManager(app)
+
 db = shelve.open("shelve.db", "c")
 # creating admin account / ensuring a super admin account exists
-
 # creating genre list
 try:
     genre_list = db["genre_list"]
@@ -20,22 +27,15 @@ except:
     db["genre_list"] = genre_list
 
 try:
-    user_dict = db['Users']      
+    user_dict = db['Users']          
     if user_dict["A0"] == None:
-        user_dict["A0"] = Admin("Super Admin", "superadmin@saw.com", ["Super Admin"], "Admin" )
+        user_dict["A0"] = Admin("Super Admin", "superadmin@saw.com", ["Super Admin"], bcrypt.generate_password_hash("Admin").decode('utf-8') )            
 except:        
     user_dict = {}
-    user_dict["A0"] = Admin("Super Admin", "superadmin@saw.com", ["Super Admin"], "Admin" )
+    user_dict["A0"] = Admin("Super Admin", "superadmin@saw.com", ["Super Admin"], bcrypt.generate_password_hash("Admin").decode('utf-8') )
     db["Users"] = user_dict    
-# bcrypt.generate_password_hash("admin").decode('utf-8')
+print(user_dict)
 db.close()
-
-app.config['SECRET_KEY'] = "73892748739"
-app.config['REMEMBER_COOKIE_DURATION'] = datetime.timedelta(minutes=5)
-app.config['UPLOADED_FILES_ALLOW'] = ["jpg", "jpeg", "png", "mov", "mp4"]
-
-bcrypt = Bcrypt(app)
-login_manager = LoginManager(app)
 
 from package.showtime.routes import showtime_blueprint
 from package.carousel.routes import carousel_blueprint

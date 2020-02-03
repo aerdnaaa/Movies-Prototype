@@ -54,7 +54,7 @@
               {{ form.confirm_password.label(class="form-control-label") }}
               {{ render_field(form.confirm_password, class="form-control") }}
             </div>
-            &nbsp&nbsp{{ form.submit(class="btn btn-primary") }}
+            &nbsp&nbsp{{ form.submit(class="btn btn-primary" , onclick="return confirm('Are you sure you want to proceed?')") }}
           </form>
         </div>
       </div>

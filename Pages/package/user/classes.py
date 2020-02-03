@@ -56,7 +56,7 @@ class User(Person, UserMixin):
         self.__password = password
         self.__username = username
         self.__gender = gender
-        self.___DateofBirth = DateofBirth        
+        self.__DateofBirth = DateofBirth        
     def get_fullname(self):
         return self.__fullname
     def get_username(self):

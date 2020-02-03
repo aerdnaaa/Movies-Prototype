@@ -63,7 +63,7 @@
                   {{ form.promotion_image(class="form-control-file") }}
                 </div>                
               </div>
-              {{ form.submit(class="btn btn-primary") }}
+              {{ form.submit(class="btn btn-primary" , onclick="return confirm('Are you sure you want to add this promotion entry?')") }}
           </form>
         </div>
       </div>

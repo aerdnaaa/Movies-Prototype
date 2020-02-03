@@ -14,7 +14,7 @@
                     <!-- breadcrumb -->
                     <ul class="breadcrumb">
                         <li class="breadcrumb__item"><a href="{{ url_for('carousel.home') }}">Home</a></li>
-                        <li class="breadcrumb__item breadcrumb__item--active">Booking</li>
+                        <li class="breadcrumb__item breadcrumb__item--active">Showtimes</li>
                     </ul>
                     <!-- end breadcrumb -->
                 </div>
@@ -51,7 +51,7 @@
                             <span class="filter__item-label">THEATRES:</span>
 
                             <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-theatre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <input type="button" value="All Theatres">
+                                <input type="button" id="theatres" value="All Theatres">
                                 <span></span>
                             </div>                            
                             <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-theatre">  
@@ -67,7 +67,7 @@
                             <span class="filter__item-label">MOVIE:</span>
                             <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-movie" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {% if Movies_dict %}
-                                    <input type="button" value="All Movies">
+                                    <input type="button" id="movies" value="All Movies">
                                 {% else %}
                                     <input type="button" value="No theatres available">
                                 {% endif %}
@@ -122,7 +122,7 @@
                     </div>
                     
                     <!-- filter btn -->
-                    <button class="filter__btn" type="button">apply filter</button>
+                    <button class="filter__btn" type="button" onclick="apply_filter()">apply filter</button>
                     <!-- end filter btn -->
                 </div>
             </div>
@@ -135,33 +135,12 @@
 <div class="catalog">
     <div class="container">
         <div class="row">
-            {% for key, movie in Movies_dict.items() %}
-                
-            <!-- card -->
-            <!-- <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
-                <div class="card">                    
-                    <div class="card__cover">
-                        <img src="{{ url_for('static', filename='images/movie poster/' + movie.get_poster()) }}" alt="">
-                    </div>
-                    <div class="card__content">
-                        <h3 class="card__title"><a href="{{ url_for('movie.movie_detail', movie_id=movie.get_id()) }}">{{ movie.get_movie_name() }}</a></h3>
-                        <span class="card__category">
-                            {% for genre in movie.get_genre_list() %}
-                                <a>{{ genre }}</a>
-                            {% endfor  %}
-                        </span>
-                        <span class="card__rate"><i class="icon ion-ios-star"></i>{{ movie.get_rating() }}</span>
-                    </div>
-                </div>
-            </div> -->
-            <!-- end card -->
-            {% endfor %}
             <div class="col-12">
                 {% for theatre_name, showtime_list in theatre_movie_showtime_dict.items() %}
-                <table border="1" style="color:white">
+                <table border="1" id="{{ theatre_name }}" style="color:white;width:1110px;">
                     <thead>
-                        <th><h2>{{ theatre_name }}</h2></th>
-                        <th>
+                        <th style="width:300px;"><h2>{{ theatre_name }} Theatre</h2></th>
+                        <th style="padding-left:40px; padding-right:40px">
                             <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
                                 {% for value in date_dict.values() %}
                                 {% if loop.index == 1 %}
@@ -179,22 +158,26 @@
                     </thead>
                     <tbody>
                         {% for showtime_class in showtime_list %}
-                        <tr>
-                            <td>{{ showtime_class.get_movie_class().get_movie_name()  }}</td>
+                        <tr id="{{ showtime_class.get_movie_class().get_movie_name() }}" class="movie_row">
+                            <td>{{ showtime_class.get_movie_class().get_movie_name() }}</td>
                             <td colspan="6">
-                                {% for timeslot in showtime_class.get_timeslot() %}                                
-                                <button class="filter__btn" type="button" style="display: inline-block;">{{ timeslot }}</button>
+                                {% for timeslot in showtime_class.get_timeslot() %}
+                                <form action="{{ url_for('showtime.bookmovieseats', showtime_id=showtime_class.get_id()) }}" method="GET" style="display: inline-block; ">
+                                    <button class="filter__btn" type="submit" style="width: 110px; height: 40px; margin: 10px;"><span style="padding: 5px;">{{ timeslot }}</span s></button>                                    
+                                </form>                                
                                 {% endfor %}
                             </td>
                         </tr>
                         {% endfor %}
                     </tbody>
+                    <hr style="margin: 45px auto 45px auto; visibility: hidden;">
                 </table>
                 {% endfor %}
+                
             </div>
     
             <!-- paginator -->
-            <div class="col-12">
+            <!-- <div class="col-12">
                 <ul class="paginator">
                     <li class="paginator__item paginator__item--prev">
                         <a href="#"><i class="icon ion-ios-arrow-back"></i></a>
@@ -207,12 +190,74 @@
                         <a href="#"><i class="icon ion-ios-arrow-forward"></i></a>
                     </li>
                 </ul>
-            </div>
+            </div> -->
             <!-- end paginator -->
         </div>
     </div>
 </div>
 <!-- end showtime -->
+<script>
+function apply_filter() {
+    var theatre_filter = document.getElementById("theatres").value;
+    var tables = document.getElementsByTagName("table");
+    if (theatre_filter != "All Theatres") {
+        for (table of tables) {
+            if (table.id != theatre_filter) {
+                table.style.display = "None";
+            } else {
+                table.style.display = "";
+            }
+        }
+    } else {
+        for (table of tables) {
+            table.style.display = "";
+        }
+    }
+
+    var movie_filter = document.getElementById("movies").value;
+    var movies = document.getElementsByClassName("movie_row");
+    if (movie_filter != "All Movies") {
+        for (movie of movies) {
+            if (movie.id != movie_filter) {
+                movie.style.display = "None";
+            } else {
+                movie.style.display = "";
+            }
+        }
+    } else {
+        for (movie of movies) {
+            movie.style.display = "";
+        }
+    }
+
+    clean_empty_theatres();
+}
+
+function clean_empty_theatres() {
+    var theatres = document.getElementsByTagName("table");
+    var contain_movies;
+    for (theatre of theatres) {
+        contain_movies = false;
+        var movies = theatre.getElementsByTagName("tr");
+        var skip_first = 1;
+        for (movie of movies) {
+            if (skip_first == 1) {
+                skip_first = 0;
+                continue;
+            }
+            if (movie.style.display == "") {
+                contain_movies = true;
+                break;
+            }
+        }
+        if (contain_movies == false) {
+            theatre.style.display = "None";
+        } else {
+            theatre.style.display = "";
+        }
+    }
+}
+</script>
 {% endblock %}
 
 

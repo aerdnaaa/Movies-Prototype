@@ -1,30 +1,26 @@
-from package import login_manager
-import shelve
+from package import login_manager, bcrypt, app
+import shelve, os, secrets
 
 @login_manager.user_loader
-def load_user(user_id):
-    userDict = {}
+def load_user(user_id):    
     db = shelve.open('shelve.db','c')
-    try:
-        userDict = db['Users']
-    except:
-        userDict = {}
-    
+    userDict = db['Users']    
+    db.close()
     try:
         return userDict[user_id]
     except:
-        return userDict
+        return userDict    
  
 def return_emails(user_dict):
     emails = []
     for value in list(user_dict.values()):
-        emails.append(value.get_email())
+        emails.append(value.get_email())    
     return emails
 
 def is_correct_password(email, password, user_dict):    
     for value in list(user_dict.values()):
         if value.get_email() == email:
-            if value.get_password() == password:
+            if bcrypt.check_password_hash(value.get_password(), password):
                 return True
     return False
 

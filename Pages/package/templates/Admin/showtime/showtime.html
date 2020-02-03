@@ -113,6 +113,7 @@
 {% block scripts %}
   <script>
     function delete_showtime() {
+      confirm("Are you sure you want to delete these few available showtime(s)?")
       var list_of_to_be_deleted_rentals = [];
       var list_of_checkboxes = document.getElementsByClassName("form-check-input");        
       for (var index=1;index<list_of_checkboxes.length;index++){                    

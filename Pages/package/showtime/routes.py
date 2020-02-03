@@ -60,8 +60,7 @@ def bookmovie():
     return render_template("User 2/showtime.html", title="Book Movie", date_dict=date_dict, Movies_dict=movie_dict, genre_list=genre_list, theatre_dict=theatre_dict, theatre_movie_showtime_dict=theatre_movie_showtime_dict) 
 
 @showtime_blueprint.route("/bookmovieseats/<showtime_id>")
-def bookmovieseats(showtime_id):
-    showtime_id = int(showtime_id)
+def bookmovieseats(showtime_id):    
     db = shelve.open('shelve.db', 'c')
     # Showtime
     try:
@@ -75,7 +74,7 @@ def bookmovieseats(showtime_id):
 
     seats_dict = showtime_class.get_seats_dict()
 
-    return render_template("User/showtime/bookmovieseats.html", title="Buying Seats", showtime_class=showtime_class, seats_dict=seats_dict)
+    return render_template("User 2/bookingseats.html", title="Buying Seats", showtime_class=showtime_class, seats_dict=seats_dict)
 
 
 @showtime_blueprint.route("/admin/showtime")
