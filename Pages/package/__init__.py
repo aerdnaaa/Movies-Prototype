@@ -33,8 +33,23 @@ try:
 except:        
     user_dict = {}
     user_dict["A0"] = Admin("Super Admin", "superadmin@saw.com", ["Super Admin"], bcrypt.generate_password_hash("Admin").decode('utf-8') )
-    db["Users"] = user_dict    
-print(user_dict)
+    db["Users"] = user_dict 
+try:
+    seat_dict = db["Seats"]   
+    if seat_dict == None:
+        seat_dict = {'A1': 'standard_available', 'A2': 'standard_available', 'A3': 'standard_available', 'A4': 'standard_available', 'A5': 'standard_available', 'A6': 'standard_available', 'A7': 'standard_available', 'A8': 'standard_available', 
+        'B1': 'standard_available', 'B2': 'standard_available', 'B3': 'standard_available', 'B4': 'standard_available', 'B5': 'standard_available', 'B6': 'standard_available', 'B7': 'standard_available', 'B8': 'standard_available', 
+        'C1': 'standard_available', 'C2': 'standard_available', 'C3': 'standard_available', 'C4': 'standard_available', 'C5': 'standard_available', 'C6': 'standard_available', 'C7': 'standard_available', 'C8': 'standard_available', 
+        'D1': 'standard_available', 'D2': 'standard_available', 'D3': 'standard_available', 'D4': 'standard_available', 'D5': 'standard_available', 'D6': 'standard_available', 'D7': 'standard_available', 'D8': 'standard_available', 
+        'E1': 'standard_available', 'E2': 'standard_available', 'E3': 'standard_available', 'E4': 'standard_available', 'E5': 'standard_available', 'E6': 'standard_available', 'E7': 'standard_available', 'E8': 'standard_available'}
+except:
+    seat_dict = {}
+    seat_dict = {'A1': 'standard_available', 'A2': 'standard_available', 'A3': 'standard_available', 'A4': 'standard_available', 'A5': 'standard_available', 'A6': 'standard_available', 'A7': 'standard_available', 'A8': 'standard_available', 
+        'B1': 'standard_available', 'B2': 'standard_available', 'B3': 'standard_available', 'B4': 'standard_available', 'B5': 'standard_available', 'B6': 'standard_available', 'B7': 'standard_available', 'B8': 'standard_available', 
+        'C1': 'standard_available', 'C2': 'standard_available', 'C3': 'standard_available', 'C4': 'standard_available', 'C5': 'standard_available', 'C6': 'standard_available', 'C7': 'standard_available', 'C8': 'standard_available', 
+        'D1': 'standard_available', 'D2': 'standard_available', 'D3': 'standard_available', 'D4': 'standard_available', 'D5': 'standard_available', 'D6': 'standard_available', 'D7': 'standard_available', 'D8': 'standard_available', 
+        'E1': 'standard_available', 'E2': 'standard_available', 'E3': 'standard_available', 'E4': 'standard_available', 'E5': 'standard_available', 'E6': 'standard_available', 'E7': 'standard_available', 'E8': 'standard_available'}
+    db["Seats"] = seat_dict
 db.close()
 
 from package.showtime.routes import showtime_blueprint

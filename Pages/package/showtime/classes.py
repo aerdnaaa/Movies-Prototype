@@ -8,7 +8,7 @@ class Showtime:
         self.__show_period = show_period
         self.__timeslot = timeslot
         self.__hall_number = hall_number
-        self.__seats_dict = {"A":["avail","avail","avail","avail","avail"],"B":["avail","avail","avail","avail","avail"],"C":["avail","avail","avail","avail","avail"],"D":["avail","avail","avail","avail","avail"]}
+        self.__seats_dict = {}
 
     def get_id(self):
         return self.__id

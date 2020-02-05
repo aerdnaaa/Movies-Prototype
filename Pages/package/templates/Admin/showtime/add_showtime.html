@@ -33,7 +33,7 @@
           {{ form.csrf_token }}
           <div class="form-group">
             {{ form.theatre_name.label(class="form-control-label") }}
-            {{ form.theatre_name(class="form-control form-control-lg", onchange="change_hall_number()") }}
+            {{ form.theatre_name(class="form-control form-control-lg") }}
           </div>
           <div class="form-group">
             {{ form.movie_title.label(class="form-control-label") }}
@@ -75,8 +75,7 @@
 <!-- /.content-wrapper -->
 
 {% block scripts %}
-  <script>
-    function change_hall_number(){
+  <script>    
     let theatre_name = document.getElementById("theatre_name");
     let hall_number = document.getElementById("hall_number");
 
@@ -98,7 +97,6 @@
 
 
     }  
-  }
   </script>
   <script src="{{ url_for('static', filename='js/extension.js') }}"></script>
   <script>

@@ -55,6 +55,7 @@ when commiting, if you finished a certain task say, finished tasks: e.g. H1, P1
     8. Legal page (Terms and conditons to be put at the checkouts of any online purchases******) √
     9. About Us page     √
 
+
                                 
 ## Admin
 * A - admin
@@ -72,6 +73,8 @@ when commiting, if you finished a certain task say, finished tasks: e.g. H1, P1
         * Rental: cannot upload duplicate rental 
     12. modify movie > routes.py > genre list missing √
     13. modify function for pages doesnt have validation when certain features are not selected 
+    14. Modify movie image source error X
+    15. Deleting Movie doesn't work X
     
     
 ## Useful Links

@@ -47,7 +47,7 @@
                         </div>
                         <!-- end filter item -->
                         <!-- filter item -->
-                        <div class="filter__item" id="filter__genre">
+                        <div class="filter__item" id="filter__theatre">
                             <span class="filter__item-label">THEATRES:</span>
 
                             <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-theatre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -90,7 +90,7 @@
                             <span class="filter__item-label">GENRE:</span>
 
                             <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-genre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <input type="button" value="All Genres">
+                                <input type="button" id="genres" value="All Genres">
                                 <span></span>
                             </div>                            
                             <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">  
@@ -101,24 +101,6 @@
                             </ul>
                         </div>
                         <!-- end filter item -->
-                        <!-- filter item -->
-                        <div class="filter__item" id="filter__rate">
-                            <span class="filter__item-label">IMBd:</span>
-
-                            <div class="filter__item-btn dropdown-toggle" role="button" id="filter-rate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <div class="filter__range">
-                                    <div id="filter__imbd-start"></div>
-                                    <div id="filter__imbd-end"></div>
-                                </div>
-                                <span></span>
-                            </div>
-
-                            <div class="filter__item-menu filter__item-menu--range dropdown-menu" aria-labelledby="filter-rate">
-                                <div id="filter__imbd"></div>
-                            </div>
-                        </div>
-                        <!-- end filter item -->
-
                     </div>
                     
                     <!-- filter btn -->
@@ -159,10 +141,16 @@
                     <tbody>
                         {% for showtime_class in showtime_list %}
                         <tr id="{{ showtime_class.get_movie_class().get_movie_name() }}" class="movie_row">
-                            <td>{{ showtime_class.get_movie_class().get_movie_name() }}</td>
+                            <td>{{ showtime_class.get_movie_class().get_movie_name() }}<br>
+                                <small class="{{ showtime_class.get_movie_class().get_genre_list() }}">
+                                    {% for genre in showtime_class.get_movie_class().get_genre_list() %}
+                                    <span>{{ genre }}&nbsp;&nbsp;&nbsp;</span>
+                                    {% endfor %}
+                                </small>
+                            </td>
                             <td colspan="6">
                                 {% for timeslot in showtime_class.get_timeslot() %}
-                                <form action="{{ url_for('showtime.bookmovieseats', showtime_id=showtime_class.get_id()) }}" method="GET" style="display: inline-block; ">
+                                <form action="{{ url_for('showtime.bookmovieseats', showtime_id=showtime_class.get_id(), timeslot=timeslot) }}" method="GET" style="display: inline-block; ">
                                     <button class="filter__btn" type="submit" style="width: 110px; height: 40px; margin: 10px;"><span style="padding: 5px;">{{ timeslot }}</span s></button>                                    
                                 </form>                                
                                 {% endfor %}
@@ -230,7 +218,18 @@ function apply_filter() {
         }
     }
 
-    clean_empty_theatres();
+    var genre_filter = document.getElementById("genres").value;
+    var movies = document.getElementsByClassName("movie_row");
+    if (genre_filter != "All Genres") {
+        for (movie of movies) {
+            var genre_list = movie.getElementsByTagName("small")[0].getAttribute("class");
+            if (genre_list.includes(genre_filter)) {
+                movie.style.display = "";          
+            } else {
+                movie.style.display = "None";
+            }
+        }
+    }
 }
 
 function clean_empty_theatres() {
@@ -252,8 +251,6 @@ function clean_empty_theatres() {
         }
         if (contain_movies == false) {
             theatre.style.display = "None";
-        } else {
-            theatre.style.display = "";
         }
     }
 }

@@ -59,8 +59,8 @@ def bookmovie():
     print(theatre_movie_showtime_dict)            
     return render_template("User 2/showtime.html", title="Book Movie", date_dict=date_dict, Movies_dict=movie_dict, genre_list=genre_list, theatre_dict=theatre_dict, theatre_movie_showtime_dict=theatre_movie_showtime_dict) 
 
-@showtime_blueprint.route("/bookmovieseats/<showtime_id>")
-def bookmovieseats(showtime_id):    
+@showtime_blueprint.route("/bookmovieseats/<showtime_id>/<timeslot>")
+def bookmovieseats(showtime_id, timeslot):    
     db = shelve.open('shelve.db', 'c')
     # Showtime
     try:
@@ -74,7 +74,7 @@ def bookmovieseats(showtime_id):
 
     seats_dict = showtime_class.get_seats_dict()
 
-    return render_template("User 2/bookingseats.html", title="Buying Seats", showtime_class=showtime_class, seats_dict=seats_dict)
+    return render_template("User 2/bookingseats.html", title="Buying Seats", showtime_class=showtime_class, timeslot=timeslot)
 
 
 @showtime_blueprint.route("/admin/showtime")
@@ -104,10 +104,7 @@ def add_showtime():
     except:
         Showtime_dict = {}
         db["showtime"] = Showtime_dict
-        # Movie_theatre_dict = {}
-        # db["movie_theatre"] = Movie_theatre_dict    
-        # Movies_dict = {}
-        # db["movies"] = Movies_dict
+    seat_dict = db["Seats"]
     theatres = []        
     for value in list(Movie_theatre_dict.values()):
         theatres.append((value.get_id(), value.get_theatre_name()))
@@ -135,6 +132,17 @@ def add_showtime():
         show_period = form.showtime_start_date.data + " - " + form.showtime_end_date.data
         hall_number = int(form.hall_number.data)
         showtime_class = Showtime(theatre_class, movie_class, show_period, timeslot_data, hall_number)
+        #? Setting seats
+        start_year, start_month, start_day = form.showtime_start_date.data.split("-")
+        start_date = datetime.date(int(start_year), int(start_month), int(start_day))
+        end_year, end_month, end_day = form.showtime_end_date.data.split("-")
+        end_date = datetime.date(int(end_year), int(end_month), int(end_day))
+        day = datetime.timedelta(days=1)
+        list_of_dates = []
+        while start_date <= end_date:
+            list_of_dates.append(start_date.strftime("%a, %d %b %Y"))
+            start_date += day
+        print(list_of_dates)
         showtime_id = showtime_class.get_id()
         Showtime_dict[showtime_id] = showtime_class
         db["showtime"] = Showtime_dict
@@ -233,10 +241,7 @@ def delete_showtime():
 @login_required
 def hall_number(theatre):
     check_admin()
-    theatre = int(theatre)
     db = shelve.open('shelve.db', 'c')
     theatre_dict = db["movie_theatre"]
-
-    for value in theatre_dict.values():
-        if value.get_id() == theatre:
-            return jsonify({"hall_number":value.get_number_of_halls()})
+    value = theatre_dict[theatre]
+    return jsonify({"hall_number":value.get_number_of_halls()})
