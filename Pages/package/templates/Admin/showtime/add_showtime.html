@@ -33,24 +33,24 @@
           {{ form.csrf_token }}
           <div class="form-group">
             {{ form.theatre_name.label(class="form-control-label") }}
-            {{ form.theatre_name(class="form-control form-control-lg") }}
+            {{ form.theatre_name(class="form-control form-control-lg", onchange="check_hall_number()") }}
           </div>
           <div class="form-group">
             {{ form.movie_title.label(class="form-control-label") }}
-            {{ form.movie_title(class="form-control form-control-lg") }}
+            {{ form.movie_title(class="form-control form-control-lg", onchange="check_hall_number()") }}
           </div>
           <div class="form-group">
-              {{ form.timeslot.label(class="form-control-label") }}
-              {{ form.timeslot(multiple=True) }}
+              {{ form.timeslot.label(class="form-control-label") }}              
+              {{ render_field(form.timeslot, multiple=True, onchange="check_hall_number()") }}
           </div>
           <div class="form-row">
             <div class="form-group col">
-              {{ form.showtime_start_date.label(class="form-control-label") }}
-              {{ form.showtime_start_date(class="form-control form-control-lg", type="date") }}
+              {{ form.showtime_start_date.label(class="form-control-label") }}              
+              {{ render_field(form.showtime_start_date, class="form-control form-control-lg", type="date", required=False, onchange="check_hall_number()") }}
             </div>
             <div class="form-group col">
               {{ form.showtime_end_date.label(class="form-control-label") }}
-              {{ form.showtime_end_date(class="form-control form-control-lg", type="date") }}
+              {{ render_field(form.showtime_end_date, class="form-control form-control-lg", type="date", required=False, onchange="check_hall_number()") }}
             </div>
           </div>
           <div class="form-group">
@@ -76,24 +76,34 @@
 
 {% block scripts %}
   <script>    
-    let theatre_name = document.getElementById("theatre_name");
-    let hall_number = document.getElementById("hall_number");
+    let theatre_field = document.getElementById("theatre_name");
+    let start_date_field = document.getElementById("showtime_start_date");
+    let end_date_field = document.getElementById("showtime_end_date");
+    let timeslot_field = document.getElementById("timeslot");
+    let hall_number_field = document.getElementById("hall_number");
 
-    theatre_name.onchange = function() {
-      theatre = theatre_name.value;      
-
-      fetch('/admin/showtime_theatre/' + theatre).then(function(response){
+    function check_hall_number() {
+      theatre = theatre_field.value;      
+      start_date = start_date_field.value;
+      end_date = end_date_field.value;
+      timeslot = Array.prototype.slice.call(document.querySelectorAll('#timeslot option:checked'),0).map(function(v,i,a) { 
+          return v.innerHTML; 
+      });
+      
+      if (theatre != '' && start_date != '' && end_date != '' && timeslot != '') {        
+      fetch('/admin/showtime_theatre/' + theatre + "/" + start_date + "/" + end_date + "/" + timeslot).then(function(response){
         response.json().then(function(data) {
-          let optionHTML = "";
+          let optionHTML = "";          
           
-          for (var i=1; i<=data.hall_number; i++){
-            optionHTML += '<option value="' + i + '">' + i + '</option>'
+          for (var hall_number of data.hall_list){
+            optionHTML += '<option value="' + hall_number + '">' + hall_number + '</option>'
           }
 
-          hall_number.innerHTML = optionHTML;
+          hall_number_field.innerHTML = optionHTML;
         
         });
       });
+      }
 
 
     }  

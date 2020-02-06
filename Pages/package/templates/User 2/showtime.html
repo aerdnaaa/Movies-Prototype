@@ -32,21 +32,6 @@
                 <div class="filter__content">
                     <div class="filter__items">
                         <!-- filter item -->
-                        <div class="filter__item" id="filter__date">
-                            <span class="filter__item-label">DATE:</span>
-                            <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-date" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <input type="button" value="All Dates">
-                                <span></span>
-                            </div>    
-                            <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-date">
-                                <li>All Dates</li>
-                                {% for value in date_dict.values() %}
-                                    <li>{{ value }}</li>
-                                {% endfor %}
-                            </ul>            
-                        </div>
-                        <!-- end filter item -->
-                        <!-- filter item -->
                         <div class="filter__item" id="filter__theatre">
                             <span class="filter__item-label">THEATRES:</span>
 
@@ -118,44 +103,57 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
+                <div style="position: sticky;top:0;position: -webkit-sticky;">
+                    <table border="1" id="{{ theatre_name }}" style="color:white;width:1110px;">
+                        <thead>
+                            <th style="width:300px;"><h2>Theatre Name</h2></th>
+                            <th style="padding-left:40px; padding-right:40px">
+                                <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
+                                    {% for key, value in date_dict.items() %}
+                                    {% if loop.index == 1 %}
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" id="{{ key }}" role="tab" aria-controls="tab-{{ value }}" aria-selected="true" onclick="change_date(this)">{{ value[:-4] }}</a>
+                                    </li>
+                                    {% else %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" id="{{ key }}" role="tab" aria-controls="tab-{{ value }}" aria-selected="false" onclick="change_date(this)">{{ value[:-4] }}</a>
+                                    </li>                                    
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>   
+                            </th>
+                        </thead>
+                    </table>
+                </div>
                 {% for theatre_name, showtime_list in theatre_movie_showtime_dict.items() %}
                 <table border="1" id="{{ theatre_name }}" style="color:white;width:1110px;">
                     <thead>
                         <th style="width:300px;"><h2>{{ theatre_name }} Theatre</h2></th>
-                        <th style="padding-left:40px; padding-right:40px">
-                            <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
-                                {% for value in date_dict.values() %}
-                                {% if loop.index == 1 %}
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#tab-1" role="tab" aria-controls="tab-1" aria-selected="true">{{ value[:-4] }}</a>
-                                </li>
-                                {% else %}
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#tab-2" role="tab" aria-controls="tab-2" aria-selected="false">{{ value[:-4] }}</a>
-                                </li>
-                                {% endif %}
-                                {% endfor %}
-                            </ul>   
+                        <th style="padding-left:40px; padding-right:40px">              
                         </th>
                     </thead>
-                    <tbody>
+                    <tbody>                        
                         {% for showtime_class in showtime_list %}
-                        <tr id="{{ showtime_class.get_movie_class().get_movie_name() }}" class="movie_row">
-                            <td>{{ showtime_class.get_movie_class().get_movie_name() }}<br>
-                                <small class="{{ showtime_class.get_movie_class().get_genre_list() }}">
-                                    {% for genre in showtime_class.get_movie_class().get_genre_list() %}
-                                    <span>{{ genre }}&nbsp;&nbsp;&nbsp;</span>
+                            {% for date in showtime_class.get_show_period() %}
+                            <tr id="" class="movie_row {{ date }}">
+                                <td>{{ showtime_class.get_movie_class().get_movie_name() }}<br>
+                                    <small class="{{ showtime_class.get_movie_class().get_genre_list() }}">
+                                        {% for genre in showtime_class.get_movie_class().get_genre_list() %}
+                                        <span>{{ genre }}&nbsp;&nbsp;&nbsp;</span>
+                                        {% endfor %}
+                                    </small>
+                                    <br>
+                                    <p>Hall {{ showtime_class.get_hall_number() }}</p>
+                                </td>
+                                <td colspan="6">                                           
+                                    {% for timeslot in showtime_class.get_timeslot() %}
+                                    <form action="{{ url_for('showtime.bookmovieseats', showtime_id=showtime_class.get_id(), timeslot=timeslot) }}" method="GET" style="display: inline-block; ">
+                                        <button class="filter__btn" type="submit" style="width: 110px; height: 40px; margin: 10px;"><span style="padding: 5px;">{{ timeslot }}</span s></button>                                    
+                                    </form>                
                                     {% endfor %}
-                                </small>
-                            </td>
-                            <td colspan="6">
-                                {% for timeslot in showtime_class.get_timeslot() %}
-                                <form action="{{ url_for('showtime.bookmovieseats', showtime_id=showtime_class.get_id(), timeslot=timeslot) }}" method="GET" style="display: inline-block; ">
-                                    <button class="filter__btn" type="submit" style="width: 110px; height: 40px; margin: 10px;"><span style="padding: 5px;">{{ timeslot }}</span s></button>                                    
-                                </form>                                
-                                {% endfor %}
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        {% endfor %}
                         {% endfor %}
                     </tbody>
                     <hr style="margin: 45px auto 45px auto; visibility: hidden;">
@@ -163,23 +161,7 @@
                 {% endfor %}
                 
             </div>
-    
-            <!-- paginator -->
-            <!-- <div class="col-12">
-                <ul class="paginator">
-                    <li class="paginator__item paginator__item--prev">
-                        <a href="#"><i class="icon ion-ios-arrow-back"></i></a>
-                    </li>
-                    <li class="paginator__item paginator__item--active"><a href="#">1</a></li>
-                    <li class="paginator__item"><a href="#">2</a></li>
-                    <li class="paginator__item"><a href="#">3</a></li>
-                    <li class="paginator__item"><a href="#">4</a></li>
-                    <li class="paginator__item paginator__item--next">
-                        <a href="#"><i class="icon ion-ios-arrow-forward"></i></a>
-                    </li>
-                </ul>
-            </div> -->
-            <!-- end paginator -->
+ 
         </div>
     </div>
 </div>
@@ -254,7 +236,29 @@ function clean_empty_theatres() {
         }
     }
 }
+
+let active_date = document.getElementsByClassName("nav-link active")[0].id;
+let movie_row_list = document.getElementsByClassName("movie_row");
+for (var movie of movie_row_list){
+    if ( ! movie.classList.contains(active_date)){
+        movie.style.display = "none";
+        
+    }
+}
+
+
+function change_date(anchor) {    
+    for (var movie of movie_row_list){
+        if ( ! movie.classList.contains(anchor.id)){
+            movie.style.display = "none";            
+        }
+        else {
+            movie.style.display = "";
+        }
+    }
+  }             
 </script>
+<script src="{{ url_for('static', filename='js/extension.js') }}"></script>
 {% endblock %}
 
 

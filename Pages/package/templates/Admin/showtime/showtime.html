@@ -72,7 +72,7 @@
                 {{ Showtime_dict[key].get_movie_class().get_movie_name() }}
               </td>
               <td>
-                {{ Showtime_dict[key].get_show_period() }}
+                {{ Showtime_dict[key].get_show_period()[0].strftime("%a, %d %b %Y") }} to {{ Showtime_dict[key].get_show_period()[-1].strftime("%a, %d %b %Y") }}
               </td>
               <td>
                 <ul>

@@ -1,5 +1,6 @@
 {% extends "User 2/base.html" %}
 
+
 {% block content %}
 <!-- page title -->
 <section class="section section--first section--bg" data-bg="img/section/section.jpg">
@@ -105,8 +106,8 @@
             <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
                 <div class="card">
                     <div class="card__cover">
-                        <img src="{{ url_for('static', filename='images/movie poster/' + movie.get_poster()) }}" alt="">
-                        <a href="#" class="card__play">
+                        <img src="{{ url_for('static', filename='images/movie poster/' + movie.get_poster()) }}" alt="" width="175" height="238">
+                        <a class="card__play" data-toggle="modal" data-target="#exampleModal">
                             <i class="icon ion-ios-play"></i>
                         </a>
                     </div>
@@ -120,7 +121,7 @@
                         <span class="card__rate"><i class="icon ion-ios-star"></i>{{ movie.get_rating() }}</span>
                     </div>
                 </div>
-            </div>
+            </div>        
             <!-- end card -->
             {% endfor %}
 
@@ -144,4 +145,25 @@
     </div>
 </div>
 <!-- end catalog -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLabel">Modal title</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

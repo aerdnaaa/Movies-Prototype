@@ -8,7 +8,7 @@ class Showtime:
         self.__show_period = show_period
         self.__timeslot = timeslot
         self.__hall_number = hall_number
-        self.__seats_dict = {}
+        self.__seats_class = ""
 
     def get_id(self):
         return self.__id
@@ -28,8 +28,8 @@ class Showtime:
     def get_hall_number(self):
         return self.__hall_number
 
-    def get_seats_dict(self):
-        return self.__seats_dict
+    def get_seats_class(self):
+        return self.__seats_class
 
     def set_theatre_class(self, theatre_class):
         self.__theatre_class = theatre_class
@@ -46,12 +46,18 @@ class Showtime:
     def set_hall_number(self, hall_number):
         self.__hall_number = hall_number
 
-    def set_seats_dict(self, seats_dict):
-        self.__seats_dict = seats_dict
+    def set_seats_class(self, seats_class):
+        self.__seats_class = seats_class
 
-    def set_all_attributes(self, theatre_class, movie_class, show_period, timeslot, hall_number):
+    def set_all_attributes(self, theatre_class, movie_class, show_period, formatted_show_period, timeslot, hall_number):
         self.set_theatre_class(theatre_class)
         self.set_movie_class(movie_class)
         self.set_show_period(show_period)
         self.set_timeslot(timeslot)
         self.set_hall_number(hall_number)
+
+class SeatClass:
+    def __init__(self, date_of_showtime, timeslot_of_showtime, hall_number, seat_dict):
+        self.date_of_showtime = date_of_showtime
+        self.timeslot_of_showtime = timeslot_of_showtime
+        self.seat_dict = seat_dict

@@ -1,7 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a07b25ba-4f7b-4e6a-8334-2b9f6f10fbd8" name="Default Changelist" comment="" />
+    <list default="true" id="a07b25ba-4f7b-4e6a-8334-2b9f6f10fbd8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Pages/package/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/package/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/showtime/classes.py" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/package/showtime/classes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/showtime/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/package/showtime/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/static/css/FlixGo/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/package/static/css/FlixGo/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/Admin/users/admins.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/package/templates/Admin/users/admins.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User 2/accountpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/package/templates/User 2/accountpage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User 2/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/package/templates/User 2/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User 2/catalog.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/package/templates/User 2/catalog.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User 2/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/package/templates/User 2/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User 2/promotion.html" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/package/templates/User 2/promotion.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/accountpage.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/base.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/contactUs.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/frozenmoviedetails.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/home.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/includes/_formHelper.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/includes/_navbar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/jokermoviedetails.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/movieslist.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/promotion.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/promotionfrozendetails.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/promotionstudentdetails.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/register.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/rentmovie.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/showtime/bookmovieseats.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/showtime/showtime.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/package/templates/User/showtime/test.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shelve.db.bak" beforeDir="false" afterPath="$PROJECT_DIR$/shelve.db.bak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shelve.db.dat" beforeDir="false" afterPath="$PROJECT_DIR$/shelve.db.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shelve.db.dir" beforeDir="false" afterPath="$PROJECT_DIR$/shelve.db.dir" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_shelve.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_shelve.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +127,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

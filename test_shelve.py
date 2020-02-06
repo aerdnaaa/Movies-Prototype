@@ -47,3 +47,6 @@ db = shelve.open("shelve.db", "c")
 # super_admin_dict["S0"] = Admin("Super Admin", "superadmin@saw.com", "Super Admin", "Admin" )
 # print(super_admin_dict["S0"])
 # print(userDict)
+showtime_dict = db["showtime"]
+print(showtime_dict)
+db.close()

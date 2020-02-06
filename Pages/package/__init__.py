@@ -50,6 +50,7 @@ except:
         'D1': 'standard_available', 'D2': 'standard_available', 'D3': 'standard_available', 'D4': 'standard_available', 'D5': 'standard_available', 'D6': 'standard_available', 'D7': 'standard_available', 'D8': 'standard_available', 
         'E1': 'standard_available', 'E2': 'standard_available', 'E3': 'standard_available', 'E4': 'standard_available', 'E5': 'standard_available', 'E6': 'standard_available', 'E7': 'standard_available', 'E8': 'standard_available'}
     db["Seats"] = seat_dict
+print(db["Users"])
 db.close()
 
 from package.showtime.routes import showtime_blueprint

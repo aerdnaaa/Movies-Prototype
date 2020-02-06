@@ -82,7 +82,9 @@
             <div class="promotion_item {{ promotion.get_applicable_to() }} col-6 col-sm-4 col-lg-3 col-xl-2">
                 <div class="card">
                     <div class="card__cover">
-                        <img src="{{ url_for('static', filename='images/promotion/' + promotion.get_promotion_image()) }}" alt="">      
+                        <a href="{{ url_for('promotion.promotionDetail', id_of_promo=promotion.get_id()) }}"> <img src="{{ url_for('static', filename='images/promotion/' + promotion.get_promotion_image()) }}" alt="" width="167" height="238">
+                        <!-- <img src="{{ url_for('static', filename='images/promotion/' + promotion.get_promotion_image()) }}" alt="" width="167" height="238"> -->
+                        </a>
                     </div>
                     <div class="card__content">
                         <h3 class="card__title"><a href="{{ url_for('promotion.promotionDetail', id_of_promo=promotion.get_id()) }}">{{ promotion.get_title() }}</a></h3>

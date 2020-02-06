@@ -18,8 +18,7 @@
 	<link rel="stylesheet" href="{{ url_for('static' , filename='css/FlixGo/plyr.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static' , filename='css/FlixGo/photoswipe.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static' , filename='css/FlixGo/default-skin.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static' , filename='css/FlixGo/main.css') }}">
-	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
+	<link rel="stylesheet" href="{{ url_for('static' , filename='css/FlixGo/main.css') }}">	
 
 	<!-- Favicons -->
 	<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}" sizes="60x60">
@@ -44,6 +43,10 @@
 		margin-top: 70px;
 		padding: 0px;
 	}
+	</style>
+	<style>
+		{% block styles %}
+		{% endblock %}
 	</style>
 
 </head>

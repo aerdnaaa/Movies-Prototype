@@ -86,11 +86,19 @@
                   </ul>
                 </td>              
                 <td>
+                  {% if Admin_dict[key].get_id() == "A0" %}          
+                  <form action="{{ url_for('user.modify_admin', admin_id= Admin_dict[key].get_id()) }}" method="GET">
+                    <button type="submit" class="btn btn-primary" disabled>
+                      Modify Admin
+                    </button>
+                  </form>          
+                    {% else %}
                   <form action="{{ url_for('user.modify_admin', admin_id= Admin_dict[key].get_id()) }}" method="GET">
                     <button type="submit" class="btn btn-primary">
                       Modify Admin
                     </button>
                   </form>
+                    {% endif %}
                 </td>
               </tr>
               {% endif %}

@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask import render_template, request, redirect, url_for, jsonify
 from flask_login import current_user, login_required
-from package.showtime.classes import Showtime
+from package.showtime.classes import Showtime, SeatClass
 from package.showtime.forms import CreateShowtime, ModifyShowtime
 from package.utilis import check_admin
 import shelve, datetime
@@ -9,18 +9,15 @@ import shelve, datetime
 showtime_blueprint = Blueprint("showtime", __name__)
 
 #* User Showtime
-@showtime_blueprint.route("/bookmovie")
+@showtime_blueprint.route("/bookmovie", methods=["GET", "POST"])
 def bookmovie():
     # Date
     base = datetime.date.today()
     date_list = [base + datetime.timedelta(days=x) for x in range(7)]
-    date_dict = {}
-    day_list = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    month_list = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    for date in date_list:
-        year, month, day = str(date).split('-')
-        value = day_list[date.weekday()] + ', ' + day + ' ' + month_list[int(month)-1] + ' ' + year
-        date_dict[str(date)] = value
+    date_dict = {}    
+    for date in date_list:        
+        value = date.strftime("%a, %d %b %Y")
+        date_dict[date] = value
 
     # Movie
     db = shelve.open("shelve.db", "c")
@@ -54,9 +51,9 @@ def bookmovie():
         theatre_class = showtime_class.get_theatre_class()
         theatre_name = theatre_class.get_theatre_name()
         theatre_movie_showtime_list = theatre_movie_showtime_dict.get(theatre_name, [])
+        start_date = date_dict[date_list[0]]        
         theatre_movie_showtime_list.append(showtime_class)
-        theatre_movie_showtime_dict[theatre_name] = theatre_movie_showtime_list
-    print(theatre_movie_showtime_dict)            
+        theatre_movie_showtime_dict[theatre_name] = theatre_movie_showtime_list        
     return render_template("User 2/showtime.html", title="Book Movie", date_dict=date_dict, Movies_dict=movie_dict, genre_list=genre_list, theatre_dict=theatre_dict, theatre_movie_showtime_dict=theatre_movie_showtime_dict) 
 
 @showtime_blueprint.route("/bookmovieseats/<showtime_id>/<timeslot>")
@@ -88,6 +85,8 @@ def admin_showtime():
         Showtime_dict = {}
         db["showtime"] = Showtime_dict
     db.close()
+    for value in Showtime_dict.values():
+        print(value.get_seats_class())
     return render_template("Admin/showtime/showtime.html", title="Showtimes", Showtime_dict=Showtime_dict)
 
 @showtime_blueprint.route("/admin/showtime/add_showtime", methods=["GET","POST"])
@@ -120,29 +119,29 @@ def add_showtime():
         halls.append((str(i),str(i)))
     form.hall_number.choices = halls
     timeslot_dict = {"1":"9am to 12pm", "2":"12pm to 3pm", "3":"3pm to 6pm", "4":"6pm to 9pm", "5":"9pm to 12am"}
-    if request.method == "POST":
-        theatre_name = form.theatre_name.data
-        theatre_class = Movie_theatre_dict[theatre_name]
-        movie_title = form.movie_title.data
-        movie_class = Movies_dict[movie_title]
+    if request.method == "POST" and form.validate_on_submit():
+        print(form.validate_on_submit())
         timeslot_list = form.timeslot.data
         timeslot_data = []
         for timeslot in timeslot_list:
             timeslot_data.append(timeslot_dict[timeslot])
-        show_period = form.showtime_start_date.data + " - " + form.showtime_end_date.data
-        hall_number = int(form.hall_number.data)
-        showtime_class = Showtime(theatre_class, movie_class, show_period, timeslot_data, hall_number)
-        #? Setting seats
-        start_year, start_month, start_day = form.showtime_start_date.data.split("-")
-        start_date = datetime.date(int(start_year), int(start_month), int(start_day))
-        end_year, end_month, end_day = form.showtime_end_date.data.split("-")
-        end_date = datetime.date(int(end_year), int(end_month), int(end_day))
+        #? Setting dates
+        start_date = datetime.datetime.strptime(form.showtime_start_date.data, "%Y-%m-%d").date()
+        end_date = datetime.datetime.strptime(form.showtime_end_date.data, "%Y-%m-%d").date()
         day = datetime.timedelta(days=1)
         list_of_dates = []
         while start_date <= end_date:
-            list_of_dates.append(start_date.strftime("%a, %d %b %Y"))
-            start_date += day
+            list_of_dates.append(start_date)
+            start_date += day        
         print(list_of_dates)
+        showtime_class = Showtime(Movie_theatre_dict[form.theatre_name.data], Movies_dict[form.movie_title.data], list_of_dates, timeslot_data, form.hall_number.data)
+        #? Setting seats        
+        seat_list_class = []
+        for date in list_of_dates:
+            for timeslot in timeslot_list:                
+                seat_class = SeatClass(date, timeslot, hall_number, seat_dict)
+                seat_list_class.append(seat_class)
+        showtime_class.set_seats_class(seat_list_class)                    
         showtime_id = showtime_class.get_id()
         Showtime_dict[showtime_id] = showtime_class
         db["showtime"] = Showtime_dict
@@ -237,11 +236,33 @@ def delete_showtime():
     db.close()
     return redirect(url_for("showtime.admin_showtime"))
 
-@showtime_blueprint.route("/admin/showtime_theatre/<theatre>", methods=["GET","POST"])
+@showtime_blueprint.route("/admin/showtime_theatre/<theatre>/<start_date>/<end_date>/<timeslot>", methods=["GET","POST"])
 @login_required
-def hall_number(theatre):
-    check_admin()
+def hall_number(theatre, start_date, end_date, timeslot):
+    check_admin()        
+    timeslot = timeslot.split(",")    
     db = shelve.open('shelve.db', 'c')
+    showtime_dict = db["showtime"]
     theatre_dict = db["movie_theatre"]
     value = theatre_dict[theatre]
-    return jsonify({"hall_number":value.get_number_of_halls()})
+    list_of_available_halls = [str(hall_number) for hall_number in range(1, value.get_number_of_halls()+1)]
+    for value in showtime_dict.values():        
+        if value.get_theatre_class().get_id() == theatre:
+            print("theatre is in this show time")
+            #? see which list is bigger
+            if len(timeslot) > len(value.get_timeslot()):
+                larger_list = timeslot
+                smaller_list = value.get_timeslot()
+            else:
+                larger_list = value.get_timeslot()
+                smaller_list = timeslot            
+            if (all(ts in larger_list for ts in smaller_list)):
+                print("timeslot is part of this showtime")
+                if not (datetime.datetime.strptime(end_date, "%Y-%m-%d").date() <= value.get_show_period()[0] or datetime.datetime.strptime(start_date, "%Y-%m-%d").date() >= value.get_show_period()[-1]):
+                    print("they do overlap")
+                    print(str(value.get_hall_number()))
+                    list_of_available_halls.remove(str(value.get_hall_number()))
+                    if ValueError:
+                        break
+    print(list_of_available_halls)
+    return jsonify({"hall_list":list_of_available_halls})    

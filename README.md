@@ -21,6 +21,7 @@ when commiting, if you finished a certain task say, finished tasks: e.g. H1, P1
     4. decide what to do for "show more"  X
     5. Ensure login works for users √
     6. add related images such as logo etc. √
+    7. make content in carousel page clickable.
 
 * P - promotion page
     1. promotion page revamp: design √
