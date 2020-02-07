@@ -29,6 +29,10 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-10">
+          <form action="{{url_for('promotion.admin_promotion')}}" method="GET">
+            <button class="btn btn-primary" type="submit" style="float: right; clear: both;">Cancel</button>
+          </form>
+          <br>
         <form method="POST" enctype="multipart/form-data">
           {{ form.csrf_token }}
           <div class="form-group">
@@ -43,7 +47,7 @@
               {{ form.administrative_rights.label(class="form-control-label") }}
               {{ form.administrative_rights(multiple=True) }}
           </div>       
-          {{ form.submit(class="btn btn-primary", onclick="return confirm('Are you sure you want to add this admin account?')") }}
+          {{ form.submit(class="btn btn-primary", onclick="functionname()") }}
         </form>
       </div>
       </div>
@@ -66,5 +70,11 @@
         select: '#administrative_rights'
       })
     }, 700)
+
+    function functionname(){
+  if(confirm("Do you want to proceed with adding the admin(s) ?")){
+    alert("Successfully added !")
+  }
+}
   </script>
 {% endblock %}

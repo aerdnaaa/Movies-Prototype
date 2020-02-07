@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask import render_template, request, redirect, url_for, Markup
+from flask import render_template, request, redirect, url_for, Markup, flash
 from flask_login import current_user, login_required
 from package.promotion.forms import CreatePromotion, ModifyPromotion
 from package.promotion.classes import Promotion
@@ -19,8 +19,14 @@ def promotion():
     except:        
         Promotion_dict = {}
         db["promotion"] = Promotion_dict
+    lst=[]
+    for i in Promotion_dict:
+        k = Promotion_dict[i].get_applicable_to()
+        if k not in lst:
+            lst.append(k)
+    
     # promotion_list needs a list in a list. Outer list for rows, inner list for promotions in 1 row
-    return render_template("User 2/promotion.html", title="Promotions", Promotion_dict=Promotion_dict)
+    return render_template("User 2/promotion.html", title="Promotions", Promotion_dict=Promotion_dict,applicabletoLst=lst)
 
 @promotion_blueprint.route("/promotion/<id_of_promo>")
 def promotionDetail(id_of_promo):
@@ -33,8 +39,7 @@ def promotionDetail(id_of_promo):
         date = date.split("-")
         mth = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         valid_period.append(f"{int(date[2])} {mth[int(date[1]) - 1]} {date[0]}")
-    
-    
+
     valid_period_str = f"{valid_period[0]} - {valid_period[1]}"
 
     return render_template("User 2/promotionDetail.html", promo=promo, period=valid_period_str, title=promo.get_title().capitalize() + " Promo")
@@ -65,8 +70,9 @@ def add_promotion():
         Promotion.id = list(Promotion_dict.values())[-1].get_id()
     except:        
         Promotion_dict = {}
-        db["promotion"] = Promotion_dict    
-    if form.validate_on_submit():        
+        db["promotion"] = Promotion_dict  
+    print(form.promotion_image.data)  
+    if request.method == "POST" and form.validate_on_submit():        
         promotion_title = form.promotion_title.data
         promotion_image = save_picture(form.promotion_image.data, "promotion")
         promotion_description = Markup(form.promotion_description.data)
@@ -78,7 +84,10 @@ def add_promotion():
         Promotion_dict[promotion_id] = promotion_class
         db["promotion"] = Promotion_dict
         db.close()
+        flash("Promotion has been added !", "success")
         return redirect(url_for("promotion.admin_promotion"))
+    elif request.method == "POST" and not form.validate_on_submit():
+        flash("Some field(s) are incorrect. Please try again", "danger")
     elif request.method == "GET":
         form.promotion_title.data = ""        
         form.promotion_description.data = ""
@@ -99,7 +108,7 @@ def modify_promotion(promotion_id):
     except:        
         Promotion_dict = {}
         db["promotion"] = Promotion_dict
-    if form.validate_on_submit():
+    if request.method == "POST" and form.validate_on_submit():
         promotion_title = form.promotion_title.data
         promotion_image = save_picture(form.promotion_image.data, "promotion")
         promotion_description = form.promotion_description.data
@@ -112,7 +121,10 @@ def modify_promotion(promotion_id):
         Promotion_dict[promotion_id] = promotion_class
         db["promotion"] = Promotion_dict
         db.close()
+        flash("Promotion has been modified !", "success")
         return redirect(url_for("promotion.admin_promotion"))
+    elif request.method == "POST" and not form.validate_on_submit():
+        flash("Some field(s) are incorrect. Please try again", "danger")
     elif request.method == "GET":
         promotion = Promotion_dict[promotion_id]
         form.promotion_title.data = promotion.get_title()

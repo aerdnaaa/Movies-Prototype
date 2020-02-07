@@ -38,20 +38,27 @@ margin: auto;
   <!-- Main content -->
   <section class="content-header">
     <div class="container-fluid">
+      
       <div class="row">
         <div class="col-10">
+          <form action="{{url_for('carousel.admin_carousel')}}" method="GET">
+            <button class="btn btn-primary" type="submit" style="float: right; clear: both;">Cancel</button>
+          </form>
+          <br>
           <form method="POST" enctype="multipart/form-data">
             {{ form.csrf_token }}
             <div class="form-group">
               {{ form.carousel_category.label(class="form-control-label") }}
-              {{ form.carousel_category(class="form-control form-control-lg", onchange="change_carousel_title()") }}
+              {{ render_field(form.carousel_category , class="form-control form-control-lg", onchange="change_carousel_title()", required=False) }}
             </div>
             <div class="form-group">
               {{ form.carousel_title.label(class="form-control-label") }}
-              {{ form.carousel_title(multiple=true) }}
+              {{ render_field(form.carousel_title, multiple=True) }}            
             </div>
-            {{ form.submit(class="btn btn-primary", onclick="return confirm('Are you sure you want to add this carousel entry?')") }}
+            {{ form.submit(class="btn btn-primary", onclick='confirm("Do you want to proceed with adding the carousel(s) ?")') }}
+            
           </form>
+              
         </div>
       </div>
     </div>

@@ -10,5 +10,5 @@ class CreateCarousel(FlaskForm):
 
 class ModifyCarousel(FlaskForm):
     carousel_category = SelectField(label='Carousel Category', choices=[("movies","Movie"), ("promotion", "Promotion")])
-    carousel_title = SelectField(label='Carousel Title', validators=[DataRequired()], choices=[])        
+    carousel_title = SelectMultipleField(label='Carousel Title', validators=[DataRequired()], choices=[])
     submit = SubmitField("Modify carousel")

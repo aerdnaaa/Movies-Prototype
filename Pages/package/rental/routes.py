@@ -19,7 +19,8 @@ def rentmovie():
         Rental_dict = {}
         db["rental"] = Rental_dict
     genre_list = db["genre_list"]
-    return render_template("User 2/rentmovie.html", title="Rent Movie",  Rental_dict=Rental_dict, genre_list=genre_list)
+    Movies_dict = db["movies"]
+    return render_template("User 2/rentmovie.html", title="Rent Movie",  Rental_dict=Rental_dict, genre_list=genre_list, Movies_dict=Movies_dict)
 
 
 #* Admin Rental

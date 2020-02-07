@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask import render_template, request, redirect, url_for, Markup
+from flask import render_template, request, redirect, url_for, Markup, jsonify
 from flask_login import current_user, login_required
 from package.movie.forms import CreateMovieForm, ModifyMovieForm
 from package.movie.classes import Movie
@@ -39,7 +39,15 @@ def movie_detail(movie_id):
         user_logged = True
     except:
         user_logged = False
-    return render_template("User 2/detail.html", title=movie_class.get_movie_name(), movie=movie_class, user_logged=user_logged)
+    Rental_dict = db["rental"]
+    rent_status = False
+    for rental in Rental_dict.values():
+        print(movie_class, rental.get_movie_class())
+        if rental.get_movie_class().get_movie_name() == movie_class.get_movie_name():
+            rent_price = rental.get_price()
+            rent_status = True
+            break
+    return render_template("User 2/detail.html", title=movie_class.get_movie_name(), movie=movie_class, user_logged=user_logged, rent_status=rent_status, rent_price=rent_price)
 
 
 #* Admin Promotion
@@ -185,3 +193,11 @@ def delete_movie():
     db.close()
     return redirect(url_for("movie.admin_movies"))
 
+@movie_blueprint.route("/get_video/<movie_id>", methods=["POST","GET"])
+def get_video(movie_id):
+    db = shelve.open('shelve.db', 'c')    
+    Movies_dict = db["movies"]
+    movie_class = Movies_dict[movie_id]
+    video_source = movie_class.get_trailer()
+    print(video_source)
+    return jsonify(video_source)

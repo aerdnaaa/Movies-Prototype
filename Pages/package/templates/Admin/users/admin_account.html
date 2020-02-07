@@ -27,7 +27,7 @@
     <div class="container-fluid">  
       <div class="row">
         <div class="col-6">
-          <form action="" method="POST">
+          <form action="" method="POST" enctype="multipart/form-data">
             {{ form.crsf_token }}
             <div class="form-row d-flex align-items-end">
                 <div class="form-col image">
@@ -38,14 +38,31 @@
                     {{ render_field(form.profile_picture, class="form-control-file", required=False) }}
                 </div>
             </div>
+            {% if current_user.get_id() == "A0" %}
+            <div class="form-group col-8">              
+              <label for="#" class="form-control-label">Username</label>
+              <input type="text" class="form-control" disabled value="{{ current_user.get_username() }}">
+            </div>
+            {% else %}
             <div class="form-group col-8 mt-2">
                 {{ form.username.label(class="form-control-label") }}
                 {{ render_field(form.username, class="form-control", required=False) }}
             </div>
+            {% endif %}
             <div class="form-group col-8">              
               <label for="#email" class="form-control-label">Email</label>
               <input type="email" class="form-control" disabled value="{{ current_user.get_email() }}">
             </div>
+            {% if current_user.get_id() == "A0" %}
+            <div class="form-group col-8">
+              <label for="#" class="form-control-label">Password</label>
+              <input type="text" class="form-control" disabled value="">
+            </div>
+            <div class="form-group col-8">
+              <label for="#" class="form-control-label">Confirm Password</label>
+              <input type="text" class="form-control" disabled value="">
+            </div>
+            {% else %}
             <div class="form-group col-8">
               {{ form.new_password.label(class="form-control-label") }}
               {{ render_field(form.new_password, class="form-control") }}
@@ -54,6 +71,7 @@
               {{ form.confirm_password.label(class="form-control-label") }}
               {{ render_field(form.confirm_password, class="form-control") }}
             </div>
+            {% endif %}
             &nbsp&nbsp{{ form.submit(class="btn btn-primary" , onclick="return confirm('Are you sure you want to proceed?')") }}
           </form>
         </div>
@@ -68,3 +86,6 @@
 </div>
 {% endblock %}
 <!-- /.content-wrapper -->
+
+{% block scripts %}
+{% endblock %}

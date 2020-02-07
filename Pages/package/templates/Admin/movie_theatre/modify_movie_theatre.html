@@ -22,25 +22,32 @@
   </section>
 
   <!-- Main content -->
+  <form action="{{url_for('movie_theatre.admin_movie_theatre')}}" method="GET">
+    <button class="btn btn-primary" type="submit" style="float: right; clear: both;">Cancel</button>
+  </form>
+  <br>
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
+     
         <form method="POST" enctype="multipart/form-data">
             {{ form.csrf_token }}                 
             <div class="form-group">
             {{ form.theatre_name.label(class="form-control-label") }}
-            {{ form.theatre_name(class="form-control form-control-lg") }}
+            {{ render_field(form.theatre_name , class="form-control form-control-lg", required=False) }}
             </div>
             <div class="form-group">
             {{ form.theatre_halls.label(class="form-control-label") }}
-            {{ form.theatre_halls(class="form-control form-control-lg") }}
+            {{ render_field(form.theatre_halls , class="form-control form-control-lg", type="number",  required=False) }}
             </div>
             <img src="{{ url_for('static', filename='images/theatre/' + image_source ) }}" alt="Img" width="200px">
             <div class="form-group">            
             {{ form.theatre_image.label(class="form-control-label") }}
-            {{ form.theatre_image(class="form-control-file") }}
+            {{ render_field(form.theatre_image , class="form-control-file", required=False) }}
             </div>                
-            {{ form.submit(class="btn btn-primary", onclick="return confirm('Are you sure you want to add this theatre entry?')") }}
+           
+         {{ form.submit(class="btn btn-primary", onclick='confirm("Do you want to proceed to save the change(s) ?")') }}
+         
         </form>
       </div>
     </div>
@@ -51,5 +58,6 @@
     <i class="fas fa-chevron-up"></i>
   </a>
 </div>
+
 {% endblock %}
 <!-- /.content-wrapper -->

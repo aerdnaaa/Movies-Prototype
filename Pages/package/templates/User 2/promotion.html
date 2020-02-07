@@ -31,7 +31,6 @@
             <div class="col-12">
                 <div class="filter__content">
                     <div class="filter__items">
-
                         <!-- filter item -->
                         <div class="filter__item" id="filter__condition">
                             <span class="filter__item-label">Applicable to:</span>
@@ -44,11 +43,12 @@
                                 {% endif %}
                                 <span></span>
                             </div>
-
                             <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">
+                                <a href="{{ url_for('promotion.promotion') }}">
+                                <li>All</li></a>
                             {% if Promotion_dict %}
-                                {% for id_of_promo in Promotion_dict %}
-                                <li>{{ Promotion_dict[id_of_promo].get_applicable_to() }}</li>
+                                {% for i in applicabletoLst%}
+                                <li>{{ i }}</li>
                                 {% endfor %}
                             {% else %}
                                 <li>All Conditons</li>
@@ -81,11 +81,11 @@
             <!-- card -->
             <div class="promotion_item {{ promotion.get_applicable_to() }} col-6 col-sm-4 col-lg-3 col-xl-2">
                 <div class="card">
+                    <a href="{{ url_for('promotion.promotionDetail', id_of_promo=promotion.get_id()) }}">  
                     <div class="card__cover">
-                        <a href="{{ url_for('promotion.promotionDetail', id_of_promo=promotion.get_id()) }}"> <img src="{{ url_for('static', filename='images/promotion/' + promotion.get_promotion_image()) }}" alt="" width="167" height="238">
-                        <!-- <img src="{{ url_for('static', filename='images/promotion/' + promotion.get_promotion_image()) }}" alt="" width="167" height="238"> -->
-                        </a>
+                            <img src="{{ url_for('static', filename='images/promotion/' + promotion.get_promotion_image()) }}" alt="" width="167" height="238">                        
                     </div>
+                </a>
                     <div class="card__content">
                         <h3 class="card__title"><a href="{{ url_for('promotion.promotionDetail', id_of_promo=promotion.get_id()) }}">{{ promotion.get_title() }}</a></h3>
                         <span class="card__category">                           

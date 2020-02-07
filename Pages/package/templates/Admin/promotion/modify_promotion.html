@@ -26,33 +26,37 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col">
+          <form action="{{url_for('promotion.admin_promotion')}}" method="GET">
+            <button class="btn btn-primary" type="submit" style="float: right; clear: both;">Cancel</button>
+          </form>
+          <br>
           <form method="POST" enctype="multipart/form-data">
               {{ form.csrf_token }}                 
               <div class="form-group">
                 {{ form.promotion_title.label(class="form-control-label") }}
-                {{ form.promotion_title(class="form-control form-control-lg") }}
+                {{ render_field(form.promotion_title , class="form-control form-control-lg", required=False) }}
               </div>
               <div class="form-group">
                 {{ form.promotion_description.label(class="form-control-label") }}
-                {{ form.promotion_description(class="form-control form-control-lg") }}
+                {{ render_field(form.promotion_description , class="form-control form-control-lg",id="promotion-description", required=False) }}
               </div>
               <div class="form-row">
                 <div class="form-group col">
                   {{ form.promotion_valid_start_date.label(class="form-control-label") }}
-                  {{ form.promotion_valid_start_date(type="date", class="form-control form-control-lg") }}
+                  {{ render_field(form.promotion_valid_start_date , class="form-control form-control-lg" , type="date", required=False) }}
                 </div>
                 <div class="form-group col">
                   {{ form.promotion_valid_end_date.label(class="form-control-label") }}
-                  {{ form.promotion_valid_end_date(type="date", class="form-control form-control-lg") }}
+                  {{ render_field(form.promotion_valid_end_date , class="form-control form-control-lg", type="date", required=False) }}
                 </div>                
               </div>
               <div class="form-group">
                 {{ form.promotion_applicable_to.label(class="form-control-label") }}
-                {{ form.promotion_applicable_to(class="form-control form-control-lg") }}
+                {{ render_field(form.promotion_applicable_to , class="form-control form-control-lg") }}
               </div>
               <div class="form-group">
                 {{ form.promotion_terms_and_condition.label(class="form-control-label") }}
-                {{ form.promotion_terms_and_condition(class="form-control form-control-lg") }}
+                {{ render_field(form.promotion_terms_and_condition , class="form-control form-control-lg", required=False) }}
               </div>
               <div class="form-row">
                 <div class="form-group col">
@@ -60,10 +64,10 @@
                 </div>
                 <div class="form-group col">            
                   {{ form.promotion_image.label(class="form-control-label") }}
-                  {{ form.promotion_image(class="form-control-file") }}
+                  {{ render_field(form.promotion_image , class="form-control-file", required=False) }}
                 </div>                
               </div>
-              {{ form.submit(class="btn btn-primary" , onclick="return confirm('Are you sure you want to add this promotion entry?')") }}
+              {{ form.submit(class="btn btn-primary" , onclick='confirm("Do you want to proceed to save the change(s) ?")') }}
           </form>
         </div>
       </div>
@@ -75,5 +79,6 @@
     <i class="fas fa-chevron-up"></i>
   </a>
 </div>
+
 {% endblock %}
 <!-- /.content-wrapper -->

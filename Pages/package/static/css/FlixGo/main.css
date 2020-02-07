@@ -676,7 +676,7 @@ ul {
 	Home
 ==============================*/
 .home {
-  margin-top: 70px;
+  margin-top: 0px;
   position: relative;
   display: block;
   background-color: #2b2b31;
@@ -759,7 +759,7 @@ ul {
 }
 @media (min-width: 768px) {
   .home {
-    margin-top: 90px;
+    margin-top: 0px;
     padding: 60px 0;
   }
   .home__title {
@@ -1110,7 +1110,7 @@ ul {
   background-color: #28282d;
 }
 .section--first {
-  margin-top: 70px;
+  margin-top: 0px;
 }
 .section--first .section__title {
   margin-bottom: 0;
@@ -1155,7 +1155,7 @@ ul {
     margin: 20px auto 15px;
   }
   .section--first {
-    margin-top: 90px;
+    margin-top: 0px;
   }
 }
 @media (min-width: 992px) {
@@ -1250,7 +1250,7 @@ ul {
   width: 100%;
 }
 .card__cover:before {
-  content: '';
+  content:  " (" attr(href) ")";
   position: absolute;
   display: block;
   top: 0;

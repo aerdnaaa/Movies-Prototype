@@ -1,6 +1,29 @@
 {% extends "User 2/base.html" %}
 
 {% block content %}
+<!-- page title -->
+<section class="section section--first section--bg" data-bg="img/section/section.jpg" >
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section__wrap">
+                    <!-- section title -->
+                    <h2 class="section__title">{{ movie.get_movie_name() }}</h2>
+                    <!-- end section title -->
+
+                    <!-- breadcrumb -->
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb__item"><a href="{{ url_for('carousel.home') }}">Home</a></li>
+                        <li class="breadcrumb__item breadcrumb__item">Movie List</li>
+                        <li class="breadcrumb__item breadcrumb__item--active">{{ movie.get_movie_name() }}</li>
+                    </ul>
+                    <!-- end breadcrumb -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end page title -->
 <!-- details -->
 <section class="section details">
     <!-- details background -->
@@ -10,12 +33,6 @@
     <!-- details content -->
     <div class="container">
         <div class="row">
-            <!-- title -->
-            <div class="col-12">
-                <h1 class="details__title">{{ movie.get_movie_name() }}</h1>
-            </div>
-            <!-- end title -->
-
             <!-- content -->
             <div class="col-12 col-xl-6">
                 <div class="card card--details">
@@ -52,22 +69,20 @@
                             </div>
                         </div>
                         <!-- end card content -->
+                        {% if rent_status %}
                         <form action="#">
                             {% if user_logged %}
                                 <!-- Maybe a modal? how do -->
-                                <button style="margin-left:15px" type="button" class="form__btn">Book</button>
-                                <button style="margin-left:15px" type="button" class="form__btn">Rent</button>
+                                <button style="margin-left:15px" type="button" class="form__btn">Rent for ${{ rent_price }}</button>
                             {% else %}
                                 <!-- Maybe there will be no rent / book button,
                                  just a text that says 'Sign up' to book / rent (where the 'Sign up' is a link -->
                                 <a href="{{ url_for('user.login') }}">
-                                    <button style="margin-left:15px" type="button" class="form__btn">Book</button>
-                                </a>
-                                <a href="{{ url_for('user.login') }}">
-                                    <button style="margin-left:15px" type="button" class="form__btn">Rent</button>
+                                    <button style="margin-left:15px" type="button" class="form__btn">Sign up to rent</button>
                                 </a>
                             {% endif %}
                         </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>

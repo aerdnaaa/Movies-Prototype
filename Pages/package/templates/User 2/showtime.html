@@ -65,7 +65,7 @@
                                         <li>{{ Movies_dict[movie_id].get_movie_name() }}</li>
                                     {% endfor %}
                                 {% else %}
-                                    <li>No theatres available</li>
+                                    <li>No movies available</li>
                                 {% endif %}
                             </ul>
                         </div>
@@ -102,11 +102,11 @@
 <div class="catalog">
     <div class="container">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 col-sm-6 col-lg-6 col-xl-6">
                 <div style="position: sticky;top:0;position: -webkit-sticky;">
                     <table border="1" id="{{ theatre_name }}" style="color:white;width:1110px;">
                         <thead>
-                            <th style="width:300px;"><h2>Theatre Name</h2></th>
+                            <th style="width:300px; padding-left: 10px;"><h2>Theatre Name</h2></th>
                             <th style="padding-left:40px; padding-right:40px">
                                 <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
                                     {% for key, value in date_dict.items() %}
@@ -125,29 +125,32 @@
                         </thead>
                     </table>
                 </div>
+                <p id="no_result" style="display:none;color:white;margin-top:50px;font-size:20px;">No result is found.</p>
                 {% for theatre_name, showtime_list in theatre_movie_showtime_dict.items() %}
-                <table border="1" id="{{ theatre_name }}" style="color:white;width:1110px;">
+                <table border="1" id="{{ theatre_name }}" class="theatre_movies" style="color:white;width:1110px;">
                     <thead>
-                        <th style="width:300px;"><h2>{{ theatre_name }} Theatre</h2></th>
+                        <th style="width:300px; padding-left: 10px;"><h2>{{ theatre_name }} Theatre</h2></th>
                         <th style="padding-left:40px; padding-right:40px">              
                         </th>
                     </thead>
                     <tbody>                        
                         {% for showtime_class in showtime_list %}
                             {% for date in showtime_class.get_show_period() %}
-                            <tr id="" class="movie_row {{ date }}">
-                                <td>{{ showtime_class.get_movie_class().get_movie_name() }}<br>
+                            <tr id="{{ showtime_class.get_movie_class().get_movie_name() }}" class="movie_row {{ date }}">
+                                <td style="padding-left: 10px;">{{ showtime_class.get_movie_class().get_movie_name() }}<br>
                                     <small class="{{ showtime_class.get_movie_class().get_genre_list() }}">
+                                        <span class="card__category">
                                         {% for genre in showtime_class.get_movie_class().get_genre_list() %}
-                                        <span>{{ genre }}&nbsp;&nbsp;&nbsp;</span>
+                                            <a>{{ genre }}</a>
                                         {% endfor %}
+                                        </span>
                                     </small>
                                     <br>
                                     <p>Hall {{ showtime_class.get_hall_number() }}</p>
                                 </td>
                                 <td colspan="6">                                           
                                     {% for timeslot in showtime_class.get_timeslot() %}
-                                    <form action="{{ url_for('showtime.bookmovieseats', showtime_id=showtime_class.get_id(), timeslot=timeslot) }}" method="GET" style="display: inline-block; ">
+                                    <form action="{{ url_for('showtime.bookmovieseats', showtime_id=showtime_class.get_id(), timeslot=timeslot, date=date) }}" method="GET" style="display: inline-block; ">
                                         <button class="filter__btn" type="submit" style="width: 110px; height: 40px; margin: 10px;"><span style="padding: 5px;">{{ timeslot }}</span s></button>                                    
                                     </form>                
                                     {% endfor %}
@@ -169,7 +172,7 @@
 <script>
 function apply_filter() {
     var theatre_filter = document.getElementById("theatres").value;
-    var tables = document.getElementsByTagName("table");
+    var tables = document.getElementsByClassName("theatre_movies");
     if (theatre_filter != "All Theatres") {
         for (table of tables) {
             if (table.id != theatre_filter) {
@@ -212,10 +215,17 @@ function apply_filter() {
             }
         }
     }
+    for (var movie of movie_row_list){
+    if ( ! movie.classList.contains(active_date)){
+        movie.style.display = "none";
+        }
+    }
+
+    clean_empty_theatres()
 }
 
 function clean_empty_theatres() {
-    var theatres = document.getElementsByTagName("table");
+    var theatres = document.getElementsByClassName("theatre_movies");
     var contain_movies;
     for (theatre of theatres) {
         contain_movies = false;
@@ -231,10 +241,24 @@ function clean_empty_theatres() {
                 break;
             }
         }
-        if (contain_movies == false) {
+        if (!contain_movies) {
             theatre.style.display = "None";
         }
     }
+
+    is_all_empty = true;
+    for (theatre of theatres) {
+        if (theatre.style.display == "") {
+            is_all_empty = false;
+            break;
+        }
+    }
+    if (is_all_empty) {
+        document.getElementById("no_result").style.display = ""
+    } else {
+        document.getElementById("no_result").style.display = "None"
+    }
+
 }
 
 let active_date = document.getElementsByClassName("nav-link active")[0].id;
@@ -242,7 +266,6 @@ let movie_row_list = document.getElementsByClassName("movie_row");
 for (var movie of movie_row_list){
     if ( ! movie.classList.contains(active_date)){
         movie.style.display = "none";
-        
     }
 }
 

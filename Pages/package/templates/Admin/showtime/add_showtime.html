@@ -25,19 +25,24 @@
   </section>
 
   <!-- Main content -->
+ 
   <section class="content-header">
     <div class="container-fluid">
+      <form action="{{url_for('showtime.admin_showtime')}}" method="GET">
+        <button class="btn btn-primary" type="submit" style="float: right; clear: both;">Cancel</button>
+      </form>
+      <br>
       <div class="row">
         <div class="col-10">
         <form method="POST" enctype="multipart/form-data">
           {{ form.csrf_token }}
           <div class="form-group">
             {{ form.theatre_name.label(class="form-control-label") }}
-            {{ form.theatre_name(class="form-control form-control-lg", onchange="check_hall_number()") }}
+            {{ render_field(form.theatre_name, class="form-control form-control-lg", onchange="check_hall_number()") }}
           </div>
           <div class="form-group">
             {{ form.movie_title.label(class="form-control-label") }}
-            {{ form.movie_title(class="form-control form-control-lg", onchange="check_hall_number()") }}
+            {{ render_field(form.movie_title, class="form-control form-control-lg", onchange="check_hall_number()") }}
           </div>
           <div class="form-group">
               {{ form.timeslot.label(class="form-control-label") }}              
@@ -55,9 +60,9 @@
           </div>
           <div class="form-group">
             {{ form.hall_number.label(class="form-control-label") }}
-            {{ form.hall_number(class="form-control form-control-lg") }}
+            {{ render_field(form.hall_number, class="form-control form-control-lg", required=False) }}
           </div>
-          {{ form.submit(class="btn btn-primary" , onclick="return confirm('Are you sure you want to add this showtime entry?')") }}
+          {{ form.submit(class="btn btn-primary" , onclick='confirm("Do you want to proceed with adding the showtime(s) ?")') }}
         </form>
 
         
@@ -91,18 +96,18 @@
       });
       
       if (theatre != '' && start_date != '' && end_date != '' && timeslot != '') {        
-      fetch('/admin/showtime_theatre/' + theatre + "/" + start_date + "/" + end_date + "/" + timeslot).then(function(response){
-        response.json().then(function(data) {
-          let optionHTML = "";          
-          
-          for (var hall_number of data.hall_list){
-            optionHTML += '<option value="' + hall_number + '">' + hall_number + '</option>'
-          }
+        fetch('/admin/showtime_theatre/' + theatre + "/" + start_date + "/" + end_date + "/" + timeslot).then(function(response){
+          response.json().then(function(data) {
+            let optionHTML = "";          
+            
+            for (var hall_number of data.hall_list){
+              optionHTML += '<option value="' + hall_number + '">' + hall_number + '</option>'
+            }
 
-          hall_number_field.innerHTML = optionHTML;
-        
+            hall_number_field.innerHTML = optionHTML;
+          
+          });
         });
-      });
       }
 
 
@@ -115,5 +120,6 @@
         select: '#timeslot'
       })
     }, 700)
+
   </script>
 {% endblock %}

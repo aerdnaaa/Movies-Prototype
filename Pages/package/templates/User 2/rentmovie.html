@@ -32,6 +32,29 @@
                 <div class="filter__content">
                     <div class="filter__items">
                         <!-- filter item -->
+                        <div class="filter__item" id="filter__movie">
+                            <span class="filter__item-label">MOVIE:</span>
+                            <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-movie" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {% if Movies_dict %}
+                                    <input type="button" id="movies" value="All Movies">
+                                {% else %}
+                                    <input type="button" value="No movies available">
+                                {% endif %}
+                                <span></span>
+                            </div>
+                            <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-movie">
+                                {% if Rental_dict %}
+                                    <li>All Movies</li>
+                                    {% for rental_id in Rental_dict %}
+                                        <li>{{ Rental_dict[rental_id].get_movie_class().get_movie_name() }}</li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li>No movies available</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        <!-- end filter item -->
+                        <!-- filter item -->
                         <div class="filter__item" id="filter__genre">
                             <span class="filter__item-label">GENRE:</span>
 
@@ -50,7 +73,7 @@
                         <!-- end filter item -->
 
                         <!-- filter item -->
-                        <div class="filter__item" id="filter__rate">
+                        <!-- <div class="filter__item" id="filter__rate">
                             <span class="filter__item-label">Rating:</span>
 
                             <div class="filter__item-btn dropdown-toggle" role="button" id="filter-rate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -64,11 +87,11 @@
                             <div class="filter__item-menu filter__item-menu--range dropdown-menu" aria-labelledby="filter-rate">
                                 <div id="filter__imbd"></div>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- end filter item -->
 
                         <!-- filter item -->
-                        <div class="filter__item" id="filter__year">
+                        <!-- <div class="filter__item" id="filter__year">
                             <span class="filter__item-label">RELEASE YEAR:</span>
 
                             <div class="filter__item-btn dropdown-toggle" role="button" id="filter-year" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -82,7 +105,7 @@
                             <div class="filter__item-menu filter__item-menu--range dropdown-menu" aria-labelledby="filter-year">
                                 <div id="filter__years"></div>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- end filter item -->
                     </div>
                     
@@ -105,7 +128,7 @@
             <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
                 <div class="card">
                     <div class="card__cover">
-                        <img src="{{ url_for('static', filename='images/movie poster/' + movie.get_movie_class().get_poster()) }}" alt="">
+                        <img src="{{ url_for('static', filename='images/movie poster/' + movie.get_movie_class().get_poster()) }}" alt="" width="175" height="238">
                         <a href="#" class="card__play">
                             <i class="icon ion-ios-play"></i>
                         </a>
@@ -117,7 +140,8 @@
                                 <a>{{ genre }}</a>
                             {% endfor  %}
                         </span>
-                        <span class="card__rate"><i class="icon ion-ios-star"></i>{{ movie.get_movie_class().get_rating() }}</span>
+                        <span style="color:white;">${{ movie.get_price() }}</span>
+                        <span style="float:right;" class="card__rate"><i class="icon ion-ios-star"></i>{{ movie.get_movie_class().get_rating() }}</span>
                     </div>
                 </div>
             </div>

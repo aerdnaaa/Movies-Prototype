@@ -2,7 +2,14 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from package.user.classes import Admin
-import datetime, shelve
+import datetime, shelve, stripe
+
+stripe_keys = {
+    'secret_key': 'sk_test_V3wc5tAiP5Kyn0PY0JxUT3DM005oS3wpk9',
+    'publishable_key': 'pk_test_vjq81FCmjJe9hSx1kWwAAv4T00k7I5HEag'
+}
+
+stripe.api_key = stripe_keys['secret_key']
 
 app = Flask(__name__)
 
@@ -50,7 +57,6 @@ except:
         'D1': 'standard_available', 'D2': 'standard_available', 'D3': 'standard_available', 'D4': 'standard_available', 'D5': 'standard_available', 'D6': 'standard_available', 'D7': 'standard_available', 'D8': 'standard_available', 
         'E1': 'standard_available', 'E2': 'standard_available', 'E3': 'standard_available', 'E4': 'standard_available', 'E5': 'standard_available', 'E6': 'standard_available', 'E7': 'standard_available', 'E8': 'standard_available'}
     db["Seats"] = seat_dict
-print(db["Users"])
 db.close()
 
 from package.showtime.routes import showtime_blueprint

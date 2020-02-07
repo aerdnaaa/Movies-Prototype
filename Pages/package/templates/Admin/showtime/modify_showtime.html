@@ -25,39 +25,43 @@
   </section>
 
   <!-- Main content -->
+  
   <section class="content-header">
     <div class="container-fluid">
+      <form action="{{url_for('showtime.showtime')}}" method="GET">
+        <button class="btn btn-primary" type="submit" style="float: right; clear: both;">Cancel</button>
+      </form>
       <div class="row">
         <div class="col-10">
         <form method="POST" enctype="multipart/form-data">
           {{ form.csrf_token }}
           <div class="form-group">
             {{ form.theatre_name.label(class="form-control-label") }}
-            {{ form.theatre_name(class="form-control form-control-lg") }}
+            {{ render_field(form.theatre_name, class="form-control form-control-lg", onchange="check_hall_number()") }}
           </div>
           <div class="form-group">
             {{ form.movie_title.label(class="form-control-label") }}
-            {{ form.movie_title(class="form-control form-control-lg") }}
+            {{ render_field(form.movie_title, class="form-control form-control-lg", onchange="check_hall_number()") }}
           </div>
           <div class="form-group">
               {{ form.timeslot.label(class="form-control-label") }}
-              {{ form.timeslot( multiple=True) }}
+              {{ render_field(form.timeslot, multiple=True, onchange="check_hall_number()") }}
           </div>
           <div class="form-row">
             <div class="form-group col">
               {{ form.showtime_start_date.label(class="form-control-label") }}
-              {{ form.showtime_start_date(class="form-control form-control-lg", type="date") }}
+              {{ render_field(form.showtime_start_date, class="form-control form-control-lg", type="date", required=False, onchange="check_hall_number()") }}
             </div>
             <div class="form-group col">
               {{ form.showtime_end_date.label(class="form-control-label") }}
-              {{ form.showtime_end_date(class="form-control form-control-lg", type="date") }}
+              {{ render_field(form.showtime_end_date, class="form-control form-control-lg", type="date", required=False, onchange="check_hall_number()") }}
             </div>
           </div>
           <div class="form-group">
             {{ form.hall_number.label(class="form-control-label") }}
-            {{ form.hall_number(class="form-control form-control-lg") }}
+            {{ render_field(form.hall_number, class="form-control form-control-lg", required=False) }}
           </div>
-          {{ form.submit(class="btn btn-primary", onclick="return confirm('Are you sure you want to add this showtime entry?')") }}
+          {{ form.submit(class="btn btn-primary", onclick='confirm("Do you want to proceed to save the change(s) ?")') }}
         </form>
       </div>
       </div>
@@ -79,5 +83,6 @@
       select: '#timeslot'
     })
   }, 700)
+
 </script>
 {% endblock %}

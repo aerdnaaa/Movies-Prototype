@@ -29,11 +29,15 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-10">
+          <form action="{{url_for('movie.admin_movies')}}" method="GET">
+            <button class="btn btn-primary" type="submit" style="float: right; clear: both;">Cancel</button>
+          </form>
+          <br>
         <form method="POST" enctype="multipart/form-data">
           {{ form.csrf_token }}
           <div class="form-group">
             {{ form.movie_name.label(class="form-control-label") }}
-            {{ form.movie_name(class="form-control form-control-lg") }}
+            {{ render_field(form.movie_name, class="form-control", required=False) }}
           </div>
           <div class="form-row">
             <div class="form-group col">
@@ -41,24 +45,24 @@
             </div>
             <div class="form-group col">
               {{ form.movie_poster.label(class="form-control-label") }}
-              {{ form.movie_poster(class="form-control-file") }}
+              {{ render_field(form.movie_poster, class="form-control-file", required=False) }}
             </div>
           </div>
           <div class="form-group">
             {{ form.movie_description.label(class="form-control-label") }}
-            {{ form.movie_description(class="form-control form-control-lg") }}
+            {{ render_field(form.movie_description, class="form-control", required=False) }}
           </div>
           <div class="form-group">
             {{ form.movie_genre.label(class="form-control-label") }}
-            {{ form.movie_genre(multiple=True) }}
+            {{ render_field(form.movie_genre, multiple=True) }}
           </div>
           <div class="form-group">
             {{ form.movie_casts.label(class="form-control-label") }}
-            {{ form.movie_casts(class="form-control form-control-lg") }}
+            {{ render_field(form.movie_casts, class="form-control", required=False) }}
           </div>
           <div class="form-group">
             {{ form.movie_director.label(class="form-control-label") }}
-            {{ form.movie_director(class="form-control form-control-lg") }}
+            {{ render_field(form.movie_director, class="form-control", required=False) }}
           </div>
           <div class="form-row">
             <div class="form-group col">
@@ -66,7 +70,7 @@
             </div>
             <div class="form-group col">
               {{ form.movie_fullvideo.label(class="form-control-label") }}
-              {{ form.movie_fullvideo(class="form-control-file") }}
+              {{ render_field(form.movie_fullvideo, class="form-control-file", required=False) }}
             </div>
           </div>
           <div class="form-row">
@@ -75,28 +79,28 @@
             </div>
             <div class="form-group col">
               {{ form.movie_trailer.label(class="form-control-label") }}
-              {{ form.movie_trailer(class="form-control-file") }}
+              {{ render_field(form.movie_trailer, class="form-control-file", required=False) }}
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col">
               {{ form.movie_duration.label(class="form-control-label") }}
-              {{ form.movie_duration(class="form-control form-control-lg") }}
+              {{ render_field(form.movie_duration, class="form-control", required=False, type="number") }}
             </div>
             <div class="form-group col">
               {{ form.movie_release_date.label(class="form-control-label") }}
-              {{ form.movie_release_date(class="form-control form-control-lg", type="date") }}
+              {{ render_field(form.movie_release_date, class="form-control", required=False, type="date") }}
             </div>
             <div class="form-group col">
               {{ form.movie_language.label(class="form-control-label") }}
-              {{ form.movie_language(class="form-control form-control-lg") }}
+              {{ render_field(form.movie_language, class="form-control", required=False) }}
             </div>
             <div class="form-group col">
               {{ form.movie_subtitles.label(class="form-control-label") }}
-              {{ form.movie_subtitles(class="form-control form-control-lg") }}
+              {{ render_field(form.movie_subtitles, class="form-control", required=False) }}
             </div>
           </div>
-          {{ form.submit(class="btn btn-primary", onclick="return confirm('Are you sure you want to add this movie entry?')") }}
+          {{ form.submit(class="btn btn-primary", onclick='confirm("Do you want to proceed with adding the movie(s) ?")') }}
         </form>
       </div>
       </div>
@@ -118,5 +122,6 @@
       select: '#movie_genre'
     })
   }, 700)
+
 </script>
 {% endblock %}

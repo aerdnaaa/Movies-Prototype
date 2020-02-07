@@ -20,7 +20,7 @@
 				<button class="home__nav home__nav--prev" type="button">
 					<i class="icon ion-ios-arrow-round-back"></i>
 				</button>
-				<button class="home__nav home__nav--next" type="button">
+				<button class="home__nav home__nav--next" type="button" id="add">
 					<i class="icon ion-ios-arrow-round-forward"></i>
 				</button>
 			</div>
@@ -32,7 +32,7 @@
 							<!-- card -->
 							<div class="card card--big">
 								<div class="card__cover">
-									<img src="{{ url_for('static', filename='images/' + value.get_carousel_image() ) }}" alt="" width="150" height="250">			
+									<img src="{{ url_for('static', filename='images/' + value.get_carousel_image() ) }}" alt="" width="150" height="300">			
 								</div>
 								<div class="card__content">
 									<h3 class="card__title"><a href="#">{{ value.get_title() }}</a></h3>						
@@ -1114,4 +1114,9 @@
 	</div>
 </section>
 <!-- end content -->
+<script>
+	setInterval(function() {
+      document.getElementById('add').click();
+    }, 2500);
+</script>
 {% endblock %}

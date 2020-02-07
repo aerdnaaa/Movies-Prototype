@@ -21,7 +21,7 @@ when commiting, if you finished a certain task say, finished tasks: e.g. H1, P1
     4. decide what to do for "show more"  X
     5. Ensure login works for users √
     6. add related images such as logo etc. √
-    7. make content in carousel page clickable.
+    7. make content in carousel page clickable. 
 
 * P - promotion page
     1. promotion page revamp: design √
@@ -81,3 +81,23 @@ when commiting, if you finished a certain task say, finished tasks: e.g. H1, P1
 ## Useful Links
 * Multiselect link -> https://www.cssscript.com/multi-select-dropdown-component-javascript-slim-select/
 
+## Priorities
+* High
+    1. create on hold seat attribute 
+    2. check if seat is on hold
+    3. image of movie in showtime
+    4. when click on movie image will show trailer in modal
+    5. Form validation for all admin pages
+    6. Form validation for sign up form √
+
+
+* Medium
+    
+    1. checkout with stripe
+    2. timer for check out - showtime
+    3. login user log them out if they idle too long
+    4. make content in carousel page clickable.
+    5. Generate pdf for check out
+
+
+* Low

@@ -1,13 +1,30 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, validators, SubmitField, TextAreaField, SelectField, SelectMultipleField
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, Length, ValidationError
 from flask_wtf.file import FileField, FileAllowed, FileRequired
+import shelve
+
+def validate_movie_name(form,field):
+    db = shelve.open('shelve.db', 'c')
+    try:
+        Movies_dict = db["movies"]
+    except:
+        Movies_dict = {}
+        db["movies"] = Movies_dict
+    db.close()
+    for movie_title in Movies_dict.values():
+        if movie_title.get_title() == field.data:
+            raise ValidationError("Movie Title Existed")
+
+def validate_genre(form, field):
+    if form.data == []:
+        raise ValidationError("Genre must not be empty")
 
 class CreateMovieForm(FlaskForm):            
-        movie_name = StringField(label="Movie Name", validators=[DataRequired(message="Movie must have a name")])
+        movie_name = StringField(label="Movie Name", validators=[DataRequired(message="Movie must have a name"), validate_movie_name])
         movie_poster = FileField(label="Movie Poster", validators=[DataRequired(message="Movie must have a poster"), FileAllowed(['jpg','png','jpeg'], message="This file type is not allowed")])
         movie_description = TextAreaField(label='Movie Description', validators=[DataRequired()])
-        movie_genre = SelectMultipleField(label="Movie Genre", choices=[])
+        movie_genre = SelectMultipleField(label="Movie Genre", choices=[], validators=[validate_genre])
         movie_casts = TextAreaField(label="Movie Casts", validators=[DataRequired()])
         movie_director = StringField(label="Movie Director", validators=[DataRequired()])
         movie_fullvideo = FileField(label="Movie Full Video",validators=[DataRequired(message="This field is required to be filled in")])
@@ -19,10 +36,10 @@ class CreateMovieForm(FlaskForm):
         submit = SubmitField("Add Movies")                    
 
 class ModifyMovieForm(FlaskForm):
-        movie_name = StringField(label="Movie Name", validators=[DataRequired(message="Movie must have a name")])
+        movie_name = StringField(label="Movie Name", validators=[DataRequired(message="Movie must have a name"), validate_movie_name])
         movie_poster = FileField(label="Movie Poster", validators=[DataRequired(message="Movie must have a poster"),FileAllowed(['jpg','png','jpeg'],message="This file type is not allowed")])
         movie_description = TextAreaField(label='Movie Description', validators=[DataRequired()])
-        movie_genre = SelectMultipleField(label="Movie Genre", choices=[])
+        movie_genre = SelectMultipleField(label="Movie Genre", choices=[], validators=[validate_genre])
         movie_casts = TextAreaField(label="Movie Casts", validators=[DataRequired()])
         movie_director = StringField(label="Movie Director", validators=[DataRequired()])
         movie_fullvideo = FileField(label="Movie Full Video",validators=[DataRequired(message="This field is required to be filled in"),FileAllowed("mov", "mp4")])

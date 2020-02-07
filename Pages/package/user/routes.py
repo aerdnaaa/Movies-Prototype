@@ -1,18 +1,19 @@
 from flask import Blueprint
-from flask import render_template,request,redirect,flash,url_for
+from flask import render_template,request,redirect,flash,url_for, jsonify
 from package.user.forms import CreateUserForm,LoginForm, CreateAdminForm, ModifyAdminForm, ModifyAdminAccount, UpdateContactDetails, UpdatePassword, UpdateProfilePicture
 import shelve
 from package.user.classes import User, Admin
 from package import bcrypt, login_manager
 from package.user.utilis import load_user, return_emails, is_correct_password, return_user_id, save_picture
 from flask_login import login_user, logout_user, login_required, current_user
-from package.utilis import check_admin
+from package.utilis import check_admin, check_if_login
 import datetime
 
 user_blueprint = Blueprint("user", __name__)
 
 @user_blueprint.route("/login", methods=['GET','POST'])
 def login():
+    check_if_login()
     form = LoginForm()        
     db = shelve.open('shelve.db','r')    
     try:
@@ -24,7 +25,7 @@ def login():
     db.close()                
     if request.method=='POST':        
         if form.email.data in return_emails(userDict) and is_correct_password(form.email.data, form.password.data, userDict):            
-            login_user(load_user(return_user_id(form.email.data, userDict)), remember=form.rememberMe.data)            
+            login_user(load_user(return_user_id(form.email.data, userDict)), remember=form.rememberMe.data, duration=datetime.timedelta(minutes=5))            
             flash('You have been logged in!','success')
             if current_user.get_id()[0] == "U":
                 return redirect(url_for('user.accountpage'))
@@ -34,6 +35,7 @@ def login():
             flash('Invalid username or password. Please check both fields.','danger')        
     return render_template("User 2/signin.html", title="Login Page",form=form)
 
+@login_required
 @user_blueprint.route("/logout")
 def logout():
     logout_user()
@@ -41,18 +43,19 @@ def logout():
 
 @user_blueprint.route("/register",methods=['GET','POST'])
 def register():
+    check_if_login()
     createUserForm = CreateUserForm()
     db = shelve.open('shelve.db','c')
     try:
         userDict = db['Users']
         user_key_list = []
-        for key in userDict:
-            if key[0] == "U":
-                user_key_list.append(key)
-        if user_key_list:
-            User.id = user_key_list[-1].get_id()
-        else:
-            User.id = "U-1"            
+        # for key in userDict:
+        #     if key[0] == "U":
+        #         user_key_list.append(key)
+        # if user_key_list:
+        #     User.id = user_key_list[-1].get_id()
+        # else:
+        #     User.id = "U-1"            
     except:
         userDict = {}
         db['Users'] = userDict   
@@ -63,8 +66,8 @@ def register():
         createUserForm.gender.data,createUserForm.dateOfBirth.data)
         userDict[user.get_id()] = user
         db['Users'] = userDict    
-        db.close()
         return redirect(url_for('user.login'))        
+    db.close()
     return render_template("User 2/signup.html", title="Register",form=createUserForm)
 
 @user_blueprint.route("/accountpage")
@@ -211,24 +214,27 @@ def delete_admin():
 @login_required
 def my_admin_account():
     check_admin()
-    form = ModifyAdminAccount()    
-    print(form.profile_picture.data)
-    print(form.profile_picture.data)    
-    print(form.profile_picture.data)
-    print(form.profile_picture.data)
-    print(form.profile_picture.data)
-
-    if request.method == "POST" and form.username.errors == ():                        
+    form = ModifyAdminAccount()               
+    print(form.validate_on_submit())
+    if request.method == "POST" and form.username.errors == []:          
         db = shelve.open('shelve.db', 'c')        
-        user_dict = db["Users"]
-        print(form.profile_picture.data)
+        user_dict = db["Users"]        
+        user_class = user_dict[current_user.get_id()]
         if form.profile_picture.data != None:
-            picture_path = save_picture(form.profile_picture.data, "admin_profile_pictures/")
-            print(picture_path)
-        else:
-            picture_path = ""
-
+            picture_path = save_picture(form.profile_picture.data, "admin_profile_pictures/")            
+            user_class.set_profile_picture(picture_path)
+        if form.username.data != current_user.get_username():
+            username = form.username.data
+            user_class.set_username(username)
+        if form.new_password.data != "":
+            hashed_password = bcrypt.generate_password_hash(form.new_password.data).decode('utf-8')
+            user_class.set_password(hashed_password)
+        print(user_class)
+        user_dict[user_class.get_id()] = user_class
+        db["Users"] = user_dict
+        db.close()
+        flash("Admin Account is updated", 'success')
+        return redirect(url_for('user.my_admin_account'))
     elif request.method == "GET":
-        form.username.data = current_user.get_username()
-        
-    return render_template("Admin/users/admin_account.html", title="My Admin Account", form=form)
+        form.username.data = current_user.get_username()        
+        return render_template("Admin/users/admin_account.html", title="My Admin Account", form=form)

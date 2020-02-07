@@ -2,9 +2,11 @@ from flask import Blueprint
 from flask import render_template, request, redirect, url_for, jsonify
 from flask_login import current_user, login_required
 from package.showtime.classes import Showtime, SeatClass
-from package.showtime.forms import CreateShowtime, ModifyShowtime
+from package.showtime.forms import CreateShowtime, ModifyShowtime, PaymentForm
 from package.utilis import check_admin
-import shelve, datetime
+from package.user.classes import AnonymousUser
+from package import stripe_keys
+import shelve, datetime, stripe
 
 showtime_blueprint = Blueprint("showtime", __name__)
 
@@ -50,28 +52,37 @@ def bookmovie():
         showtime_class = Showtime_dict[key]
         theatre_class = showtime_class.get_theatre_class()
         theatre_name = theatre_class.get_theatre_name()
-        theatre_movie_showtime_list = theatre_movie_showtime_dict.get(theatre_name, [])
-        start_date = date_dict[date_list[0]]        
+        theatre_movie_showtime_list = theatre_movie_showtime_dict.get(theatre_name, [])            
         theatre_movie_showtime_list.append(showtime_class)
         theatre_movie_showtime_dict[theatre_name] = theatre_movie_showtime_list        
     return render_template("User 2/showtime.html", title="Book Movie", date_dict=date_dict, Movies_dict=movie_dict, genre_list=genre_list, theatre_dict=theatre_dict, theatre_movie_showtime_dict=theatre_movie_showtime_dict) 
 
-@showtime_blueprint.route("/bookmovieseats/<showtime_id>/<timeslot>")
-def bookmovieseats(showtime_id, timeslot):    
+@showtime_blueprint.route("/bookmovieseats/<showtime_id>/<timeslot>/<date>")
+def bookmovieseats(showtime_id, timeslot, date):    
     db = shelve.open('shelve.db', 'c')
     # Showtime
     try:
         Showtime_dict = db["showtime"]
     except:
         Showtime_dict = {}
-        db["showtime"] = Showtime_dict
-    db.close()
+        db["showtime"] = Showtime_dict    
 
     showtime_class = Showtime_dict[showtime_id]
-
-    seats_dict = showtime_class.get_seats_dict()
-
-    return render_template("User 2/bookingseats.html", title="Buying Seats", showtime_class=showtime_class, timeslot=timeslot)
+    timeslot_dict = {"1":"9am to 12pm", "2":"12pm to 3pm", "3":"3pm to 6pm", "4":"6pm to 9pm", "5":"9pm to 12am"}
+    seat_class_list = showtime_class.get_seats_class()
+    for seat_class in seat_class_list:                        
+        if seat_class.date_of_showtime.strftime("%Y-%m-%d") == date and seat_class.timeslot_of_showtime in list(timeslot_dict.keys()):
+            original_seat_class = seat_class
+            seat_class.timeslot_of_showtime = timeslot_dict[seat_class.timeslot_of_showtime]
+            seat_class_list.remove(original_seat_class)
+            seat_class_list.append(seat_class)
+            showtime_class.set_seats_class(seat_class_list)
+            Showtime_dict[showtime_id] = showtime_class
+            db["showtime"] = Showtime_dict
+            
+            break
+    db.close()
+    return render_template("User 2/bookingseats.html", title="Buying Seats", showtime_class=showtime_class, seat_class=seat_class)
 
 
 @showtime_blueprint.route("/admin/showtime")
@@ -139,7 +150,7 @@ def add_showtime():
         seat_list_class = []
         for date in list_of_dates:
             for timeslot in timeslot_list:                
-                seat_class = SeatClass(date, timeslot, hall_number, seat_dict)
+                seat_class = SeatClass(date, timeslot_dict[timeslot], hall_number, seat_dict)
                 seat_list_class.append(seat_class)
         showtime_class.set_seats_class(seat_list_class)                    
         showtime_id = showtime_class.get_id()
@@ -157,6 +168,7 @@ def add_showtime():
         db.close()
     elif request.method == "POST" and request.json:
         print(request.json)
+    print(form.timeslot.data)
     return render_template("Admin/showtime/add_showtime.html", title="Add Showtime", form=form)
 
 @showtime_blueprint.route("/admin/showtime/modify_showtime/<showtime_id>", methods=["GET","POST"])
@@ -266,3 +278,37 @@ def hall_number(theatre, start_date, end_date, timeslot):
                         break
     print(list_of_available_halls)
     return jsonify({"hall_list":list_of_available_halls})    
+
+@showtime_blueprint.route("/admin/showtime_theatre/payment/<showtime_id>/<date>/<timeslot>/<list_seats>", methods=["GET","POST"])
+def payment(showtime_id, date, timeslot, list_seats):
+    form = PaymentForm()
+    db =shelve.open("shelve.db", "c")
+    showtime_dict = db["showtime"]
+    showtime_class = showtime_dict[showtime_id]
+    price = len(list_seats) *8.50
+    list_seats = list_seats.split(",")
+    date = datetime.datetime.strptime(str(date), "%Y-%m-%d").date()
+    if request.method == "POST":        
+        # AnonymousUser(form.fullname.data, form.email.data, form.dateOfBirth.data, form.gender.data, form.card_number.data, form.card_name.data,  form.dateOfExpiry.data.strftime("$m-%Y"), form.cvc.data)
+        for seat_class in showtime_class.get_seats_class():
+            if seat_class.date_of_showtime == date and timeslot in seat_class.timeslot_of_showtime:                
+                original_seat_class = seat_class
+                seat_dict = seat_class.seat_dict
+                for seat in list_seats:
+                    seat_dict["seats"][seat] = "sold"
+                print(seat_dict)
+                seat_class.seat_dict = seat_dict
+                showtime_class.get_seats_class().remove(original_seat_class)
+                showtime_class.get_seats_class().append(seat_class)                
+                showtime_dict[showtime_id] = showtime_class
+                db["showtime"] = showtime_dict
+                
+    else:
+        for seat_class in showtime_class.get_seats_class():
+            if seat_class.date_of_showtime == date and timeslot in seat_class.timeslot_of_showtime:
+                timeslot = seat_class.timeslot_of_showtime
+                date = seat_class.date_of_showtime                
+                seat_class = seat_class
+                
+        db.close()        
+    return render_template("User 2/payment.html", showtime_class=showtime_class, timeslot=timeslot, date=date, list_seats=list_seats, price=price, form=form)

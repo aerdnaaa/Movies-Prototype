@@ -1,0 +1,149 @@
+{% extends "User 2/base.html" %}
+
+{% block styles %}
+.seats {
+    cursor:pointer;
+}
+{% endblock %}
+{% from "User 2/includes/_formHelper.html" import render_field %}
+{% block content %}
+<!-- page title -->
+<section class="section section--first section--bg" data-bg="img/section/section.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section__wrap">
+                    <!-- section title -->
+                    <h2 class="section__title">Payment</h2>
+                    <!-- end section title -->
+
+                    <!-- breadcrumb -->
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb__item"><a href="{{ url_for('carousel.home') }}">Home</a></li>
+                        <li class="breadcrumb__item"><a href="{{ url_for('showtime.bookmovie') }}">Showtimes</a></li>                        
+                        <li class="breadcrumb__item breadcrumb__item--active">Payment</li>
+                    </ul>
+                    <!-- end breadcrumb -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end page title -->
+
+
+<!-- showtime -->
+<div class="catalog">
+    <br>
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-3">
+                <div class="card__cover">
+                    <img src="{{ url_for('static', filename='images/movie poster/' + showtime_class.get_movie_class().get_poster() ) }}" alt="">           
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card__content">
+                    <h3 class="card__title">Movie Title: 
+                        <span class="card__category" style="display: inline;">
+                            <a style="font-size: large;">
+                                {{ showtime_class.get_movie_class().get_movie_name() }}
+                            </a>
+                        </span>
+                    </h3>
+                    <div class="card__description">
+                        <p class="">Date: 
+                            <span class="card__category" style="display: inline;">
+                                <a>
+                                    {{ date.strftime("%a, %d %b %Y") }}
+                                </a>
+                            </span>
+                        </p>
+                        <p class="">Timeslot: 
+                            <span class="card__category" style="display: inline;">
+                                <a>
+                                    {{ timeslot }}
+                                </a>
+                            </span>
+                        </p>
+                        <p class="">
+                            Seats Selected: 
+                            <span class="card__category" style="display: inline;">
+                                {% for seat in list_seats %}
+                                    <a>{{ seat }}</a>
+                                {% endfor %}
+                            </span>
+                        </p>
+                        <p class="">
+                            Price: 
+                            <span class="card__category" style="display: inline;">                                
+                                <a>${{ price }}</a>                                
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <br>    
+        <div class="row d-flex justify-content-center">         
+            <div class="col-10">
+                <!-- authorization form -->
+                <form action="" class="sign__form" method="post" enctype="multipart/form-data">
+                    {{form.hidden_tag()}}
+                    <a href="{{ url_for('carousel.home') }}" class="sign__logo">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="">
+                    </a>
+                    {% if current_user.is_authenticated %}
+                    {% else %}
+                    <div class="contact-details" style="display: inline-block;">
+                        <h1 class="section__title">Contact Details</h1>                    
+                        <div class="sign__group">
+                            {{ render_field(form.fullName, class="sign__input", placeholder="Full Name", required=False) }}                            
+                        </div>
+                        <div class="sign__group">                            
+                            {{ render_field(form.email, class="sign__input", placeholder="Email", required=False) }}
+                        </div>
+                        <div class="sign__group">
+                            {{ render_field(form.dateOfBirth, class="sign__input", required=False) }}
+                        </div>
+                        <div class="sign__group">
+                            {{ render_field(form.gender, class="sign__input") }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="card-details" style="display: inline-block;">
+                        <h1 class="section__title">Card Details</h1> 
+                        <div class="sign__group">
+                            {{ render_field(form.card_number, class="sign__input", placeholder="Card Number", required=False) }}                            
+                        </div>
+                        <div class="sign__group">                            
+                            {{ render_field(form.name_on_card, class="sign__input", required=False) }}
+                        </div>
+                        <div class="sign__group">
+                            {{ render_field(form.dateOfExpiry, class="sign__input", required=False, type="month") }}
+                        </div>
+                        <div class="sign__group">
+                            {{ render_field(form.cvc, class="sign__input", required=False) }}
+                        </div>
+                    </div>
+                    {{ form.submit(class="filter__btn") }}
+                  </form>
+                <!-- end authorization form -->
+            </div>
+        </div>    
+    </div>
+
+</div>
+<!-- end showtime -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+</script>
+<script src="{{ url_for('static', filename='js/extension.js') }}"></script>
+{% endblock %}
+
+
+

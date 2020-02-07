@@ -13,3 +13,7 @@ def error_401(error):
 @errors_blueprint.app_errorhandler(500)
 def error_500(error):
     return render_template('User 2/errors/500.html'), 500
+
+@errors_blueprint.app_errorhandler(403)
+def error_403(error):
+    return render_template('User 2/errors/403.html'), 403

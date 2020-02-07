@@ -107,7 +107,7 @@
                 <div class="card">
                     <div class="card__cover">
                         <img src="{{ url_for('static', filename='images/movie poster/' + movie.get_poster()) }}" alt="" width="175" height="238">
-                        <a class="card__play" data-toggle="modal" data-target="#exampleModal">
+                        <a class="card__play" data-toggle="modal" data-target="#exampleModal" onclick="load_video('{{ movie.get_id() }}','{{ movie.get_movie_name() }}' )">
                             <i class="icon ion-ios-play"></i>
                         </a>
                     </div>
@@ -149,21 +149,34 @@
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title" id="exampleModalLabel">Modal title</h3>
+      <div class="modal-content" style="background-color:#2b2b31;">
+        <div class="modal-header" style="border-bottom: 1px solid #ff55a5;">
+          <h3 class="modal-title card__title id="exampleModalLabel">Trailer</h3>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+            <img src="{{ url_for('static', filename='svgs/close 1.svg') }}" alt="" style="color: white;" width="50" height="auto">
           </button>
         </div>
         <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+            <video src="" width="100%" class="video" controls></video>
+        </div>    
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function load_video(movie_id, movie_name) {    
+    let video = document.getElementsByClassName("video")[0];
+    let modal_title = document.getElementsByClassName("modal-title")[0];
+    modal_title.innerHTML = movie_name + " Trailer";
+    fetch('/get_video/' + movie_id).then(function(response){
+        response.json().then(function(data) {
+            console.log(data);
+            
+          video.src = "{{ url_for('static', filename='videos/movie trailer/') }}" + data;
+        });
+      });
+}
+</script>
 {% endblock %}
