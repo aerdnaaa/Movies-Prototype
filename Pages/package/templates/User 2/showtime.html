@@ -137,16 +137,25 @@
                         {% for showtime_class in showtime_list %}
                             {% for date in showtime_class.get_show_period() %}
                             <tr id="{{ showtime_class.get_movie_class().get_movie_name() }}" class="movie_row {{ date }}">
-                                <td style="padding-left: 10px;">{{ showtime_class.get_movie_class().get_movie_name() }}<br>
-                                    <small class="{{ showtime_class.get_movie_class().get_genre_list() }}">
-                                        <span class="card__category">
-                                        {% for genre in showtime_class.get_movie_class().get_genre_list() %}
-                                            <a>{{ genre }}</a>
-                                        {% endfor %}
-                                        </span>
-                                    </small>
-                                    <br>
-                                    <p>Hall {{ showtime_class.get_hall_number() }}</p>
+                                <td style="padding-left: 10px;">
+                                    <div class="row" style="padding: 5px;">
+                                        <div class="col-5">
+                                            <img src="{{ url_for('static', filename='images/movie poster/' + showtime_class.get_movie_class().get_poster() ) }}" alt="" width="100">
+                                        </div>
+                                        <div class="col">
+                                            {{ showtime_class.get_movie_class().get_movie_name() }}<br>
+                                            <small class="{{ showtime_class.get_movie_class().get_genre_list() }}">
+                                                <span class="card__category">
+                                                {% for genre in showtime_class.get_movie_class().get_genre_list() %}
+                                                    <a>{{ genre }}</a>
+                                                {% endfor %}
+                                                </span>
+                                            </small>
+                                            <br>
+                                            <p>Hall {{ showtime_class.get_hall_number() }}</p>
+                                        </div>
+                                    </div>
+                                    
                                 </td>
                                 <td colspan="6">                                           
                                     {% for timeslot in showtime_class.get_timeslot() %}

@@ -85,8 +85,8 @@ when commiting, if you finished a certain task say, finished tasks: e.g. H1, P1
 * High
     1. create on hold seat attribute 
     2. check if seat is on hold
-    3. image of movie in showtime
-    4. when click on movie image will show trailer in modal
+    3. image of movie in showtime √
+    4. when click on movie image will show trailer in modal √
     5. Form validation for all admin pages
     6. Form validation for sign up form √
 
