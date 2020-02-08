@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-from package.utilis import set_up_variables
+
 import datetime, shelve, stripe
 
 stripe_keys = {
@@ -20,6 +20,7 @@ app.config['UPLOADED_FILES_ALLOW'] = ["jpg", "jpeg", "png", "mov", "mp4"]
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 
+from package.utilis import set_up_variables
 set_up_variables()
 
 from package.showtime.routes import showtime_blueprint

@@ -24,7 +24,7 @@ class CreateMovieTheatre(FlaskForm):
     submit = SubmitField('Add Movie Theatre')
 
 class ModifyMovieTheatre(FlaskForm):
-    theatre_name = StringField(label='Movie Theatre Name', validators=[DataRequired(), Length(min=3,max=20), validate_theatre_name])
+    theatre_name = StringField(label='Movie Theatre Name', validators=[DataRequired(), Length(min=3,max=20),])
     theatre_image = FileField(label='Movie Theatre Image', validators=[DataRequired(message="Movie Theatre must have an image"), FileAllowed(['jpg','png','jpeg'], message="This file type is not allowed")])
     theatre_halls = IntegerField(label='Movie Theatre Halls', validators=[DataRequired(), NumberRange(min=1, max=10)])
     submit = SubmitField('Modify Movie Theatre')

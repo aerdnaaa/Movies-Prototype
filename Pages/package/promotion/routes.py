@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from package.promotion.forms import CreatePromotion, ModifyPromotion
 from package.promotion.classes import Promotion
 from package.promotion.utilis import save_picture
-from package.utilis import check_admin
+from package.utilis import check_admin, check_rights
 import shelve, datetime
 
 promotion_blueprint = Blueprint("promotion", __name__)
@@ -50,6 +50,7 @@ def promotionDetail(id_of_promo):
 @login_required
 def admin_promotion():    
     check_admin()
+    check_rights()
     db = shelve.open('shelve.db', 'c')
     try:
         Promotion_dict = db["promotion"]
@@ -63,6 +64,7 @@ def admin_promotion():
 @login_required
 def add_promotion():
     check_admin()
+    check_rights()
     form = CreatePromotion()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -101,6 +103,7 @@ def add_promotion():
 @login_required
 def modify_promotion(promotion_id):
     check_admin()
+    check_rights()
     form = ModifyPromotion()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -143,6 +146,7 @@ def modify_promotion(promotion_id):
 @login_required
 def delete_promotion():
     check_admin()
+    check_rights()
     db = shelve.open('shelve.db', 'c')
     try:
         Promotion_dict = db["promotion"]

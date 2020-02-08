@@ -62,7 +62,7 @@ def set_seat_class_dict(showtime_class):
     for date in showtime_class.get_show_period():
         for timeslot in showtime_class.get_timeslot():            
             seat_class = SeatClass(date, timeslot, showtime_class.get_hall_number(), seat_dict)    
-            seat_class_dict[seat_class.id] = seat_class    
+            seat_class_dict[seat_class.id] = seat_class        
     showtime_class.set_seats_class(seat_class_dict) 
     return showtime_class
 

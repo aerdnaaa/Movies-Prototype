@@ -39,7 +39,7 @@ class CreatePromotion(FlaskForm):
     submit = SubmitField("Add Promotion")
 
 class ModifyPromotion(FlaskForm):
-    promotion_title = StringField(label='Promotion Title', validators=[DataRequired(message="Promotion title is required"), Length(min=5, max=30), validate_promotion_title])
+    promotion_title = StringField(label='Promotion Title', validators=[DataRequired(message="Promotion title is required"), Length(min=5, max=30),])
     promotion_description = TextAreaField(label='Promotion Description', validators=[DataRequired(message="Description is required")])
     promotion_terms_and_condition = TextAreaField(label='Promotion Terms and Condition', validators=[DataRequired(message="Terms & Condition is required")])
     promotion_valid_start_date = StringField(label='Promotion Start Date', validators=[DataRequired(message="Start Date is required"), validate_start_date])

@@ -6,7 +6,7 @@ from package.user.classes import User, Admin
 from package import bcrypt, login_manager
 from package.user.utilis import load_user, return_emails, is_correct_password, return_user_id, save_picture
 from flask_login import login_user, logout_user, login_required, current_user
-from package.utilis import check_admin, check_if_login
+from package.utilis import check_admin, check_if_login, check_rights
 import datetime
 
 user_blueprint = Blueprint("user", __name__)
@@ -21,7 +21,7 @@ def login():
     except:
         userDict = {}
         db['Users'] = userDict
-    print(db["Users"])             
+    print(db["Users"])           
     db.close()                
     if request.method=='POST':        
         if form.email.data in return_emails(userDict) and is_correct_password(form.email.data, form.password.data, userDict):            
@@ -49,24 +49,26 @@ def register():
     try:
         userDict = db['Users']
         user_key_list = []
-        # for key in userDict:
-        #     if key[0] == "U":
-        #         user_key_list.append(key)
-        # if user_key_list:
-        #     User.id = user_key_list[-1].get_id()
-        # else:
-        #     User.id = "U-1"            
+        for key in userDict:
+            if key[0] == "U":
+                user_key_list.append(key)
+        if user_key_list:
+            User.id = user_key_list[-1]
+        else:
+            User.id = "U-1"            
     except:
         userDict = {}
         db['Users'] = userDict   
-    if request.method=='POST' and createUserForm.validate():
+    if request.method=='POST' and createUserForm.validate():    
         flash(f'Account created for {createUserForm.username.data}!','success')        
         user = User(createUserForm.fullName.data,
         createUserForm.email.data,bcrypt.generate_password_hash(createUserForm.password.data).decode('utf-8'),createUserForm.username.data,
         createUserForm.gender.data,createUserForm.dateOfBirth.data)
         userDict[user.get_id()] = user
-        db['Users'] = userDict    
-        return redirect(url_for('user.login'))        
+        db['Users'] = userDict
+        login_user(user)
+        return redirect(url_for("carousel.home")) 
+        # return redirect(url_for('user.login'))        
     db.close()
     return render_template("User 2/signup.html", title="Register",form=createUserForm)
 
@@ -126,6 +128,7 @@ def accountpage():
 @login_required
 def admin_accounts():
     check_admin()
+    check_rights()
     db = shelve.open('shelve.db', 'c')
     try:
         Admin_dict = db['Users']
@@ -139,15 +142,16 @@ def admin_accounts():
 @login_required
 def add_admin():
     check_admin()
+    check_rights()
     form = CreateAdminForm()
     db = shelve.open('shelve.db', 'c')
     Admin_dict = db['Users']
     admin_list = []
     for key in Admin_dict:
-        if key == "A":
+        if key[0] == "A":
             admin_list.append(key)
     try:
-        Admin.id = admin_list[-1].get_id()   
+        Admin.id = admin_list[-1]   
     except:
         Admin.id = "A0"
     if form.validate_on_submit():
@@ -176,6 +180,7 @@ def add_admin():
 @login_required
 def modify_admin(admin_id):
     check_admin()
+    check_rights()
     form = ModifyAdminForm()
     db = shelve.open('shelve.db', 'c')    
     Admin_dict = db["Users"]    
@@ -207,6 +212,7 @@ def modify_admin(admin_id):
 @login_required
 def delete_admin():
     check_admin()
+    check_rights()
     db = shelve.open('shelve.db', 'c')
     try:
         Admin_dict = db["Users"]
@@ -217,6 +223,7 @@ def delete_admin():
         db["Users"] = Admin_dict
         db["deleted_Admins"] = Deleted_list
     list_of_to_be_deleted_admins = request.json
+    print(list_of_to_be_deleted_admins)
     for admin_id in list_of_to_be_deleted_admins:
         delete_admin = Admin_dict[admin_id]        
         Deleted_list.append([delete_admin, datetime.date.today()])

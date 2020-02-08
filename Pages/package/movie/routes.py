@@ -5,7 +5,7 @@ from package.movie.forms import CreateMovieForm, ModifyMovieForm
 from package.movie.classes import Movie
 from package.user.classes import Admin
 from package.movie.utilis import save_picture, save_video
-from package.utilis import check_admin
+from package.utilis import check_admin, check_rights
 import shelve, datetime
 
 movie_blueprint = Blueprint("movie", __name__)
@@ -35,7 +35,7 @@ def movie_detail(movie_id):
             rent_price = rental.get_price()
             rent_status = True
             break
-    return render_template("User 2/detail.html", title=movie_class.get_movie_name(), movie=movie_class, user_logged=user_logged, rent_status=rent_status, rent_price=rent_price)
+    return render_template("User 2/detail.html", title=movie_class.get_movie_name(), movie=movie_class, user_logged=user_logged)
 
 
 #* Admin Promotion
@@ -43,6 +43,7 @@ def movie_detail(movie_id):
 @login_required
 def admin_movies():
     check_admin()
+    check_rights()
     db = shelve.open('shelve.db', 'c')
     try:
         Movies_dict = db["movies"]
@@ -56,6 +57,7 @@ def admin_movies():
 @login_required
 def add_movie():
     check_admin()
+    check_rights()
     form = CreateMovieForm()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -109,6 +111,7 @@ def add_movie():
 @login_required
 def modify_movie(movie_id):
     check_admin()
+    check_rights()
     movie_id = movie_id
     form = ModifyMovieForm()
     db = shelve.open('shelve.db', 'c')
@@ -168,6 +171,7 @@ def modify_movie(movie_id):
 @login_required
 def delete_movie():
     check_admin()
+    check_rights()
     db = shelve.open('shelve.db', 'c')
     try:
         Movies_dict = db["movies"]

@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from package.showtime.classes import Showtime, SeatClass
 from package.showtime.forms import CreateShowtime, ModifyShowtime, PaymentForm
 from package.showtime.utilis import return_available_theatres_and_hall, return_available_movie_title, return_timeslots, make_showtime
-from package.utilis import check_admin
+from package.utilis import check_admin, check_rights
 from package.user.classes import AnonymousUser
 from package import stripe_keys
 import shelve, datetime, stripe
@@ -67,18 +67,102 @@ def bookmovieseats(showtime_id, seat_class_id):
     except:
         Showtime_dict = {}
         db["showtime"] = Showtime_dict    
-
     showtime_class = Showtime_dict[showtime_id]    
     seat_class_dict = showtime_class.get_seats_class()
     seat_class = seat_class_dict[seat_class_id]
+    print(seat_class.seat_dict)
     db.close()
     return render_template("User 2/bookingseats.html", title="Buying Seats", showtime_class=showtime_class, seat_class=seat_class)
+
+@showtime_blueprint.route("/showtime_theatre/checkout/<showtime_id>/<seat_class_id>/<list_seats>", methods=["GET","POST"])
+def checkout(showtime_id, seat_class_id, list_seats):
+    form = PaymentForm()
+    db =shelve.open("shelve.db", "c")
+    showtime_dict = db["showtime"]
+    showtime_class = showtime_dict[showtime_id]
+    list_seats = list_seats.split(",")
+    price = len(list_seats) *8.50    
+    if request.method == "POST":        
+        pass
+    else:
+        seat_class_dict = showtime_class.get_seats_class()
+        seat_class = seat_class_dict[seat_class_id]
+        timeslot = seat_class.timeslot_of_showtime
+        date = seat_class.date_of_showtime  
+        seat_dict = seat_class.seat_dict
+        #? make seat on hold
+        for seat in list_seats:
+            seat_dict["seats"][seat] = "on_hold"                
+        seat_class.seat_dict = seat_dict
+        seat_class_dict[seat_class_id] = seat_class
+        showtime_class.set_seats_class(seat_class_dict)
+        print(seat_class)
+        showtime_dict[showtime_id] = showtime_class
+        # db["showtime"] = showtime_dict
+               
+        db.close()        
+    return render_template("User 2/payment.html", showtime_class=showtime_class, list_seats=list_seats, price=price, form=form, timeslot=timeslot, date=date)
+
+@showtime_blueprint.route("/checkseats/<showtime_id>/<seat_class_id>/<old_list>/<new_list>")
+def check_seats(showtime_id, seat_class_id, old_list, new_list):
+    db =shelve.open("shelve.db", "c")
+    showtime_dict = db["showtime"]
+    showtime_class = showtime_dict[showtime_id]
+    new_list = new_list.split(",")
+    seat_class_dict = showtime_class.get_seats_class()
+    seat_class = seat_class_dict[seat_class_id]
+    seat_dict = seat_class.seat_dict["seats"]
+    if old_list != "none":
+        old_list = old_list.split(",")
+        for seat in old_list:
+            if seat_dict[seat] == "on_hold":
+                seat_dict[seat] = "standard_available"
+    list_of_seats_that_are_on_hold = []
+    
+    for seat in new_list:
+        if seat_dict[seat] == "on_hold":
+            list_of_seats_that_are_on_hold.append(seat)
+    if list_of_seats_that_are_on_hold == []:
+        return jsonify("none")
+    else:
+        return jsonify(",".join(list_of_seats_that_are_on_hold))
+
+@showtime_blueprint.route("/get_annonymous_id")
+def get_annonymous_id():
+    db =shelve.open("shelve.db", "c")
+    try:
+        annonymous_id = db["annonymous"]
+        annonymous_id += 1
+    except:
+        annonymous_id = 0
+        db["annonymous"] = annonymous_id
+    return jsonify(annonymous_id)
+
+@showtime_blueprint.route("/showtime_theatre/cancel_seats/<showtime_id>/<seat_class_id>/<current_seats>")
+def remove_seats(showtime_id,seat_class_id,current_seats):
+    current_seats = current_seats.split(",")
+    db =shelve.open("shelve.db", "c")
+    showtime_dict = db["showtime"]
+    showtime_class = showtime_dict[showtime_id]    
+    seat_class_dict = showtime_class.get_seats_class()
+    seat_class = seat_class_dict[seat_class_id]
+    seat_dict = seat_class.seat_dict["seats"]
+    for seat in current_seats:
+        seat_dict[seat] = "standard_available"
+    seat_class.seat_dict["seats"] = seat_dict
+    seat_class_dict[seat_class_id] = seat_class
+    showtime_class.set_seats_class(seat_class_dict)
+    showtime_dict[showtime_id] = showtime_class
+    db["showtime"] = showtime_dict
+    db.close()
+    return redirect(url_for('showtime.bookmovie'))
 
 
 @showtime_blueprint.route("/admin/showtime")
 @login_required
 def admin_showtime():
     check_admin()
+    check_rights()
     db = shelve.open('shelve.db', 'c')
     try:
         Showtime_dict = db["showtime"]        
@@ -92,6 +176,7 @@ def admin_showtime():
 @login_required
 def add_showtime():
     check_admin()
+    check_rights()
     form = CreateShowtime()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -133,6 +218,7 @@ def add_showtime():
 @login_required
 def modify_showtime(showtime_id):
     check_admin()
+    check_rights()
     form = ModifyShowtime()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -167,6 +253,7 @@ def modify_showtime(showtime_id):
 @login_required
 def delete_showtime():
     check_admin()
+    check_rights()
     db = shelve.open('shelve.db', 'c')
     try:
         Showtime_dict = db["showtime"]
@@ -249,48 +336,3 @@ def modify_hall_number(theatre, start_date, end_date, timeslot):
     print(list_of_available_halls)
     return jsonify({"hall_list":list_of_available_halls})    
 
-@showtime_blueprint.route("/admin/showtime_theatre/payment/<showtime_id>/<seat_class_id>/<list_seats>", methods=["GET","POST"])
-def payment(showtime_id, seat_class_id, list_seats):
-    form = PaymentForm()
-    db =shelve.open("shelve.db", "c")
-    showtime_dict = db["showtime"]
-    showtime_class = showtime_dict[showtime_id]
-    list_seats = list_seats.split(",")
-    price = len(list_seats) *8.50    
-    if request.method == "POST":        
-        pass
-    else:
-        seat_class = showtime_class.get_seats_class()[seat_class_id]
-        timeslot = seat_class.timeslot_of_showtime
-        date = seat_class.date_of_showtime  
-        seat_dict = seat_class.seat_dict
-        #? make seat on hold
-        for seat in list_seats:
-            seat_dict["seats"][seat] = "on_hold"
-        seat_class.seat_dict = seat_dict
-                        
-        showtime_dict[showtime_id] = showtime_class
-        db["showtime"] = showtime_dict
-                
-                
-        db.close()        
-    return render_template("User 2/payment.html", showtime_class=showtime_class, list_seats=list_seats, price=price, form=form)
-
-@showtime_blueprint.route("/checkseats/<showtime_id>/<seat_class_id>/<list_seats>")
-def check_seats(showtime_id, seat_class_id, list_seats):
-    db =shelve.open("shelve.db", "c")
-    showtime_dict = db["showtime"]
-    showtime_class = showtime_dict[showtime_id]
-    list_seats = list_seats.split(",")
-
-    list_of_seats_that_are_on_hold = []
-    seat_class_dict = showtime_class.get_seats_class()
-    seat_class = seat_class_dict[seat_class_id]
-    seat_dict = seat_class.seat_dict["seats"]
-    for seat in list_seats:
-        if seat_dict[seat] == "on_hold":
-            list_of_seats_that_are_on_hold.append(seat)
-    if list_of_seats_that_are_on_hold == []:
-        return jsonify("none")
-    else:
-        return jsonify(",".join(list_of_seats_that_are_on_hold))

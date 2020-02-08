@@ -2,6 +2,7 @@ from flask import redirect, url_for, render_template, abort, request
 from flask_login import current_user
 from package.user.classes import Admin
 import shelve
+from package import bcrypt
 
 def check_admin():
     print(f"{current_user.get_id()} tried to access admin pages")
@@ -11,6 +12,36 @@ def check_admin():
 def check_if_login():
     if current_user.is_authenticated:
         abort(403)
+
+def check_rights():
+    url_path = request.path
+    url_purpose = url_path.split("/")[2]  # /admin/[url_purpose]/.../...
+    current_admin_rights = current_user.get_administrative_rights()
+    if not "Super Admin" in current_admin_rights:
+        if url_purpose == "home":
+            return current_admin_rights[0]
+        if url_purpose == "admin_accounts":
+            if not "Manage admins" in current_admin_rights:
+                abort(401)
+        if url_purpose == "carousel":
+            if not "Carousel" in current_admin_rights:
+                abort(401)
+        if url_purpose == "movie_theatre":
+            if not "Theatres" in current_admin_rights:
+                abort(401)
+        if url_purpose == "movies":
+            if not "Movies" in current_admin_rights:
+                abort(401)
+        if url_purpose == "rental":
+            if not "Rental" in current_admin_rights:
+                abort(401)
+        if url_purpose == "showtime":
+            if not "Showtime" in current_admin_rights:
+                abort(401)
+        if url_purpose == "promotion":
+            if not "Promotion" in current_admin_rights:
+                abort(401)
+        
 
 def set_up_variables():
     db = shelve.open("shelve.db", "c")
@@ -30,10 +61,10 @@ def set_up_variables():
     try:
         user_dict = db['Users']          
         if user_dict["A0"] == None:
-            user_dict["A0"] = Admin("Super Admin", "superadmin@saw.com", ["Super Admin"], bcrypt.generate_password_hash("Admin").decode('utf-8') )            
+            user_dict["A0"] = Admin("Super Admin", "superadmin@saw.com", ["Super Admin"], bcrypt.generate_password_hash("Admin").decode("utf-8") )            
     except:        
         user_dict = {}
-        user_dict["A0"] = Admin("Super Admin", "superadmin@saw.com", ["Super Admin"], bcrypt.generate_password_hash("Admin").decode('utf-8') )
+        user_dict["A0"] = Admin("Super Admin", "superadmin@saw.com", ["Super Admin"], bcrypt.generate_password_hash("Admin").decode("utf-8") )
         db["Users"] = user_dict 
     try:
         seat_dict = db["Seats"]   

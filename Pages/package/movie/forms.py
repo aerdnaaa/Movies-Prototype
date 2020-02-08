@@ -36,7 +36,7 @@ class CreateMovieForm(FlaskForm):
         submit = SubmitField("Add Movies")                    
 
 class ModifyMovieForm(FlaskForm):
-        movie_name = StringField(label="Movie Name", validators=[DataRequired(message="Movie must have a name"), validate_movie_name])
+        movie_name = StringField(label="Movie Name", validators=[DataRequired(message="Movie must have a name")])
         movie_poster = FileField(label="Movie Poster", validators=[DataRequired(message="Movie must have a poster"),FileAllowed(['jpg','png','jpeg'],message="This file type is not allowed")])
         movie_description = TextAreaField(label='Movie Description', validators=[DataRequired()])
         movie_genre = SelectMultipleField(label="Movie Genre", choices=[], validators=[validate_genre])

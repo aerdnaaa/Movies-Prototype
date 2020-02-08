@@ -20,6 +20,7 @@ def return_emails(user_dict):
 def is_correct_password(email, password, user_dict):    
     for value in list(user_dict.values()):
         if value.get_email() == email:
+            print(value.get_password())
             if bcrypt.check_password_hash(value.get_password(), password):
                 return True
     return False

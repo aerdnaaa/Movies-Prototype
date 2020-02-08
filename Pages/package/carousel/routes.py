@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from package.carousel.forms import CreateCarousel, ModifyCarousel
 from package.carousel.classes import Carousel
 from package.carousel.utilis import save_picture
-from package.utilis import check_admin
+from package.utilis import check_admin, check_rights
 import shelve, datetime
 
 carousel_blueprint = Blueprint("carousel", __name__)
@@ -35,6 +35,7 @@ def home():
 @login_required
 def admin_carousel():
     check_admin()
+    check_rights()
     db = shelve.open('shelve.db', 'c')
     try:
         Carousel_dict = db['carousel']
@@ -48,6 +49,7 @@ def admin_carousel():
 @login_required
 def add_carousel():
     check_admin()
+    check_rights()
     form = CreateCarousel()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -99,6 +101,7 @@ def add_carousel():
 @login_required
 def modify_carousel(carousel_id):
     check_admin()
+    check_rights()
     form = ModifyCarousel()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -143,6 +146,7 @@ def modify_carousel(carousel_id):
 @login_required
 def delete_carousel():
     check_admin()
+    check_rights()
     db = shelve.open('shelve.db', 'c')
     try:
         Carousel_dict = db["carousel"]

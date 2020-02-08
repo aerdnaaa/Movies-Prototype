@@ -89,11 +89,11 @@ when commiting, if you finished a certain task say, finished tasks: e.g. H1, P1
     4. when click on movie image will show trailer in modal √
     5. Form validation for all admin pages √
     6. Form validation for sign up form √
-    7. must remember what the users had selected and allow them to change
+    7. must remember what the users had selected and allow them to change √
     8. seats must be independent from each other
     9. seats dict should have their own key √ 
     10. on admin side can see who booked the seats at the moment
-    11. if no theatre, movie added, must tell user that you cannot add showtime
+    11. if no theatre, movie added, must tell user that you cannot add showtime √
 
 * Medium
     1. checkout with stripe

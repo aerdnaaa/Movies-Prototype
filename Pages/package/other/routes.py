@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import render_template, request, redirect, url_for, Markup
 from flask_login import current_user, login_required
 from package.other.forms import CreateContactUsForm
-from package.utilis import check_admin
+from package.utilis import check_admin, check_rights
 from flask_login import login_required
 import shelve
 # from package.utilis import check_admin
@@ -20,6 +20,23 @@ def contactUs():
 @login_required
 def admin_home():
     check_admin()
+    first_rights = check_rights()
+    if first_rights:
+        if first_rights == "Manage admins":
+            return redirect(url_for("user.admin_accounts"))
+        if first_rights == "Carousel":
+            return redirect(url_for("carousel.admin_carousel"))
+        if first_rights == "Theatres":
+            return redirect(url_for("movie_theatre.admin_movie_theatre"))
+        if first_rights == "Movies":
+            return redirect(url_for("movie.admin_movies"))
+        if first_rights == "Rental":
+            return redirect(url_for("rental.admin_rental"))
+        if first_rights == "Showtime":
+            return redirect(url_for("showtime.admin_showtime"))
+        if first_rights == "Promotion":
+            return redirect(url_for("promotion.admin_promotion"))
+        
     db = shelve.open("shelve.db", "c")
     try:
         Promotion_dict = db["promotion"]

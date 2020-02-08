@@ -26,6 +26,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+          {% if "Super Admin" in current_user.get_administrative_rights()%} 
           <li class="nav-item has-treeview menu-open">
             <ul class="nav nav-treeview">
               <li class="nav-item">
@@ -35,7 +36,9 @@
                 </a>
               </li>
             </ul>
-          </li> 
+          </li>
+          {% endif %}
+          {% if "Manage admins" in current_user.get_administrative_rights() or "Super Admin" in current_user.get_administrative_rights()%} 
           <li class="nav-item">
             <a href="{{ url_for('user.admin_accounts') }}" class="nav-link">              
               <i class="nav-icon fas fa-user"></i>
@@ -45,6 +48,8 @@
               </p>
             </a>
           </li>
+          {% endif %}
+          {% if "Carousel" in current_user.get_administrative_rights() or "Super Admin" in current_user.get_administrative_rights()%} 
           <li class="nav-item">
             <a href="{{ url_for('carousel.admin_carousel') }}" class="nav-link">              
               <i class="nav-icon far fa-image"></i>
@@ -54,6 +59,8 @@
               </p>
             </a>
           </li>
+          {% endif %}
+          {% if "Theatres" in current_user.get_administrative_rights() or "Super Admin" in current_user.get_administrative_rights()%} 
           <li class="nav-item">
             <a href="{{ url_for('movie_theatre.admin_movie_theatre') }}" class="nav-link">              
               <i class="nav-icon far fa-building"></i>
@@ -63,6 +70,8 @@
               </p>
             </a>
           </li>
+          {% endif %}
+          {% if "Movies" in current_user.get_administrative_rights() or "Super Admin" in current_user.get_administrative_rights()%} 
           <li class="nav-item">
             <a href="{{ url_for('movie.admin_movies') }}" class="nav-link">              
               <i class="nav-icon fas fa-film"></i>
@@ -72,6 +81,8 @@
               </p>
             </a>
           </li>
+          {% endif %}
+          {% if "Rental" in current_user.get_administrative_rights() or "Super Admin" in current_user.get_administrative_rights()%}
           <li class="nav-item">
             <a href="{{ url_for('rental.admin_rental') }}" class="nav-link">
               <i class="nav-icon 	fas fa-video" ></i>
@@ -81,6 +92,8 @@
               </p>
             </a>
           </li>
+          {% endif %}
+          {% if "Showtime" in current_user.get_administrative_rights() or "Super Admin" in current_user.get_administrative_rights()%}
           <li class="nav-item">
             <a href="{{ url_for('showtime.admin_showtime') }}" class="nav-link">              
               <i class="nav-icon fas fa-ticket-alt"></i>
@@ -90,6 +103,8 @@
               </p>
             </a>
           </li>
+          {% endif %}
+          {% if "Promotion" in current_user.get_administrative_rights() or "Super Admin" in current_user.get_administrative_rights()%}
           <li class="nav-item">
             <a href="{{ url_for('promotion.admin_promotion') }}" class="nav-link">
               <i class="nav-icon fas fa-tag"></i>
@@ -99,6 +114,7 @@
               </p>
             </a>
           </li>
+          {% endif %}
           <li class="nav-item">
             <a href="{{ url_for('other.admin_calendar') }}" class="nav-link">
               <i class="nav-icon far fa-calendar-alt"></i>              

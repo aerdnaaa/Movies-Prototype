@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from package.rental.forms import CreateRental, ModifyRental
 from package.rental.classes import Rental
 from package.rental.utilis import save_picture
-from package.utilis import check_admin
+from package.utilis import check_admin, check_rights
 import shelve, datetime
 
 rental_blueprint = Blueprint("rental", __name__)
@@ -28,6 +28,7 @@ def rentmovie():
 @login_required
 def admin_rental():
     check_admin()
+    check_rights()
     db = shelve.open('shelve.db', 'c')
     try:
         Rental_dict = db["rental"]
@@ -41,6 +42,7 @@ def admin_rental():
 @login_required
 def add_rental():
     check_admin()
+    check_rights()
     form = CreateRental()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -76,6 +78,7 @@ def add_rental():
 @login_required
 def modify_rental(rental_id):
     check_admin()
+    check_rights()
     form = ModifyRental()
     db = shelve.open('shelve.db', 'c')
     try:
@@ -111,6 +114,7 @@ def modify_rental(rental_id):
 @login_required
 def delete_rental():
     check_admin()
+    check_rights()
     db = shelve.open('shelve.db', 'c')
     try:
         Rental_dict = db["rental"]
@@ -130,6 +134,7 @@ def delete_rental():
     db["deleted_rental"] = Deleted_list
     db.close()
     return redirect(url_for("rental.admin_rental"))
+
 @rental_blueprint.route("/admin/rental/rental_users")
 def rental_users():
     pass
