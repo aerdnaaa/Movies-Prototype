@@ -291,6 +291,64 @@ function cancel_seats(){
     sessionStorage.setItem('id', json_string) 
     location.href = "/showtime_theatre/cancel_seats/" + showtime_id + "/" + seat_class_id+ "/" + current_seats;
 }
+    }
+}
+function save_seats(){
+    var list_of_selected_seats_elements = document.getElementsByClassName("standard_selected");
+    var list_of_selected_seats_id = [];
+    for (let element of list_of_selected_seats_elements){
+        list_of_selected_seats_id.push(element.id);
+    }
+    let json_string = sessionStorage.getItem('id');
+    let user_object = JSON.parse(json_string);
+    user_object['new_seat_list'] = list_of_selected_seats_id;
+    json_string = JSON.stringify(user_object)            
+    sessionStorage.setItem('id', json_string) 
+}
+
+function cancel_seats(){
+    let json_string = sessionStorage.getItem('id');
+    let user_object = JSON.parse(json_string);
+    let new_list =  user_object['new_seat_list'];
+    let old_list = user_object['old_seat_list']
+    console.log(old_list)
+    let current_seats =new_list.concat(old_list).join(); 
+    console.log(current_seats)
+    user_object['new_seat_list'] = []
+    user_object['old_user_list'] = []
+    json_string = JSON.stringify(user_object)            
+    sessionStorage.setItem('id', json_string) 
+    location.href = "/showtime_theatre/cancel_seats/" + showtime_id + "/" + seat_class_id+ "/" + current_seats;
+}
+    }
+}
+function save_seats(){
+    var list_of_selected_seats_elements = document.getElementsByClassName("standard_selected");
+    var list_of_selected_seats_id = [];
+    for (let element of list_of_selected_seats_elements){
+        list_of_selected_seats_id.push(element.id);
+    }
+    let json_string = sessionStorage.getItem('id');
+    let user_object = JSON.parse(json_string);
+    user_object['new_seat_list'] = list_of_selected_seats_id;
+    json_string = JSON.stringify(user_object)            
+    sessionStorage.setItem('id', json_string) 
+}
+
+function cancel_seats(){
+    let json_string = sessionStorage.getItem('id');
+    let user_object = JSON.parse(json_string);
+    let new_list =  user_object['new_seat_list'];
+    let old_list = user_object['old_seat_list']
+    console.log(old_list)
+    let current_seats =new_list.concat(old_list).join(); 
+    console.log(current_seats)
+    user_object['new_seat_list'] = []
+    user_object['old_user_list'] = []
+    json_string = JSON.stringify(user_object)            
+    sessionStorage.setItem('id', json_string) 
+    location.href = "/showtime_theatre/cancel_seats/" + showtime_id + "/" + seat_class_id+ "/" + current_seats;
+}
 </script>
 <script src="{{ url_for('static', filename='js/extension.js') }}"></script>
 
