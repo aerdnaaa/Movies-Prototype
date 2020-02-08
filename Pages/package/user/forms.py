@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm, Form
+from flask_login import current_user
 from wtforms import StringField, validators, SubmitField, SelectField, SelectMultipleField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, EqualTo, Email, Optional, ValidationError
 from flask_wtf.file import FileField, FileAllowed, FileRequired
@@ -45,7 +46,7 @@ class LoginForm(FlaskForm):
 
 class CreateAdminForm(FlaskForm):
     username = StringField("Username",[Length(min=1, max=30), DataRequired()], default="Admin")
-    email = EmailField("Email", [DataRequired(), Email()])
+    email = EmailField("Email", [DataRequired("Email is required "), Email(), validate_email])
     administrative_rights = SelectMultipleField("Administrative Rights", choices=[("Super Admin", "Super Admin"), ("Manage admins", "Manage admins"), ("Carousel", "Carousel")], default="Super Admin")    
     submit = SubmitField("Add Admin")
 
@@ -64,16 +65,17 @@ class ModifyAdminAccount(FlaskForm):
 
 class UpdateContactDetails(FlaskForm):
     fullName = StringField('Full Name',[validators.Length(min=1,max=150), validators.DataRequired(message="This cannot be empty!")])
-    email = EmailField('Email address', [validators.DataRequired(), validators.Email(message="Please enter valid email.")])
-    dateOfBirth = DateField('Date of Birth', validators=[validators.DataRequired()], format="%Y-%m-%d",render_kw={"placeholder": "dd/mm/yyyy"})
+    email = EmailField('Email address', [validators.DataRequired(), validators.Email(message="Please enter valid email."), validate_email])
+    dateOfBirth = DateField('Date of Birth', validators=[validators.DataRequired(),validate_dateOfbirth], format="%Y-%m-%d",render_kw={"placeholder": "dd/mm/yyyy"})
     username = StringField('Username', [validators.length(min=2, max=20), validators.DataRequired()])
     gender = SelectField("Gender",validators=[DataRequired()],choices=[('Male','Male'),('Female','Female')])
     submit = SubmitField('Save changes')
-
+    
 class UpdatePassword(FlaskForm):
     password = PasswordField('Password', [validators.length(min=8), validators.DataRequired()])
     confirmpassword = PasswordField('Confirm Password',[validators.length(min=8),validators.EqualTo('password', message='Passwords must match')])
     submit = SubmitField('Change Password')
 
 class UpdateProfilePicture(FlaskForm):
-    photo = FileField(validators=[FileRequired('File was empty!')])
+    photo = FileField('Change Display Picture',validators=[FileRequired('File was empty!'),FileAllowed(['jpg','png'])])
+    submit = SubmitField('Change Display Picture')

@@ -1,6 +1,26 @@
 {% extends "User 2/base.html" %}
 
 {% block content %}
+<style>
+	.gotop #tothetop {
+	  position: fixed;
+	  bottom: 20px;
+	  right: 30px;
+	  z-index: 99;
+	  font-size: 18px;
+	  border: none;
+	  outline: none;
+	  background-color: red;
+	  color: white;
+	  cursor: pointer;
+	  padding: 15px;
+	  border-radius: 4px;
+	}
+	
+	.gotop #tothetop:hover {
+	  background-color: blue;
+	}
+	</style>
 <!-- page title -->
 <section class="section section--first section--bg" data-bg="img/section/section.jpg">
     <div class="container">
@@ -116,6 +136,11 @@
     </div>
 </div>
 <!-- end promotion -->
+<div class=gotop>
+	<a id="tothetop" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+		<i class="fas fa-chevron-up"></i>
+	  </a>
+    </div>
 <script>
     function apply_filter() {
         var condition_filter = document.getElementById("condition").value;        
@@ -135,6 +160,23 @@
             }
         }
     }
+
+
+    var mybutton = document.getElementById("tothetop");
+    window.onscroll = function() {scrollFunction()};
+        function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+        }
+    
+        
+
+
+
+
 </script>
 
 {% endblock %}

@@ -13,7 +13,7 @@ def validate_movie_name(form,field):
         db["movies"] = Movies_dict
     db.close()
     for movie_title in Movies_dict.values():
-        if movie_title.get_title() == field.data:
+        if movie_title.get_movie_name() == field.data:
             raise ValidationError("Movie Title Existed")
 
 def validate_genre(form, field):

@@ -83,21 +83,28 @@ when commiting, if you finished a certain task say, finished tasks: e.g. H1, P1
 
 ## Priorities
 * High
-    1. create on hold seat attribute 
-    2. check if seat is on hold
+    1. create on hold seat attribute √
+    2. check if seat is on hold √
     3. image of movie in showtime √
     4. when click on movie image will show trailer in modal √
-    5. Form validation for all admin pages
+    5. Form validation for all admin pages √
     6. Form validation for sign up form √
-
+    7. must remember what the users had selected and allow them to change
+    8. seats must be independent from each other
+    9. seats dict should have their own key √ 
+    10. on admin side can see who booked the seats at the moment
+    11. if no theatre, movie added, must tell user that you cannot add showtime
 
 * Medium
-    
     1. checkout with stripe
     2. timer for check out - showtime
     3. login user log them out if they idle too long
-    4. make content in carousel page clickable.
-    5. Generate pdf for check out
+    4. make content in carousel page clickable. 
+    5. Generate pdf for check out  
+    6. ModifyShowtime in routes.py flash message √
 
-
+allo help me with smthing ??????
+add in the filter thing for movies (catalog)
+and also come voice call wait the filter i delete the year and rating 
+can be fking crazy and allow user to update the ratings oof
 * Low

@@ -86,6 +86,7 @@
               {{ form.movie_subtitles.label(class="form-control-label") }}              
               {{ render_field(form.movie_subtitles, class="form-control", required=False) }}
             </div>
+        
           </div>
           {{ form.submit(class="btn btn-primary", onclick='confirm("Do you want to proceed with adding the movie(s) ?")') }}
         </form>

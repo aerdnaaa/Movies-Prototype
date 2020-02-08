@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
 from flask_login import current_user, login_required
 from package.carousel.forms import CreateCarousel, ModifyCarousel
 from package.carousel.classes import Carousel
@@ -20,7 +20,15 @@ def home():
     except:
         Carousel_dict = {}
         db['carousel'] = Carousel_dict
-    return render_template("User 2/index.html", title="Home", Carousel_dict=Carousel_dict)
+        db.close()
+    try:
+        Movies_dict = db["movies"]        
+    except:
+        Movies_dict = {}    
+        db["movies"] = Movies_dict
+    genre_list = db["genre_list"]
+    db.close()
+    return render_template("User 2/index.html", title="Home", Carousel_dict=Carousel_dict, Movies_dict=Movies_dict, genre_list=genre_list)
 
 #* Admin Carousel
 @carousel_blueprint.route("/admin/carousel")
@@ -67,7 +75,10 @@ def add_carousel():
             Carousel_dict[carousel_id] = carousel_class
         db["carousel"] = Carousel_dict
         db.close()
+        flash("Carousel has been added !", "success")
         return redirect(url_for("carousel.admin_carousel"))
+    elif request.method == "POST" and not form.validate_on_submit():
+        flash("Some field(s) are incorrect. Please try again", "danger")
     elif request.method == "GET":
         form.carousel_category.data = "movies" 
         db = shelve.open("shelve.db", 'c')
@@ -96,6 +107,16 @@ def modify_carousel(carousel_id):
         Carousel_dict = {}
         db['carousel'] = Carousel_dict
     carousel_class = Carousel_dict[carousel_id]
+    #? initialize choices 
+    try:
+        title_dict = db["movies"]
+    except:
+        title_dict = {}
+        db["movies"] = title_dict
+    tuple_list = []
+    for key , value in title_dict.items():            
+        tuple_list.append((key, value.get_movie_name()))
+    form.carousel_title.choices = tuple_list
     if request.method == "POST":
         carousel_title = form.carousel_title.data             
         carousel_category = form.carousel_category.data        
@@ -108,29 +129,14 @@ def modify_carousel(carousel_id):
         Carousel_dict[carousel_id] = carousel_class
         db["carousel"] = Carousel_dict
         db.close()
+        flash("Carousel has been modified !", "success")
         return redirect(url_for("carousel.admin_carousel"))
-    elif request.method == "GET":         
-        db = shelve.open("shelve.db", 'c')
-        try:
-            title_dict = db[carousel_class.get_category()]
-        except:
-            title_dict = {}
-            db[carousel_class.get_category()] = title_dict
-        tuple_list = []        
-        for key , value in title_dict.items():            
-            if carousel_class.get_category() == "movies":
-                tuple_list.append((key, value.get_movie_name()))
-                if value.get_movie_name() == carousel_class.get_title():
-                    carousel_title = key
-            else:
-                tuple_list.append((key, value.get_title()))          
-                if value.get_title() == carousel_class.get_title():
-                    carousel_title = key  
-        db.close()
-        form.carousel_title.choices = tuple_list
+    elif request.method == "POST" and not form.validate_on_submit():
+        flash("Some field(s) are incorrect. Please try again", "danger")
+    elif request.method == "GET":                 
         form.carousel_category.data= carousel_class.get_category()
-        form.carousel_title.data =  carousel_title
-        print(form.carousel_title.data)
+        form.carousel_title.data =  carousel_class.get_title()        
+        print(carousel_class.get_title())
     return render_template("Admin/carousel/modify_carousel.html", title="Modify Carousel", form=form)
 
 @carousel_blueprint.route("/admin/carousel/delete", methods=["GET","POST"])
@@ -172,7 +178,6 @@ def return_carousel_title(category):
         if category == "movies":
             title_new_dict[key] = value.get_movie_name()
         else:
-            title_new_dict[key] = value.get_title()
-    print(title_new_dict)
+            title_new_dict[key] = value.get_title()    
     db.close()
     return jsonify({"carousel_title":title_new_dict})

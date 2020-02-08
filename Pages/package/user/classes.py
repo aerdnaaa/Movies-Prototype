@@ -77,60 +77,18 @@ class User(Person, UserMixin):
 
 class AnonymousUser():
     id = "a0"
-    def __init__(self, fullname, email, DateofBirth, gender, card_number, card_name, expiry_date, cvc):
+    def __init__(self):
         self.id = AnonymousUser.id
-        self.__fullname = fullname
-        self.__email = email
-        self.__DateofBirth = DateofBirth
-        self.__gender = gender
-        self.__card_number = card_number
-        self.__card_name = card_number
-        self.__expiry_date = expiry_date
-        self.__cvc = cvc
+        self.fullname = ""
+        self.email = ""
+        self.DateofBirth = ""
+        self.gender = ""
+        self.card_number = ""
+        self.card_name = ""
+        self.expiry_date = ""
+        self.cvc = ""
         self.seats = []
         AnonymousUser.id += 1
-
-    def get_fullname(self):
-        return self.__fullname
-    def get_email(self):
-        return self.__email
-    def get_DateofBirth(self):
-        return self.__DateofBirth
-    def get_gender(self):
-        return self.__gender
-    def get_card_number(self):
-        return self.__card_number
-    def get_card_name(self):
-        return self.__card_name
-    def get_expiry_date(self):
-        return self.__expiry_date
-    def get_cvc(self):
-        return self.__cvc
-    
-    def set_fullname(self, fullname):
-        self.__fullname = fullname
-
-    def set_email(self, email):
-        self.__email = email
-
-    def set_DateofBirth(self, DateofBirth):
-        self.__DateofBirth = DateofBirth
-
-    def set_gender(self, gender):
-        self.__gender = gender
-
-    def set_card_number(self, card_number):
-        self.__card_number = card_number
-
-    def set_card_name(self, card_name):
-        self.__card_name = card_name
-
-    def set_expiry_date(self, expiry_date):
-        self.__expiry_date = expiry_date
-
-    def set_cvc(self, cvc):
-        self.__cvc = cvc
-    
 
 
 

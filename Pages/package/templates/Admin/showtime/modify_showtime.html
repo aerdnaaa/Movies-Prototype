@@ -28,7 +28,7 @@
   
   <section class="content-header">
     <div class="container-fluid">
-      <form action="{{url_for('showtime.showtime')}}" method="GET">
+      <form action="{{url_for('showtime.admin_showtime')}}" method="GET">
         <button class="btn btn-primary" type="submit" style="float: right; clear: both;">Cancel</button>
       </form>
       <div class="row">
@@ -77,6 +77,40 @@
 <!-- /.content-wrapper -->
 
 {% block scripts %}
+<script>    
+  let theatre_field = document.getElementById("theatre_name");
+  let start_date_field = document.getElementById("showtime_start_date");
+  let end_date_field = document.getElementById("showtime_end_date");
+  let timeslot_field = document.getElementById("timeslot");
+  let hall_number_field = document.getElementById("hall_number");
+
+  function check_hall_number() {
+    theatre = theatre_field.value;      
+    start_date = start_date_field.value;
+    end_date = end_date_field.value;
+    timeslot = Array.prototype.slice.call(document.querySelectorAll('#timeslot option:checked'),0).map(function(v,i,a) { 
+        return v.innerHTML; 
+    });
+    
+    if (theatre != '' && start_date != '' && end_date != '' && timeslot != '') {        
+      fetch('/admin/modify_showtime_theatre/' + theatre + "/" + start_date + "/" + end_date + "/" + timeslot).then(function(response){
+        response.json().then(function(data) {
+          let optionHTML = "";          
+          
+          for (var hall_number of data.hall_list){
+            optionHTML += '<option value="' + hall_number + '">' + hall_number + '</option>'
+          }
+
+          hall_number_field.innerHTML = optionHTML;
+        
+        });
+      });
+    }
+
+
+  }  
+</script>
+<script src="{{ url_for('static', filename='js/extension.js') }}"></script>
 <script>
   setTimeout(function() {
     new SlimSelect({

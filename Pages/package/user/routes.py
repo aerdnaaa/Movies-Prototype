@@ -70,7 +70,7 @@ def register():
     db.close()
     return render_template("User 2/signup.html", title="Register",form=createUserForm)
 
-@user_blueprint.route("/accountpage")
+@user_blueprint.route("/accountpage", methods=['GET','POST'])
 @login_required
 def accountpage():
     UCDform = UpdateContactDetails()
@@ -85,6 +85,7 @@ def accountpage():
     user_class = userDict[current_user.get_id()]
     if request.method == 'POST' and UCDform.validate():
         flash(f'You have successfully changed your contact details.', 'success')
+
         user_fullName = UCDform.fullName.data
         user_email = UCDform.email.data
         user_dateOfBirth = UCDform.dateOfBirth.data
@@ -97,18 +98,27 @@ def accountpage():
         user_class.set_username(user_username)
         user_class.set_gender(user_gender)
 
+        userDict[current_user.get_id()] = user_class
         db["Users"] = userDict
         db.close()
         return redirect(url_for('user.accountpage'))
     if request.method =='POST' and UPform.validate():
         flash(f'You have successfully changed your password.','success')
-        user_password = UPform.password.data
+        user_password = bcrypt.generate_password_hash(UPform.password.data).decode('utf-8')
         user_class.set_password(user_password)
+        userDict[current_user.get_id()] = user_class
         db['Users'] =userDict
         db.close()
         return redirect(url_for('user.accountpage'))
+        
     if request.method == 'POST' and UPPform.validate():
-        pass #need to set directory for uploaded images
+        if UPPform.photo.data:
+            picture_file = save_picture(UPPform.photo.data, "/profile_pictures")
+            user_class.set_profile_picture(picture_file)
+            userDict[current_user.get_id()] = user_class
+            db['Users'] =userDict
+            db.close()
+            
         return redirect(url_for('user.accountpage'))
     return render_template("User 2/accountpage.html", UCDform=UCDform, UPform=UPform,UPPform=UPPform, title="My Account Page")
 
@@ -151,7 +161,10 @@ def add_admin():
         Admin_dict[admin_class.get_id()] = admin_class
         db["Users"] = Admin_dict
         db.close()
+        flash("Admin has been added !", "success")
         return redirect(url_for("user.admin_accounts"))
+    elif request.method == "POST" and not form.validate_on_submit():
+        flash("Some field(s) are incorrect. Please try again", "danger")
     elif request.method == "GET":
         form.username.data = "Admin"
         form.email.data = ""
@@ -178,7 +191,10 @@ def modify_admin(admin_id):
         admin_class.set_administrative_rights(admin_rights_list)
         db["Users"] = Admin_dict
         db.close()
+        flash("Admin Credentials has been modified !", "success")
         return redirect(url_for("user.admin_accounts"))
+    elif request.method == "POST" and not form.validate_on_submit():
+        flash("Some field(s) are incorrect. Please try again", "danger")
     elif request.method == "GET":
         form.username.data = admin_class.get_username()
         form.email.data = admin_class.get_email()

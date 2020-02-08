@@ -108,6 +108,8 @@ def modify_promotion(promotion_id):
     except:        
         Promotion_dict = {}
         db["promotion"] = Promotion_dict
+    promotion = Promotion_dict[promotion_id]
+    image_source = promotion.get_promotion_image()
     if request.method == "POST" and form.validate_on_submit():
         promotion_title = form.promotion_title.data
         promotion_image = save_picture(form.promotion_image.data, "promotion")
@@ -126,7 +128,7 @@ def modify_promotion(promotion_id):
     elif request.method == "POST" and not form.validate_on_submit():
         flash("Some field(s) are incorrect. Please try again", "danger")
     elif request.method == "GET":
-        promotion = Promotion_dict[promotion_id]
+        
         form.promotion_title.data = promotion.get_title()
         form.promotion_description.data = promotion.get_description()
         form.promotion_terms_and_condition.data = "\n".join(promotion.get_terms_and_conditions())
@@ -134,7 +136,7 @@ def modify_promotion(promotion_id):
         form.promotion_valid_start_date.data = start_date
         form.promotion_valid_end_date.data = end_date
         form.promotion_applicable_to.data = promotion.get_applicable_to()
-        image_source = promotion.get_promotion_image()
+        
     return render_template("Admin/promotion/modify_promotion.html", title="Modify Promotion", form=form, image_source=image_source)
 
 @promotion_blueprint.route("/admin/promotion/delete", methods=["GET","POST"])

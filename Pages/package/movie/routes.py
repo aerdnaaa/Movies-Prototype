@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask import render_template, request, redirect, url_for, Markup, jsonify
+from flask import render_template, request, redirect, url_for, Markup, jsonify, flash
 from flask_login import current_user, login_required
 from package.movie.forms import CreateMovieForm, ModifyMovieForm
 from package.movie.classes import Movie
@@ -11,18 +11,6 @@ import shelve, datetime
 movie_blueprint = Blueprint("movie", __name__)
 
 #* User Movie
-# list of movies
-@movie_blueprint.route("/movieslist")
-def movieslist():
-    db = shelve.open('shelve.db', 'c')
-    try:
-        Movies_dict = db["movies"]        
-    except:
-        Movies_dict = {}    
-        db["movies"] = Movies_dict
-    genre_list = db["genre_list"]
-    db.close()
-    return render_template("User 2/catalog.html", title="Movies List", Movies_dict=Movies_dict, genre_list=genre_list)
 
 @movie_blueprint.route("/movie/<movie_id>")
 def movie_detail(movie_id):
@@ -100,7 +88,10 @@ def add_movie():
         Movies_dict[movie_id] = movie_class
         db["movies"] = Movies_dict        
         db.close()
+        flash("Movie has been added !", "success")
         return redirect(url_for("movie.admin_movies"))
+    elif request.method == "POST" and not form.validate_on_submit():
+        flash("Some field(s) are incorrect. Please try again", "danger")
     elif request.method == "GET":
         form.movie_name.data = ""
         form.movie_description.data = ""
@@ -128,6 +119,10 @@ def modify_movie(movie_id):
         db["movies"] = Movies_dict
     genre_list = db["genre_list"]
     form.movie_genre.choices = genre_list
+    movie_class = Movies_dict[movie_id]
+    fullvideo_source = movie_class.get_movie_fullvideo()
+    trailer_source = movie_class.get_trailer()
+    image_source = movie_class.get_poster()
     if form.validate_on_submit():
         movie_name = form.movie_name.data
         movie_poster = save_picture(form.movie_poster.data, "movie poster")
@@ -150,17 +145,16 @@ def modify_movie(movie_id):
         Movies_dict[movie_id] = movie_class
         db["movies"] = Movies_dict        
         db.close()
+        flash("Movie has been modified !", "success")
         return redirect(url_for("movie.admin_movies"))
-    elif request.method == "GET":
-        movie_class = Movies_dict[movie_id]
-        form.movie_name.data = movie_class.get_movie_name()
-        image_source = movie_class.get_poster()
+    elif request.method == "POST" and not form.validate_on_submit():
+        flash("Some field(s) are incorrect. Please try again", "danger")
+    elif request.method == "GET":        
+        form.movie_name.data = movie_class.get_movie_name()        
         form.movie_description.data = movie_class.get_description()
         form.movie_genre.data = movie_class.get_genre_list()
         form.movie_casts.data = movie_class.get_casts()
-        form.movie_director.data = movie_class.get_director()
-        fullvideo_source = movie_class.get_movie_fullvideo()
-        trailer_source = movie_class.get_trailer()
+        form.movie_director.data = movie_class.get_director()        
         form.movie_duration.data = movie_class.get_duration()
         day, month, year = movie_class.get_release_date().split(" ")
         month_list = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']

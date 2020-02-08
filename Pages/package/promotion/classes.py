@@ -8,7 +8,8 @@ class Promotion:
         self.__description = description
         self.__terms_and_conditions = terms_and_conditions
         self.__valid_period = valid_period
-        self.__applicable_to = applicable_to        
+        self.__applicable_to = applicable_to       
+        self.carousel_status = False 
 
     def get_id(self):
         return self.__id

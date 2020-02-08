@@ -16,6 +16,7 @@ class Movie:
         self.__subtitles = subtitles
         self.__director = director
         self.__rating = 0
+        self.carousel_status = False
 
     def get_id(self):
         return self.__id

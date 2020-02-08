@@ -22,7 +22,7 @@ def validate_timeslot(form, field):
 
 class CreateShowtime(FlaskForm):    
     theatre_name = SelectField(label="Theatre Name", choices=[])
-    movie_title = SelectField(label="Movie Title", choices=[])
+    movie_title = SelectField(label="Movie Title", choices=[], validators=[DataRequired("Must select a movie")])
     timeslot = SelectMultipleField("Timeslot", choices=[], validators=[validate_timeslot])
     showtime_start_date = StringField(label="Showtime Start Date", validators=[DataRequired("Please choose a date"), validate_start_date])
     showtime_end_date = StringField(label="Showtime End Date", validators=[DataRequired("Please choose a date"), validate_end_date])

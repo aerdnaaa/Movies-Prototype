@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask import render_template, request, redirect, url_for, Markup
+from flask import render_template, request, redirect, url_for, Markup, flash
 from flask_login import current_user, login_required
 from package.movie_theatre.forms import CreateMovieTheatre, ModifyMovieTheatre
 from package.movie_theatre.classes import Theatre
@@ -36,7 +36,7 @@ def add_movie_theatre():
     except:        
         Movie_theatre_dict = {}
         db["movie_theatre"] = Movie_theatre_dict      
-    if form.validate_on_submit():
+    if request.method == "POST" and form.validate_on_submit():
         theatre_name = form.theatre_name.data
         theatre_image = save_picture(form.theatre_image.data, "theatre")        
         theatre_halls = int(form.theatre_halls.data)
@@ -45,7 +45,10 @@ def add_movie_theatre():
         Movie_theatre_dict[theatre_id] = movie_theatre_class
         db["movie_theatre"] = Movie_theatre_dict
         db.close()
+        flash("Movie Theatre has been added !", "success")
         return redirect(url_for('movie_theatre.admin_movie_theatre'))
+    elif request.method == "POST" and not form.validate_on_submit():
+        flash("Some field(s) are incorrect. Please try again", "danger")
     elif request.method == "GET":
         form.theatre_name.data = ""
         form.theatre_halls.data = 1
@@ -73,7 +76,10 @@ def modify_movie_theatre(movie_theatre_id):
         Movie_theatre_dict[movie_theatre_id] = movie_theatre_class
         db["movie_theatre"] = Movie_theatre_dict
         db.close()
+        flash("Movie Theatre has been modified !", "success")
         return redirect(url_for('movie_theatre.admin_movie_theatre'))
+    elif request.method == "POST" and not form.validate_on_submit():
+        flash("Some field(s) are incorrect. Please try again", "danger")
     elif request.method == "GET":
         movie_theatre = Movie_theatre_dict[movie_theatre_id]
         form.theatre_name.data = movie_theatre.get_theatre_name()

@@ -1,6 +1,7 @@
 {% extends "User 2/base.html" %}
 {% from "User 2/includes/_formHelper.html" import render_field %}
 {% block content %}
+
 <section class="content">
     <div class="content__head">
         <div class="container">
@@ -367,104 +368,107 @@
 </div>
 </div>
 </div>
-</div>
-</div>
-</div>
-</div>
-</div>
+        </div>
+    </div>
 </section>
 
 <!-- Update Contact Details Modal -->
 <div class="modal fade" id="UCDmodal" tabindex="-1" role="dialog" aria-labelledby="UCDModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-header" style="background-color: #28282d;">
-            <h2 class="modal-title card__title" id="UCDModalLabel" style="padding:20px"> Update Contact Details </h2>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white;">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>        
-        <div class="modal-body sign__form">                
-          <form action="#" class="" method="POST">
-            {{ UCDform.hidden_tag() }}            
-            <div class="sign__group">
-                {{ render_field(UCDform.fullName, class="sign__input", placeholder="Full Name", required=False) }}
-            </div>
-            <div class="sign__group">
-                {{ render_field(UCDform.username, class="sign__input", placeholder="Username", required=False) }}
-            </div>
-            <div class="sign__group">
-                {{ render_field(UCDform.email, class="sign__input", placeholder="Email", required=False) }}
-            </div>
-            <div class="sign__group">
-                {{ render_field(UCDform.dateOfBirth, class="sign__input", required=False) }}
-            </div>
-            <div class="sign__group">
-                {{ render_field(UCDform.gender, class="sign__input") }}
-            </div>
-            <div class="sign__group">                
-                {{ render_field(UCDform.submit, class="sign__btn") }}            
-            </div>
-        </form>
-        </div>    
-    </div>
-  </div>
-
-  <!-- Update Change Password modal    -->
-    <div class="modal fade" id="UPmodal" tabindex="-1" role="dialog" aria-labelledby="UPmodaltitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color: #28282d;">
-                    <h2 class="modal-title" id="UPmodaltitle" style="color:white">Update Change Password</h2>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white;">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <divclass="modal-body"> 
-                    <!-- Change Password form -->
-                    <form action="#" class="sign__form" method="POST">
-                        {{ UPform.hidden_tag() }}
-                        <div>
-                            <div class="sign__group">
-                                {{ render_field(UPform.password, class="sign__input",placeholder="Password", required=False) }}
-                            </div>
-                            <div class="sign__group">
-                                {{ render_field(UPform.confirmpassword, class="sign__input",placeholder="Confirm Password", required=False) }}
-                            </div>
-                            <div class="sign__group">
-                                {{ render_field(UPform.submit, class="sign__btn") }}
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            </div>
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #28282d;">
+                <h2 class="modal-title card__title" id="UCDModalLabel" style="padding:20px"> Update Contact Details </h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white;">
+                    <i class="fa fa-close" style="color: #ff55a5;"></i>
+                </button>
+            </div>        
+            <div class="modal-body ">                
+                <form action="#" class="sign__form" method="POST">
+                    {{ UCDform.hidden_tag() }}            
+                    <div class="sign__group">
+                        {{ render_field(UCDform.fullName, class="sign__input", placeholder="Full Name", required=False) }}
+                    </div>
+                    <div class="sign__group">
+                        {{ render_field(UCDform.username, class="sign__input", placeholder="Username", required=False) }}
+                    </div>
+                    <div class="sign__group">
+                        {{ render_field(UCDform.email, class="sign__input", placeholder="Email", required=False) }}
+                    </div>
+                    <div class="sign__group">
+                        {{ render_field(UCDform.dateOfBirth, class="sign__input", required=False) }}
+                    </div>
+                    <div class="sign__group">
+                        {{ render_field(UCDform.gender, class="sign__input") }}
+                    </div>
+                    <div class="sign__group">                
+                        {{ render_field(UCDform.submit, class="sign__btn") }}            
+                    </div>
+                </form>
+            </div>    
         </div>
+    </div>
+</div>
 
-                <!-- Update Profile Picture modal -->
-                <div class="modal fade" id="UPPmodal" tabindex="-1" role="dialog" aria-labelledby="UPPmodaltitle" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header" style="background-color: #28282d;">
-                                <h2 class="modal-title" id="UPPtitle" style="color:white;">Update Profile Picture</h2>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white;">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div>
-                                <img src="{{ url_for('static', filename='images/profile_pictures/' + current_user.get_profile_picture() ) }}" alt="..." style="border-radius: 50%;" width="150" height="auto">
-                                <form>
-                                    {{ render_field(UPPform.photo) }}
-                                </form>
-                            </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Save changes</button>
-                            </div>
-                        </div>
+<!-- Update Change Password modal    -->
+<div class="modal fade" id="UPmodal" tabindex="-1" role="dialog" aria-labelledby="UPmodaltitle" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header" style="background-color: #28282d;">
+            <h2 class="modal-title" id="UPmodaltitle" style="color:white">Update Change Password</h2>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white;">
+                <i class="fa fa-close" style="color: #ff55a5;"></i>
+            </button>
+        </div>
+        <div class="modal-body"> 
+            <!-- Change Password form -->
+            <form action="#" class="sign__form" method="POST">
+                {{ UPform.hidden_tag() }}
+                <div>
+                    <div class="sign__group">
+                        {{ render_field(UPform.password, class="sign__input",placeholder="Password", required=False) }}
+                    </div>
+                    <div class="sign__group">
+                        {{ render_field(UPform.confirmpassword, class="sign__input",placeholder="Confirm Password", required=False) }}
+                    </div>
+                    <div class="sign__group">
+                        {{ render_field(UPform.submit, class="sign__btn") }}
                     </div>
                 </div>
+            </form>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- Update Profile Picture modal -->
+<div class="modal fade" id="UPPmodal" tabindex="-1" role="dialog" aria-labelledby="UPPmodaltitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #28282d;">
+                <h2 class="modal-title" id="UPPtitle" style="color:white;">Update Profile Picture</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white;">
+                    <i class="fa fa-close" style="color: #ff55a5;"></i>
+                </button>
+            </div>
+            <div class="modal-body" >
+                <div>
+                <form method="POST" action="#" enctype="multipart/form-data">
+                    <div class="sign__group">
+                        <img src="{{ url_for('static', filename='images/profile_pictures/' + current_user.get_profile_picture() ) }}" alt="..." style="border-radius: 50%;" width="150" height="auto">
+                    </div>
+                    <div class="sign__group">
+                        {{ UPPform.hidden_tag() }}
+                        {{ render_field(UPPform.photo) }}
+                    </div>
+                    <div class="sign__group">
+                        {{ render_field(UPPform.submit, class="sign__btn") }}
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
                 {% endblock%}
 					<!-- content title -->

@@ -1,6 +1,26 @@
 {% extends "User 2/base.html" %}
 
 {% block content %}
+<style>
+	.gotop #tothetop {
+	  position: fixed;
+	  bottom: 20px;
+	  right: 30px;
+	  z-index: 99;
+	  font-size: 18px;
+	  border: none;
+	  outline: none;
+	  background-color: red;
+	  color: white;
+	  cursor: pointer;
+	  padding: 15px;
+	  border-radius: 4px;
+	}
+	
+	.gotop #tothetop:hover {
+	  background-color: blue;
+	}
+	</style>
 <!-- page title -->
 <section class="section section--first section--bg" data-bg="img/section/section.jpg">
     <div class="container">
@@ -159,9 +179,13 @@
                                 </td>
                                 <td colspan="6">                                           
                                     {% for timeslot in showtime_class.get_timeslot() %}
-                                    <form action="{{ url_for('showtime.bookmovieseats', showtime_id=showtime_class.get_id(), timeslot=timeslot, date=date) }}" method="GET" style="display: inline-block; ">
-                                        <button class="filter__btn" type="submit" style="width: 110px; height: 40px; margin: 10px;"><span style="padding: 5px;">{{ timeslot }}</span s></button>                                    
-                                    </form>                
+                                        {% for key, class in showtime_class.get_seats_class().items() %}
+                                            {% if class.timeslot_of_showtime == timeslot and class.date_of_showtime == date %}
+                                                <form action="{{ url_for('showtime.bookmovieseats', showtime_id=showtime_class.get_id(), seat_class_id = key) }}" method="GET" style="display: inline-block; ">
+                                                    <button class="filter__btn" type="submit" style="width: 110px; height: 40px; margin: 10px;"><span style="padding: 5px;">{{ timeslot }}</span s></button>                                    
+                                                </form>   
+                                            {% endif %}
+                                        {% endfor %}             
                                     {% endfor %}
                                 </td>
                             </tr>
@@ -178,6 +202,11 @@
     </div>
 </div>
 <!-- end showtime -->
+<div class=gotop>
+	<a id="tothetop" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+		<i class="fas fa-chevron-up"></i>
+	  </a>
+	</div>
 <script>
 function apply_filter() {
     var theatre_filter = document.getElementById("theatres").value;
@@ -288,7 +317,18 @@ function change_date(anchor) {
             movie.style.display = "";
         }
     }
-  }             
+  }   
+  
+  
+  var mybutton = document.getElementById("tothetop");
+    window.onscroll = function() {scrollFunction()};
+        function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+        }
 </script>
 <script src="{{ url_for('static', filename='js/extension.js') }}"></script>
 {% endblock %}

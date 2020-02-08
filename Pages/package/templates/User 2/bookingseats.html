@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="col-12 col-sm-8">
-                <div class="card__content information {{ showtime_class.get_id() }} {{ seat_class.date_of_showtime }} {{ seat_class.timeslot_of_showtime }}">
+                <div class="card__content information {{ showtime_class.get_id() }} {{ seat_class.id }} ">
                     <h3 class="card__title"><a href="#">{{ showtime_class.get_movie_class().get_movie_name() }}</a></h3>
                     <span class="card__category">                        
                         {% for genre in showtime_class.get_movie_class().get_genre_list() %}
@@ -66,7 +66,7 @@
             <div class="col-8">
                 <div class="row d-flex justify-content-center">
                     <div class="col-4">
-                        <h1 class="card__title">Select Seats</h1>
+                        <h1 class="card__title">Legend</h1>
                     </div>
                 </div>
                 <div class="row type-of-seats d-flex justify-content-center">
@@ -88,6 +88,12 @@
                             <a>Sold</a>
                         </span>
                     </div>
+                    <div class="col-3 card__description">
+                        <img src="{{ url_for('static', filename='images/seats/on_hold.png') }}" alt="">                        
+                        <span class="card__category" style="display: inline-block;">
+                            <a>On Hold</a>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,62 +102,40 @@
             <div class="col-8">
                 <div class="row">
                 {% for seat, status in seat_class.seat_dict['seats'].items() %}
-                {% if loop.index % 8 == 4 %}
-                {% if status != "sold" %}
-                    <div class="col-lg-1 seats" onclick="chooseThisSeat(this)">                        
-                        <img src="{{ url_for('static', filename='images/seats/' + status + '.png') }}" alt="" class="{{ status }}" id="{{ seat }}">
-                        <span class="card__category">
-                            <a>{{ seat }}</a>
-                        </span>
-                    </div>
+                {% if loop.index % 8 == 4 or loop.index % 8 == 0 %}
+                    {% if status == "standard_available" %}
+                        <div class="col-lg-1 seats" onclick="chooseThisSeat(this)">                        
+                            <img src="{{ url_for('static', filename='images/seats/' + status + '.png') }}" alt="" class="{{ status }}" id="{{ seat }}">
+                            <span class="card__category">
+                                <a>{{ seat }}</a>
+                            </span>
+                        </div>
+                    {% else %}
+                        <div class="col-lg-1">                        
+                            <img src="{{ url_for('static', filename='images/seats/' + status + '.png') }}" alt="" class="{{ status }}" id="{{ seat }}">
+                            <span class="card__category">
+                                <a>{{ seat }}</a>
+                            </span>
+                        </div>
+                    {% endif%}
                     <div class="col-lg-2">                        
                     </div>  
                 {% else %}
-                    <div class="col-lg-1">                        
-                        <img src="{{ url_for('static', filename='images/seats/' + status + '.png') }}" alt="" class="{{ status }}" id="{{ seat }}">
-                        <span class="card__category">
-                            <a>{{ seat }}</a>
-                        </span>
-                    </div>
-                    <div class="col-lg-2">                        
-                    </div>  
-                {% endif%}
-                {% elif loop.index % 8 == 0 %}              
-                {% if status != "sold" %}
-                    <div class="col-lg-1 seats" onclick="chooseThisSeat(this)">                        
-                        <img src="{{ url_for('static', filename='images/seats/' + status + '.png') }}" alt="" class="{{ status }}" id="{{ seat }}">
-                        <span class="card__category">
-                            <a>{{ seat }}</a>
-                        </span>
-                    </div>
-                    <div class="col-lg-2">                        
-                    </div>  
-                {% else %}
-                    <div class="col-lg-1">                        
-                        <img src="{{ url_for('static', filename='images/seats/' + status + '.png') }}" alt="" class="{{ status }}" id="{{ seat }}">
-                        <span class="card__category">
-                            <a>{{ seat }}</a>
-                        </span>
-                    </div>
-                    <div class="col-lg-2">                        
-                    </div>  
-                {% endif%}
-                {% else %}
-                {% if status != "sold" %}
-                    <div class="col-lg-1 seats" onclick="chooseThisSeat(this)">
-                        <img src="{{ url_for('static', filename='images/seats/' + status + '.png') }}" alt="" class="{{ status }}" id="{{ seat }}">
-                        <span class="card__category">
-                            <a>{{ seat }}</a>
-                        </span>
-                    </div>
-                {% else %}
-                    <div class="col-lg-1">
-                        <img src="{{ url_for('static', filename='images/seats/' + status + '.png') }}" alt="" class="{{ status }}" id="{{ seat }}">
-                        <span class="card__category">
-                            <a>{{ seat }}</a>
-                        </span>
-                    </div>
-                {% endif%}
+                    {% if status == "standard_available" %}
+                        <div class="col-lg-1 seats" onclick="chooseThisSeat(this)">
+                            <img src="{{ url_for('static', filename='images/seats/' + status + '.png') }}" alt="" class="{{ status }}" id="{{ seat }}">
+                            <span class="card__category">
+                                <a>{{ seat }}</a>
+                            </span>
+                        </div>
+                    {% else %}
+                        <div class="col-lg-1">
+                            <img src="{{ url_for('static', filename='images/seats/' + status + '.png') }}" alt="" class="{{ status }}" id="{{ seat }}">
+                            <span class="card__category">
+                                <a>{{ seat }}</a>
+                            </span>
+                        </div>
+                    {% endif%}
                 {% endif %}
                 {% endfor %}
                 <br>
@@ -165,6 +149,11 @@
         </div>
     </div>
 </div>
+<div class=gotop>
+	<a id="tothetop" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+		<i class="fas fa-chevron-up"></i>
+	  </a>
+	</div>
 <!-- end showtime -->
 {% endblock %}
 
@@ -187,24 +176,44 @@ function submit_booking(){
     for (let element of list_of_selected_seats_elements){
         list_of_selected_seats_id.push(element.id);
     }
-    console.log(list_of_selected_seats_id);
     
     if (list_of_selected_seats_id.length == 0){        
         alert("No seats were chosen!");
     }
     else {
-    var information_classes = document.getElementsByClassName("information")[0];
-    var information_list = Array.from(information_classes.classList);
-    var showtime_id = information_list.slice(2,5)[0];
-    var date = information_list.slice(2,5)[1];
-    var timeslot =  information_list.slice(2,5)[2];
-    data = {'showtime_id':showtime_id, 'date':date, 'timeslot':timeslot, list_of_selected_seats_id};    
-    location.href = "/admin/showtime_theatre/payment/" + showtime_id + "/" + date+ "/" + timeslot + "/" + list_of_selected_seats_id ;
+        var information_classes = document.getElementsByClassName("information")[0];
+        var information_list = Array.from(information_classes.classList);
+        var showtime_id = information_list.slice(2,5)[0];
+        var seat_class_id = information_list.slice(2,5)[1];
+        fetch("/checkseats/" + showtime_id + "/" + seat_class_id + "/" + list_of_selected_seats_id).then(function (response){
+            response.json().then(function(data) {
+                if (data == "none"){                       
+                    location.href = "/admin/showtime_theatre/payment/" + showtime_id + "/" + seat_class_id+ "/" + list_of_selected_seats_id ;
+                }
+                else {
+                    alert("Seat(s) " + data + " have been taken. Please choose another seat(s).")
+                    location.reload()
+                }
+            });
+        });
     }
 }
 
 </script>
 <script src="{{ url_for('static', filename='js/extension.js') }}"></script>
+
+<script>
+    var mybutton = document.getElementById("tothetop");
+window.onscroll = function() {scrollFunction()};
+	function scrollFunction() {
+	if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+		mybutton.style.display = "block";
+	} else {
+		mybutton.style.display = "none";
+	}
+	}
+
+	</script>
 {% endblock %}
 
 
