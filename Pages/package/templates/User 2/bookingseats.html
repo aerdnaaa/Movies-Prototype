@@ -121,7 +121,7 @@
         <div class="row d-flex justify-content-center">     
             <div class="col-8">
                 <div class="row">
-                {% for seat, status in seat_class.seat_dict['seats'].items() %}
+                {% for seat, status in seat_class.get_seat_dict().items() %}
                 {% if loop.index % 8 == 4 or loop.index % 8 == 0 %}
                     {% if status == "standard_available" %}
                         <div class="col-lg-1 seats" onclick="chooseThisSeat(this)">                        
@@ -162,9 +162,9 @@
                 <div class="col-4  d-flex justify-content-center">                    
                     <button class="submit_booking filter__btn" type="submit" onclick="cancel_seats()">CANCEL</button>                    
                 </div>
-                <div class="col-4  d-flex justify-content-center">
+                <!-- <div class="col-4  d-flex justify-content-center">
                     <button class="submit_booking filter__btn" onclick="save_seats()">SAVE SEATS</button>
-                </div>
+                </div> -->
                 <div class="col-4  d-flex justify-content-center">
                     <button class="submit_booking filter__btn" onclick="submit_booking()">CONTINUE</button>
                 </div>
@@ -185,32 +185,52 @@
 
 {% block scripts %}
 <script>
-var information_classes = document.getElementsByClassName("information")[0];
-var information_list = Array.from(information_classes.classList);
-var showtime_id = information_list.slice(2,5)[0];
-var seat_class_id = information_list.slice(2,5)[1];
-if (sessionStorage.getItem('id')) {
-    let json_string = sessionStorage.getItem('id');
+// to get showtime_id and seat_class_id
+let information_classes = document.getElementsByClassName("information")[0];
+let information_list = Array.from(information_classes.classList);
+let showtime_id = information_list.slice(2,5)[0];
+let seat_class_id = information_list.slice(2,5)[1];
+// key for smaller dictionary which is specific to each showtime
+let showtime_seat_class_id = showtime_id + seat_class_id;
+console.log(showtime_seat_class_id);
+
+
+
+if (localStorage.getItem('data')) {
+    let json_string = localStorage.getItem('data');
     let user_object = JSON.parse(json_string);
-    let old_seat_list = user_object['new_seat_list'];    
-    user_object['old_seat_list'] = old_seat_list;
-    user_object['new_seat_list'] = []
-    json_string = JSON.stringify(user_object)            
-    sessionStorage.setItem('id', json_string)
-    for (let seat of old_seat_list){
-        let img_element = document.getElementById(seat);
-        img_element.src = "{{ url_for('static', filename='images/seats/standard_selected.png') }}";
-        img_element.className = "standard_selected";
-        img_element.parentElement.onclick = "chooseThisSeat(this)";
-        
+
+    if (user_object[showtime_seat_class_id] == null){
+        user_object[showtime_seat_class_id] = {'showtime_id':showtime_id, 'seat_class_id':seat_class_id, 'old_seat_list':[], 'new_seat_list':[]};
+        json_string = JSON.stringify(user_object)            
+        localStorage.setItem('data', json_string)
+    }
+    else {
+        let data = user_object[showtime_seat_class_id];
+        // new seats becomes old seats
+        let old_seat_list = data['new_seat_list'];    
+        data['old_seat_list'] = old_seat_list;
+        // data['new_seat_list'] = []
+        user_object[showtime_seat_class_id] = data
+        json_string = JSON.stringify(user_object)            
+        localStorage.setItem('data', json_string)
+        for (let seat of old_seat_list){
+            let img_element = document.getElementById(seat);
+            img_element.src = "{{ url_for('static', filename='images/seats/standard_selected.png') }}";
+            img_element.className = "standard_selected";
+            img_element.parentElement.setAttribute('onclick', "chooseThisSeat(this)");                       
+        }
     }
 }
+
 else {
     fetch('/get_annonymous_id').then(function(response){
         response.json().then(function(data){
-            let user_object = {'id':data,'showtime_id':showtime_id, 'seat_class_id':seat_class_id, 'old_seat_list':[]};
+            let user_object = {};
+            user_object[showtime_seat_class_id] = {'showtime_id':showtime_id, 'seat_class_id':seat_class_id, 'old_seat_list':[], 'new_seat_list':[]};
             json_string = JSON.stringify(user_object)            
-            sessionStorage.setItem('id', json_string)
+            localStorage.setItem('data', json_string)
+            localStorage.setItem('id', data)
         });
     });
 }
@@ -224,130 +244,107 @@ function chooseThisSeat(div){
         div.children[0].src = "{{ url_for('static', filename='images/seats/standard_available.png') }}";
         div.children[0].className = "standard_available";
     }
+    save_seats();
 }
 
 function submit_booking(){
+    let json_string = localStorage.getItem('data');
+    let user_object = JSON.parse(json_string);
+    let data = user_object[showtime_seat_class_id];
+    let new_list =  data['new_seat_list'];
+    if (new_list.length == 0) {
+        alert('You need to choose a seat.');
+    }
+    else {
+        let new_seats_string = new_list.join();
+        let reply = confirm("Are you sure you want to choose these seat(s): " + new_seats_string);
+        if (reply) {
+            location.href = "/showtime_theatre/checkout/" + showtime_id + "/" + seat_class_id + "/" + new_list;
+        }
+    }
+}
+
+function cancel_seats(){
+    let json_string = localStorage.getItem('data');
+    let user_object = JSON.parse(json_string);
+    let data = user_object[showtime_seat_class_id];
+    let new_list =  data['new_seat_list'];
+    let old_list = data['old_seat_list']    
+    let reply = true;
+    let list_of_selected_seats_elements = document.getElementsByClassName("standard_selected");
+    if (list_of_selected_seats_elements.length != 0) {
+
+        var list_of_selected_seats_id = [];
+        for (let element of list_of_selected_seats_elements){
+            list_of_selected_seats_id.push(element.id);
+        }
+        reply = confirm("Are you sure you want to cancel seats: " + list_of_selected_seats_id.join())
+    }
+    else if (old_list.length != 0) {
+        reply = confirm("Are you sure you want to cancel seats: " + old_list.join())
+    }
+    if (reply) {        
+        let current_seats =new_list.concat(old_list).join();  
+        data['new_seat_list'] = []
+        data['old_seat_list'] = []
+        user_object[showtime_seat_class_id] = data
+        console.log(user_object);
+        json_string = JSON.stringify(user_object)            
+        localStorage.setItem('data', json_string) 
+        location.href = "/showtime_theatre/cancel_seats/" + showtime_id + "/" + seat_class_id + "/" + current_seats;
+    }   
+}
+function save_seats(){
     var list_of_selected_seats_elements = document.getElementsByClassName("standard_selected");
     var list_of_selected_seats_id = [];
     for (let element of list_of_selected_seats_elements){
         list_of_selected_seats_id.push(element.id);
     }
-    
-    if (list_of_selected_seats_id.length == 0){        
-        alert("No seats were chosen!");
+    // getting data dictionary out
+    let json_string = localStorage.getItem('data');
+    let user_object = JSON.parse(json_string);
+    let data = user_object[showtime_seat_class_id];
+    let old_list = data["old_seat_list"];
+    let new_list = list_of_selected_seats_id;
+    console.log(old_list);
+    if (old_list.length == 0){
+        old_list = "none";
     }
-    else {        
-        let json_string = sessionStorage.getItem('id');
-        let user_object = JSON.parse(json_string);
-        let old_list = user_object['old_seat_list'];        
-        if (old_list.length == 0){
-            old_list = "none";
-        }
-        else {
-            old_list.join();
-        }
-        fetch("/checkseats/" + showtime_id + "/" + seat_class_id + "/" +  old_list + "/" + list_of_selected_seats_id).then(function (response){
-            response.json().then(function(data) {
-                if (data == "none"){                                       
-                    user_object['new_seat_list'] = list_of_selected_seats_id;
-                    json_string = JSON.stringify(user_object)            
-                    sessionStorage.setItem('id', json_string)                    
-                    location.href = "/showtime_theatre/checkout/" + showtime_id + "/" + seat_class_id+ "/" + list_of_selected_seats_id;                                    
+    console.log(new_list);
+    // before saving seats, we need to check if seat is taken and make sure it is on_hold for other people
+    fetch("/checkseats/" + showtime_id + "/" + seat_class_id + "/" + old_list + "/" + new_list).then(function (response){
+        response.json().then(function (data_json){
+            if (data_json == "none"){
+
+            }
+            else {
+                for (let old_seat of old_list){
+                    if (data_json.includes(old_seat)){
+                        data_json.splice( data_json.indexOf(old_seat), 1 );
+                    }
                 }
-                else {
-                    alert("Seat(s) " + data + " have been taken. Please choose another seat(s).")
+                  
+                let string = data_json.join()
+                if (data_json.length != 0){
+                    alert("Seat(s) " + string + " have been taken. Please choose another seat(s).")
+                    for (let seat of data_json){
+                        list_of_selected_seats_id.splice(new_list.indexOf(seat), 1);                        
+                    }
                     location.reload()
                 }
-            });
+            }
+           console.log(list_of_selected_seats_id);
+           
+            // saving of seats
+            data['new_seat_list'] = list_of_selected_seats_id;
+            data['old_seat_list'] = list_of_selected_seats_id;
+            user_object[showtime_seat_class_id] = data
+            json_string = JSON.stringify(user_object)            
+            localStorage.setItem('data', json_string)        
         });
- 
+    });    
 
-    }
-}
-function save_seats(){
-    var list_of_selected_seats_elements = document.getElementsByClassName("standard_selected");
-    var list_of_selected_seats_id = [];
-    for (let element of list_of_selected_seats_elements){
-        list_of_selected_seats_id.push(element.id);
-    }
-    let json_string = sessionStorage.getItem('id');
-    let user_object = JSON.parse(json_string);
-    user_object['new_seat_list'] = list_of_selected_seats_id;
-    json_string = JSON.stringify(user_object)            
-    sessionStorage.setItem('id', json_string) 
-}
 
-function cancel_seats(){
-    let json_string = sessionStorage.getItem('id');
-    let user_object = JSON.parse(json_string);
-    let new_list =  user_object['new_seat_list'];
-    let old_list = user_object['old_seat_list']
-    console.log(old_list)
-    let current_seats =new_list.concat(old_list).join(); 
-    console.log(current_seats)
-    user_object['new_seat_list'] = []
-    user_object['old_user_list'] = []
-    json_string = JSON.stringify(user_object)            
-    sessionStorage.setItem('id', json_string) 
-    location.href = "/showtime_theatre/cancel_seats/" + showtime_id + "/" + seat_class_id+ "/" + current_seats;
-}
-    }
-}
-function save_seats(){
-    var list_of_selected_seats_elements = document.getElementsByClassName("standard_selected");
-    var list_of_selected_seats_id = [];
-    for (let element of list_of_selected_seats_elements){
-        list_of_selected_seats_id.push(element.id);
-    }
-    let json_string = sessionStorage.getItem('id');
-    let user_object = JSON.parse(json_string);
-    user_object['new_seat_list'] = list_of_selected_seats_id;
-    json_string = JSON.stringify(user_object)            
-    sessionStorage.setItem('id', json_string) 
-}
-
-function cancel_seats(){
-    let json_string = sessionStorage.getItem('id');
-    let user_object = JSON.parse(json_string);
-    let new_list =  user_object['new_seat_list'];
-    let old_list = user_object['old_seat_list']
-    console.log(old_list)
-    let current_seats =new_list.concat(old_list).join(); 
-    console.log(current_seats)
-    user_object['new_seat_list'] = []
-    user_object['old_user_list'] = []
-    json_string = JSON.stringify(user_object)            
-    sessionStorage.setItem('id', json_string) 
-    location.href = "/showtime_theatre/cancel_seats/" + showtime_id + "/" + seat_class_id+ "/" + current_seats;
-}
-    }
-}
-function save_seats(){
-    var list_of_selected_seats_elements = document.getElementsByClassName("standard_selected");
-    var list_of_selected_seats_id = [];
-    for (let element of list_of_selected_seats_elements){
-        list_of_selected_seats_id.push(element.id);
-    }
-    let json_string = sessionStorage.getItem('id');
-    let user_object = JSON.parse(json_string);
-    user_object['new_seat_list'] = list_of_selected_seats_id;
-    json_string = JSON.stringify(user_object)            
-    sessionStorage.setItem('id', json_string) 
-}
-
-function cancel_seats(){
-    let json_string = sessionStorage.getItem('id');
-    let user_object = JSON.parse(json_string);
-    let new_list =  user_object['new_seat_list'];
-    let old_list = user_object['old_seat_list']
-    console.log(old_list)
-    let current_seats =new_list.concat(old_list).join(); 
-    console.log(current_seats)
-    user_object['new_seat_list'] = []
-    user_object['old_user_list'] = []
-    json_string = JSON.stringify(user_object)            
-    sessionStorage.setItem('id', json_string) 
-    location.href = "/showtime_theatre/cancel_seats/" + showtime_id + "/" + seat_class_id+ "/" + current_seats;
 }
 </script>
 <script src="{{ url_for('static', filename='js/extension.js') }}"></script>

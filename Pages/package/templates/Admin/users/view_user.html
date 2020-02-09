@@ -1,0 +1,85 @@
+{% extends "Admin/baseAdmin.html" %}
+<!-- Content Wrapper. Contains page content -->
+{% block links %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/master.css') }}">
+{% endblock %}
+{% block content %}
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Users</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="{{ url_for('other.admin_home') }}" class="homeButton">Home</a></li>
+            <li class="breadcrumb-item active">Users</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content-header">
+      <div class="row">
+        <div class="col">
+            <table class="table table-striped" id="{{ theatre_name }}" style="width:1110px;">
+                <thead>                            
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Runtime</th>
+                        <th scope="col">Genre</th>
+                        <th scope="col">Date Bought</th>
+                        <th scope="col">Seats Bought</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for value in selected_user.get_bought_seats().values()%}
+                    <tr >
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ value['showtime_class'].get_movie_class().get_movie_name() }}</td>
+                        <td>{{ value['showtime_class'].get_movie_class().get_duration() }} minutes</td>
+                        <td>
+                            <span class="card__category">                        
+                                {% for genre in value['showtime_class'].get_movie_class().get_genre_list() %}
+                                    <a>{{ genre }}</a>
+                                {% endfor  %}
+                            </span>
+                        </td>
+                        <td>{{ value['date'] }}</td>
+                        <td>
+                            <span class="card__category">                                                                        
+                                {% for seat in value['seats'] %}
+                                    <a>{{ seat }}</a>                   
+                                {% endfor %}                             
+                            </span>
+                        </td>
+                        <td>
+                          {% for seat in value['seats'] %}
+                              {% if loop.index == 1 %}
+                                  ${{ loop.length * 8.5 }}           
+                              {% endif %}
+                          {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}                                                                                                                                                                                
+                </tbody>
+            </table>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </a>
+</div>
+{% endblock %}
+<!-- /.content-wrapper -->

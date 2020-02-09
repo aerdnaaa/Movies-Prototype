@@ -53,19 +53,38 @@
                     <div class="filter__items">
                         <!-- filter item -->
                         <div class="filter__item" id="filter__condition">
-                            <span class="filter__item-label">Applicable to:</span>
+                            <span class="filter__item-label">APPLICABLE TO:</span>
+
+                            <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-condition" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {% if Promotion_dict %}
+                                    <input type="button" id="conditions" value="All Conditions">
+                                {% else %}
+                                    <input type="button" value="No Promotions Available">
+                                {% endif %}
+                                <span></span>
+                            </div>                            
+                            <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-condition">  
+                                {% if Promotion_dict %}
+                                    <li>All Conditions</li>
+                                    {% for cond in condition_list %}
+                                        <li>{{ cond }}</li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li>No promotions available</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        <!-- <div class="filter__item" id="filter__condition">
+                            <span class="filter__item-label">APPLICABLE TO:</span>
                             <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-genre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {% if Promotion_dict %}
                                 <input type="button" id="condition" value="All Conditions">
-                                    <!-- <input type="button" value="All Promotions"> -->
                                 {% else %}
                                     <input type="button" value="No Promotions Available">
                                 {% endif %}
                                 <span></span>
                             </div>
                             <ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">
-                                <!-- <a href="{{ url_for('promotion.promotion') }}">
-                                <li>All</li></a> -->
                             {% if Promotion_dict %}
                                 {% for i in applicabletoLst%}
                                 <li>{{ i }}</li>
@@ -73,13 +92,12 @@
                             {% else %}
                                 <li>All Conditons</li>
                             {% endif %}
-                
                             </ul>
                         </div>
 
                             <div class="filter__item-menu filter__item-menu--range dropdown-menu" aria-labelledby="filter-rate">
                                 <div id="filter__imbd"></div>
-                            </div>
+                            </div> -->
                         <!-- end filter item -->
                     </div>
                     
@@ -143,24 +161,23 @@
     </div>
 <script>
     function apply_filter() {
-        var condition_filter = document.getElementById("condition").value;        
-        var promotions = document.getElementsByClassName("promotion_item");        
-        if (condition_filter != "All Condition") {
+        var condition_filter = document.getElementById("conditions").value;        
+        var promotions = document.getElementsByClassName("promotion_item");      
+        if (condition_filter != "All Conditions") {
             for (promotion of promotions) {                
                 var class_list = Array.from(promotion.classList);    
                 if (!class_list.includes(condition_filter)) {
-                    promotion.style["display"] = "None";
+                    promotion.style.display = "None";
                 } else {
-                    promotion.style["display"] = "";
+                    promotion.style.display = "";
                 }
             }
         } else {
             for (promotion of promotions) {
-                promotion.style["display"] = "";
+                promotion.style.display = "";
             }
         }
     }
-
 
     var mybutton = document.getElementById("tothetop");
     window.onscroll = function() {scrollFunction()};

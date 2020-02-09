@@ -25,8 +25,10 @@ def promotion():
         if k not in lst:
             lst.append(k)
     
+    conditions = ["Student", "Elderly"]
+    
     # promotion_list needs a list in a list. Outer list for rows, inner list for promotions in 1 row
-    return render_template("User 2/promotion.html", title="Promotions", Promotion_dict=Promotion_dict,applicabletoLst=lst)
+    return render_template("User 2/promotion.html", title="Promotions", Promotion_dict=Promotion_dict, applicabletoLst=lst, condition_list=conditions)
 
 @promotion_blueprint.route("/promotion/<id_of_promo>")
 def promotionDetail(id_of_promo):

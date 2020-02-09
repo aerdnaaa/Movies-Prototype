@@ -73,6 +73,7 @@ def add_carousel():
                 carousel_class = Carousel(category, value.get_movie_name(), "movie poster/" + value.get_poster())
             else:
                 carousel_class = Carousel(category, value.get_title(), "promotion/" + value.get_promotion_image())
+            carousel_class.movie_or_poster_id = key
             carousel_id = carousel_class.get_id()
             Carousel_dict[carousel_id] = carousel_class
         db["carousel"] = Carousel_dict
@@ -128,7 +129,8 @@ def modify_carousel(carousel_id):
         if carousel_category == "movies":
             carousel_class.set_all_attributes(carousel_category, title_class.get_movie_name(), "movie poster/" + title_class.get_poster())        
         else:
-            carousel_class.set_all_attributes(carousel_category, title_class.get_title(), "promotion/" + title_class.get_promotion_image())        
+            carousel_class.set_all_attributes(carousel_category, title_class.get_title(), "promotion/" + title_class.get_promotion_image())       
+        carousel_class.movie_or_poster_id = carousel_title 
         Carousel_dict[carousel_id] = carousel_class
         db["carousel"] = Carousel_dict
         db.close()

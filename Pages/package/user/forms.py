@@ -47,13 +47,13 @@ class LoginForm(FlaskForm):
 class CreateAdminForm(FlaskForm):
     username = StringField("Username",[Length(min=1, max=30), DataRequired()], default="Admin")
     email = EmailField("Email", [DataRequired("Email is required "), Email(), validate_email])
-    administrative_rights = SelectMultipleField("Administrative Rights", choices=[("Super Admin", "Super Admin"), ("Manage admins", "Manage admins"), ("Carousel", "Carousel"), ("Theatres", "Theatres"), ("Movies", "Movies"), ("Rental", "Rental"), ("Showtime", "Showtime"), ("Promotion", "Promotion")], default="Super Admin")    
+    administrative_rights = SelectMultipleField("Administrative Rights", choices=[("Super Admin", "Super Admin"), ("Manage users", "Manage users"), ("Manage admins", "Manage admins"), ("Carousel", "Carousel"), ("Theatres", "Theatres"), ("Movies", "Movies"), ("Showtime", "Showtime"), ("Promotion", "Promotion")], default="Super Admin")    
     submit = SubmitField("Add Admin")
 
 class ModifyAdminForm(FlaskForm):
     username = StringField("Username",[Length(min=1, max=30), DataRequired()], default="Admin")
     email = EmailField("Email", [DataRequired(), Email()])
-    administrative_rights = SelectMultipleField("Administrative Rights", choices=[("Super Admin", "Super Admin"), ("Manage admins", "Manage admins"), ("Carousel", "Carousel"), ("Theatres", "Theatres"), ("Movies", "Movies"), ("Rental", "Rental"), ("Showtime", "Showtime"), ("Promotion", "Promotion")], default="Super Admin")    
+    administrative_rights = SelectMultipleField("Administrative Rights", choices=[("Super Admin", "Super Admin"), ("Manage users", "Manage users"), ("Manage admins", "Manage admins"), ("Carousel", "Carousel"), ("Theatres", "Theatres"), ("Movies", "Movies"),("Showtime", "Showtime"), ("Promotion", "Promotion")], default="Super Admin")    
     submit = SubmitField("Modify Admin")
 
 class ModifyAdminAccount(FlaskForm):

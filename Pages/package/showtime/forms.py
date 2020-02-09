@@ -37,14 +37,3 @@ class ModifyShowtime(FlaskForm):
     showtime_end_date = StringField(label="Showtime End Date", validators=[DataRequired(), validate_end_date])
     hall_number = SelectField(label="Hall Number", choices=[])
     submit = SubmitField("Modify Showtime")
-
-class PaymentForm(FlaskForm):
-    fullName = StringField('Full Name',[validators.Length(min=1,max=150), validators.DataRequired(message="This cannot be empty!")])
-    email = EmailField('Email address', [validators.DataRequired(), validators.Email(message="Please enter valid email.")])
-    dateOfBirth = DateField('Date of Birth', validators=[validators.DataRequired()], format="%Y-%m-%d",render_kw={"placeholder": "dd/mm/yyyy"})    
-    gender = SelectField("Gender",validators=[DataRequired()],choices=[('Male','Male'),('Female','Female')])
-    card_number = StringField('Card Number', [DataRequired()])
-    name_on_card = StringField('Name on card', [DataRequired()],render_kw={"placeholder": "Name On Card"})
-    dateOfExpiry = DateField('Date of Expiry', validators=[validators.DataRequired()], format="%Y-%m",render_kw={"placeholder": "MM/YYYY"})    
-    cvc = StringField('CVC', [DataRequired(), Length(min=3, max=4, message="Not a valid CVC")],render_kw={"placeholder": "CVC"})
-    submit = SubmitField('Pay Now')

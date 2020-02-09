@@ -56,7 +56,8 @@ class User(Person, UserMixin):
         self.__password = password
         self.__username = username
         self.__gender = gender
-        self.__DateofBirth = DateofBirth        
+        self.__DateofBirth = DateofBirth     
+        self.__bought_seats = {}
     def get_fullname(self):
         return self.__fullname
     def get_username(self):
@@ -65,6 +66,8 @@ class User(Person, UserMixin):
         return self.__gender
     def get_DateofBirth(self):
         return self.__DateofBirth
+    def get_bought_seats(self):
+        return self.__bought_seats
     def set_fullname(self,fullname):
         self.__fullname=fullname
     def set_username(self,username):
@@ -73,23 +76,41 @@ class User(Person, UserMixin):
         self.__gender = gender
     def set_DateofBirth(self,DateofBirth):
         self.__DateofBirth=DateofBirth
+    def set_bought_seats(self, bought_seats):
+        self.__bought_seats = bought_seats
+        
 
 
 class AnonymousUser():
-    id = "a0"
+    id = "AN0"
     def __init__(self):
         self.id = AnonymousUser.id
         self.fullname = ""
         self.email = ""
         self.DateofBirth = ""
         self.gender = ""
-        self.card_number = ""
-        self.card_name = ""
-        self.expiry_date = ""
-        self.cvc = ""
-        self.seats = []
-        AnonymousUser.id += 1
+        self.seats = {}
+        AnonymousUser.id = AnonymousUser.id[:2] + str(int(AnonymousUser.id[2:])+1)
+    
+    def get_email(self):
+        return ""
 
+    def get_id(self):
+        return self.id
 
+    def get_password(self):
+        return ""
 
+    def get_name(self):
+        return ""
+    def get_email(self):
+        return ""
+    def get_password(self):
+        return ""
+    def get_profile_picture(self):
+        return ""
+    def get_username(self):
+        return ""
+    def get_administrative_rights(self):
+        return ""
 

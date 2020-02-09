@@ -281,6 +281,9 @@ function clean_empty_theatres() {
         }
         if (!contain_movies) {
             theatre.style.display = "None";
+        } 
+        else {
+            theatre.style.display = "";
         }
     }
 
@@ -304,8 +307,11 @@ let movie_row_list = document.getElementsByClassName("movie_row");
 for (var movie of movie_row_list){
     if ( ! movie.classList.contains(active_date)){
         movie.style.display = "none";
+    } else {
+        movie.style.display = "";
     }
 }
+clean_empty_theatres();
 
 
 function change_date(anchor) {    
@@ -317,6 +323,7 @@ function change_date(anchor) {
             movie.style.display = "";
         }
     }
+    clean_empty_theatres();
   }   
   
   

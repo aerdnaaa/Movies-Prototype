@@ -183,9 +183,9 @@ def delete_movie():
         db["deleted_movies"] = Deleted_list
     list_of_to_be_deleted_movies = request.json
     for movie_id in list_of_to_be_deleted_movies:
-        delete_movie = Movies_dict[int(movie_id)]        
+        delete_movie = Movies_dict[movie_id]        
         Deleted_list.append([delete_movie, datetime.date.today()])
-        del Movies_dict[int(movie_id)]
+        del Movies_dict[movie_id]
     db["movies"] = Movies_dict
     db["deleted_movies"] = Deleted_list
     db.close()

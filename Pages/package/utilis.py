@@ -2,7 +2,7 @@ from flask import redirect, url_for, render_template, abort, request
 from flask_login import current_user
 from package.user.classes import Admin
 import shelve
-from package import bcrypt
+from package import bcrypt, app
 
 def check_admin():
     print(f"{current_user.get_id()} tried to access admin pages")
@@ -23,6 +23,9 @@ def check_rights():
         if url_purpose == "admin_accounts":
             if not "Manage admins" in current_admin_rights:
                 abort(401)
+        if url_purpose == "user_accounts":
+            if not "Manage users" in current_admin_rights:
+                abort(401)
         if url_purpose == "carousel":
             if not "Carousel" in current_admin_rights:
                 abort(401)
@@ -41,6 +44,12 @@ def check_rights():
         if url_purpose == "promotion":
             if not "Promotion" in current_admin_rights:
                 abort(401)
+
+def check_admin_id():
+    url_path = request.path
+    url_admin_id = url_path.split("/")[4]
+    if url_admin_id == current_user.get_id() or url_admin_id == "A0":
+        abort(401)
         
 
 def set_up_variables():
@@ -83,3 +92,71 @@ def set_up_variables():
             'E1': 'standard_available', 'E2': 'standard_available', 'E3': 'standard_available', 'E4': 'standard_available', 'E5': 'standard_available', 'E6': 'standard_available', 'E7': 'standard_available', 'E8': 'standard_available'}
         db["Seats"] = seat_dict
     db.close()
+
+def generate_pdf(email, receipt_id, data):
+    import time, os
+    from reportlab.lib.enums import TA_JUSTIFY
+    from reportlab.lib.pagesizes import letter
+    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    from reportlab.lib.units import inch
+    pdf_fn = receipt_id +".pdf"
+    pdf_path = os.path.join(app.root_path, 'static/pdf/' , pdf_fn)
+    doc = SimpleDocTemplate(pdf_path,pagesize=letter,
+                            rightMargin=72,leftMargin=72,
+                            topMargin=72,bottomMargin=18)
+    Story=[]
+    # logo = app.route_path, 'static/images/logo.png'
+    
+    movie_theatre = data['showtime_class'].get_theatre_class().get_theatre_name()
+    movie = data['showtime_class'].get_movie_class().get_movie_name()
+    hall = data['showtime_class'].get_hall_number()
+    list_seats = data['seats']
+    seats = ",".join(list_seats)
+    price = len(list_seats) * 8.5
+    purchase_date = data['date']
+
+    formatted_time = time.ctime()
+
+    styles=getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
+    
+    ptext = '<font size=20>Saw Theatre</font>'
+    Story.append(Paragraph(ptext, styles["Normal"]))
+    Story.append(Spacer(1, 12))
+
+    # im = Image(logo, 2*inch, 2*inch)
+    # Story.append(im)
+    
+    ptext = '<font size=12>%s</font>' % formatted_time
+    
+    Story.append(Paragraph(ptext, styles["Normal"]))
+    Story.append(Spacer(1, 12))
+    
+    Story.append(Spacer(1, 12))
+    ptext = '<font size=12>Dear Customer:</font>' 
+    Story.append(Paragraph(ptext, styles["Normal"]))
+    Story.append(Spacer(1, 12))
+    
+    ptext = f'''<font size=14>User details</font>\n<font size=12>Email: {email}</font>'''
+    Story.append(Paragraph(ptext, styles["Justify"]))
+    Story.append(Spacer(1, 12))
+    
+    ptext = f'<font size=14>Billing Information</font>\n<font size=12>Movie Theatre: {movie_theatre}     Movie: {movie}</font>\n<font size=12>Hall: {hall}     Seat(s) chosen: {seats}</font>\n<font size=12>Price: ${price:.2f}     Date of purchase: {purchase_date}</font>'
+    Story.append(Paragraph(ptext, styles["Justify"]))
+    Story.append(Spacer(1, 12))
+
+    ptext = f'<font size=14>Receipt ID: {receipt_id}</font>'
+    Story.append(Paragraph(ptext, styles["Justify"]))
+    Story.append(Spacer(1, 12))
+        
+    ptext = '<font size=12>Thank you very much and we look forward to serving you.</font>'
+    Story.append(Paragraph(ptext, styles["Justify"]))
+    Story.append(Spacer(1, 12))
+    ptext = '<font size=12>Sincerely,</font>'
+    Story.append(Paragraph(ptext, styles["Normal"]))
+    Story.append(Spacer(1, 48))
+    ptext = '<font size=12>Saw Theatre Pte Ltd</font>'
+    Story.append(Paragraph(ptext, styles["Normal"]))
+    Story.append(Spacer(1, 12))
+    doc.build(Story)

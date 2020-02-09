@@ -6,7 +6,7 @@ from package.user.classes import User, Admin
 from package import bcrypt, login_manager
 from package.user.utilis import load_user, return_emails, is_correct_password, return_user_id, save_picture
 from flask_login import login_user, logout_user, login_required, current_user
-from package.utilis import check_admin, check_if_login, check_rights
+from package.utilis import check_admin, check_if_login, check_rights, check_admin_id
 import datetime
 
 user_blueprint = Blueprint("user", __name__)
@@ -85,6 +85,7 @@ def accountpage():
         userDict = {}
         db["Users"] = userDict
     user_class = userDict[current_user.get_id()]
+    print(user_class.get_bought_seats())
     if request.method == 'POST' and UCDform.validate():
         flash(f'You have successfully changed your contact details.', 'success')
 
@@ -104,6 +105,7 @@ def accountpage():
         db["Users"] = userDict
         db.close()
         return redirect(url_for('user.accountpage'))
+        
     if request.method =='POST' and UPform.validate():
         flash(f'You have successfully changed your password.','success')
         user_password = bcrypt.generate_password_hash(UPform.password.data).decode('utf-8')
@@ -124,6 +126,21 @@ def accountpage():
         return redirect(url_for('user.accountpage'))
     return render_template("User 2/accountpage.html", UCDform=UCDform, UPform=UPform,UPPform=UPPform, title="My Account Page")
 
+@user_blueprint.route("/deleteAccount", methods=['POST'])
+@login_required
+def delete_account():
+    user_id = current_user.get_id()
+    logout_user()
+    db = shelve.open('shelve.db', 'c')
+    user_dict = db['Users']
+    del user_dict[user_id]
+    db['Users'] = user_dict
+    db.close()
+    print(user_dict)
+    flash('Account is deleted', 'success')
+    return redirect(url_for('carousel.home'))
+
+
 @user_blueprint.route("/admin/admin_accounts")
 @login_required
 def admin_accounts():
@@ -136,7 +153,7 @@ def admin_accounts():
         Admin_dict = {}
         db['Users'] = Admin_dict
     print(Admin_dict)
-    return render_template("Admin/users/admins.html", title="Admin Accounts", Admin_dict=Admin_dict)
+    return render_template("Admin/users/admins.html", title="Admin Accounts", Admin_dict=Admin_dict, current_user=current_user)
 
 @user_blueprint.route("/admin/admin_accounts/add_admin", methods=["GET","POST"])
 @login_required
@@ -181,6 +198,7 @@ def add_admin():
 def modify_admin(admin_id):
     check_admin()
     check_rights()
+    check_admin_id()
     form = ModifyAdminForm()
     db = shelve.open('shelve.db', 'c')    
     Admin_dict = db["Users"]    
@@ -261,3 +279,31 @@ def my_admin_account():
     elif request.method == "GET":
         form.username.data = current_user.get_username()        
         return render_template("Admin/users/admin_account.html", title="My Admin Account", form=form)
+
+@user_blueprint.route("/admin/user_accounts")
+@login_required
+def user_accounts():
+    check_admin()
+    check_rights()
+    db = shelve.open('shelve.db', 'c')
+    try:
+        User_dict = db['Users']
+    except:
+        User_dict = {}
+        db['Users'] = User_dict
+    print(User_dict)
+    return render_template("Admin/users/users.html", title="User Accounts", User_dict=User_dict)
+
+@user_blueprint.route("/admin/user_accounts/<user_id>", methods=["POST","GET"])
+@login_required
+def view_user_history(user_id):
+    check_admin()
+    check_rights()
+    db = shelve.open('shelve.db', 'c')
+    try:
+        User_dict = db['Users']
+    except:
+        User_dict = {}
+        db['Users'] = User_dict
+    selected_user = User_dict[user_id]
+    return render_template("/admin/users/view_user.html", title="User Accounts", selected_user=selected_user)

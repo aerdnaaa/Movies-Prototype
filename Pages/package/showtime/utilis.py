@@ -57,11 +57,12 @@ def return_movie_class(movie_id):
 
 def set_seat_class_dict(showtime_class):
     db = shelve.open('shelve.db', 'c')
-    seat_dict = db["Seats"]
+    seat_dict = db["Seats"]['seats']
     seat_class_dict = {}
     for date in showtime_class.get_show_period():
         for timeslot in showtime_class.get_timeslot():            
-            seat_class = SeatClass(date, timeslot, showtime_class.get_hall_number(), seat_dict)    
+            seat_dict_copy = dict(seat_dict)    
+            seat_class = SeatClass(date, timeslot, showtime_class.get_hall_number(), seat_dict_copy)    
             seat_class_dict[seat_class.id] = seat_class        
     showtime_class.set_seats_class(seat_class_dict) 
     return showtime_class
@@ -76,3 +77,19 @@ def make_showtime(form, id):
         showtime_class = Showtime_dict[id]
         showtime_class.set_all_attributes(return_movie_theatre_class(form.theatre_name.data), return_movie_class(form.movie_title.data), return_date_period(form.showtime_start_date.data, form.showtime_end_date.data), form.timeslot.data, form.hall_number.data)
         return set_seat_class_dict(showtime_class)
+
+def make_seats_sold(showtime_id, seat_class_id, seat_list):
+    db = shelve.open('shelve.db', 'c')
+    Showtime_dict = db["showtime"]
+    showtime_class = Showtime_dict[showtime_id]
+    seat_class_dict = showtime_class.get_seats_class()
+    seat_class = seat_class_dict[seat_class_id]  
+    seat_dict = seat_class.get_seat_dict()
+    for seat in seat_list:
+        seat_dict[seat] = "sold"
+    seat_class.set_seat_dict(seat_dict)
+    seat_class_dict[seat_class_id] =  seat_class
+    showtime_class.set_seats_class(seat_class_dict)
+    Showtime_dict[id] = showtime_class
+    db["showtime"] = Showtime_dict
+    db.close()

@@ -21,9 +21,7 @@
                                 <a href="{{ url_for('showtime.bookmovie') }}" class="header__nav-link">Book</a>
                             </li>
                             
-                            <li class="header__nav-item">
-                                <a href="{{ url_for('rental.rentmovie') }}" class="header__nav-link">Rent</a>
-                            </li>
+                           
 
                             <li class="header__nav-item">
                                 <a href="{{ url_for('promotion.promotion') }}" class="header__nav-link">Promotion</a>
@@ -38,9 +36,7 @@
 
                         <!-- header auth -->
                         <div class="header__auth">
-                            <button class="header__search-btn" type="button">
-                                <i class="icon ion-ios-search"></i>
-                            </button>
+                            
                             {% if current_user.is_authenticated and current_user.get_id()[0] == "U" %} 
                             <p>&nbsp&nbsp&nbsp&nbsp&nbsp</p>       
                             <a href="{{ url_for('user.accountpage') }}">

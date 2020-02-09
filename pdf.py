@@ -5,7 +5,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
  
-doc = SimpleDocTemplate("form_letter.pdf",pagesize=letter,
+doc = SimpleDocTemplate(".pdf",pagesize=letter,
                         rightMargin=72,leftMargin=72,
                         topMargin=72,bottomMargin=18)
 Story=[]
@@ -18,7 +18,6 @@ freeGift = "tin foil hat"
  
 formatted_time = time.ctime()
 full_name = "Mike Driscoll"
-address_parts = ["411 State St.", "Marshalltown, IA 50158"]
  
 im = Image(logo, 2*inch, 2*inch)
 Story.append(im)
@@ -33,9 +32,6 @@ Story.append(Spacer(1, 12))
 # Create return address
 ptext = '<font size=12>%s</font>' % full_name
 Story.append(Paragraph(ptext, styles["Normal"]))       
-for part in address_parts:
-    ptext = '<font size=12>%s</font>' % part.strip()
-    Story.append(Paragraph(ptext, styles["Normal"]))   
  
 Story.append(Spacer(1, 12))
 ptext = '<font size=12>Dear %s:</font>' % full_name.split()[0].strip()
@@ -59,7 +55,7 @@ Story.append(Spacer(1, 12))
 ptext = '<font size=12>Sincerely,</font>'
 Story.append(Paragraph(ptext, styles["Normal"]))
 Story.append(Spacer(1, 48))
-ptext = '<font size=12>Ima Sucker</font>'
+ptext = '<font size=12>Saw Theatre Pte Ltd</font>'
 Story.append(Paragraph(ptext, styles["Normal"]))
 Story.append(Spacer(1, 12))
 doc.build(Story)

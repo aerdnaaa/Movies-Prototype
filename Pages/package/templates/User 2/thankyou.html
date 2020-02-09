@@ -1,0 +1,68 @@
+{% extends "User 2/base.html" %}
+
+{% block styles %}
+{% endblock %}
+<!-- {% from "User 2/includes/_formHelper.html" import render_field %} -->
+{% block content %}
+<!-- page title -->
+<section class="section section--first section--bg" data-bg="img/section/section.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section__wrap">
+                    <!-- section title -->
+                    <h2 class="section__title">Thank You</h2>
+                    <!-- end section title -->
+
+                    <!-- breadcrumb -->
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb__item"><a href="{{ url_for('carousel.home') }}">Home</a></li>
+                        <li class="breadcrumb__item"><a href="{{ url_for('showtime.bookmovie') }}">Showtime</a></li>                  
+                        <li class="breadcrumb__item breadcrumb__item--active">Thank You</li>
+                    </ul>
+                    <!-- end breadcrumb -->
+                </div>
+            </div>
+        </div>
+    </div>    
+</section>
+<!-- end page title -->
+<div class="catalog">
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card__content">
+                    <h3 class="card__title">Thank You for shopping with us!</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4  d-flex justify-content-center">
+                <form action="{{ url_for('carousel.home') }}">
+                    <button class="submit_booking filter__btn" type="submit">GO HOME</button>
+                </form>
+            </div>
+            <div class="col-4  d-flex justify-content-center">
+                <button class="submit_booking filter__btn" onclick="">GENERATE PDF</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let json_string = localStorage.getItem('data');
+    let user_object = JSON.parse(json_string);
+    let showtime_seat_class_id = "{{ showtime_id }}" + "{{ seat_class_id }}";
+    let data = user_object[showtime_seat_class_id];
+    console.log(showtime_seat_class_id);
+    data["new_seat_list"] = []
+    data["old_seat_list"] = []
+    user_object[showtime_seat_class_id] = data;
+    json_string = JSON.stringify(user_object)
+    localStorage.setItem('data', json_string)
+</script>
+{% endblock %}

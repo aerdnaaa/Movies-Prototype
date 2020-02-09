@@ -22,6 +22,8 @@ def admin_home():
     check_admin()
     first_rights = check_rights()
     if first_rights:
+        if first_rights == "Manage users":
+            return redirect(url_for("user.user_accounts"))
         if first_rights == "Manage admins":
             return redirect(url_for("user.admin_accounts"))
         if first_rights == "Carousel":
@@ -48,13 +50,13 @@ def admin_home():
         count_of_promotion += 1
 #For loop for rental data
     try:
-        Rental_dict = db["rental"]
+        Carousel_dict = db["carousel"]
     except:        
-        Rental_dict = {}
-        db["rental"] = Rental_dict
-    count_of_rental = 0
-    for key in Rental_dict:
-        count_of_rental += 1 
+        Carousel_dict = {}
+        db["carousel"] = Carousel_dict
+    count_of_carousel = 0
+    for key in Carousel_dict:
+        count_of_carousel += 1 
 
     try:
         Movies_dict = db["movies"]        
@@ -71,7 +73,7 @@ def admin_home():
         if key[0]== "A":
             count_of_admin += 1
         
-    return render_template("Admin/index.html", title="Dashboard", count_of_promotion=count_of_promotion, count_of_rental=count_of_rental, count_of_movie=count_of_movie, count_of_admin=count_of_admin)
+    return render_template("Admin/index.html", title="Dashboard", count_of_promotion=count_of_promotion, count_of_carousel=count_of_carousel, count_of_movie=count_of_movie, count_of_admin=count_of_admin)
 
 @main_blueprint.route("/admin/composeMail")
 @login_required

@@ -1,0 +1,76 @@
+{% extends "Admin/baseAdmin.html" %}
+<!-- Content Wrapper. Contains page content -->
+{% block links %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/master.css') }}">
+{% endblock %}
+{% block content %}
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Users</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="{{ url_for('other.admin_home') }}" class="homeButton">Home</a></li>
+            <li class="breadcrumb-item active">Users</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content-header">
+      <div class="row">
+        <div class="col">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>       
+                <th scope="col">History</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for key in User_dict %}
+              {% if User_dict[key].get_id()[0] == "A" %}
+              {% else %}
+              <tr>
+                <td>
+                  {{ User_dict[key].get_id() }}
+                </td>
+                <td>
+                  {{ User_dict[key].get_username() }}
+                </td>
+                <td>
+                  {{ User_dict[key].get_email() }}
+                </td>             
+                <td>
+                    <form action="{{ url_for('user.view_user_history', user_id= User_dict[key].get_id()) }}" method="GET">
+                        <button type="submit" class="btn btn-primary">
+                            View transaction history
+                        </button>
+                    </form>
+                </td>
+              </tr>
+              {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </a>
+</div>
+{% endblock %}
+<!-- /.content-wrapper -->

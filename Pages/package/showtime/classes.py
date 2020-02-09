@@ -63,4 +63,10 @@ class SeatClass:
         self.id = SeatClass.id
         self.date_of_showtime = date_of_showtime
         self.timeslot_of_showtime = timeslot_of_showtime
-        self.seat_dict = seat_dict
+        self.__seat_dict = seat_dict
+
+    def get_seat_dict(self):
+        return self.__seat_dict
+
+    def set_seat_dict(self, seat_dict):
+        self.__seat_dict = seat_dict

@@ -16,10 +16,6 @@
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#tab-2-testing" role="tab" aria-controls="tab-2" aria-selected="false">Movies</a>
                         </li>
-                
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#tab-3-testing" role="tab" aria-controls="tab-3" aria-selected="false">BIlling Information</a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -93,285 +89,77 @@
                 <div class="row">
                     <div class="col movies">
                         <div class="anchor" id="Movies"></div>
-                        <h3 style=color:white>My Movies</h3>
+                        <h3 style=color:white>My Showtime Movies</h3>
                         <div class="pl-4">
                             <div class="anchor" id="RML"></div>
                             <table border="1" id="{{ theatre_name }}" style="color:white;width:1110px;">
-                                <thead>
-                                    <tr>
-                                        <th scope="row" colspan="5" class="table-primary"><h5>Rented Movies Library</h5></th>
-                                    </tr>
+                                <thead>                            
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Runtime</th>
                                         <th scope="col">Genre</th>
-                                        <th scope="col">Date added</th>
+                                        <th scope="col">Date Bought</th>
+                                        <th scope="col">Seats Bought</th>
+                                        <th scope="col">Price</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% for value in current_user.get_bought_seats().values()%}
                                     <tr >
-                                        <th scope="row">1</th>
-                                        <td>Joker</td>
-                                        <td>2 hours 2 minutes</td>
-                                        <td>Drama/Thriller</td>
-                                        <td>20 November 2019</td>
+                                        <th scope="row">{{ loop.index }}</th>
+                                        <td>{{ value['showtime_class'].get_movie_class().get_movie_name() }}</td>
+                                        <td>{{ value['showtime_class'].get_movie_class().get_duration() }} minutes</td>
+                                        <td>
+                                            <span class="card__category">                     
+                                                {% for genre in value['showtime_class'].get_movie_class().get_genre_list() %}
+                                                    <a>{{ genre }}</a>
+                                                {% endfor %}
+                                            </span>
+                                        </td>
+                                        <td>{{ value['date'] }}</td>
+                                        <td>
+                                            <span class="card__category">                                                                        
+                                                {% for seat in value['seats'] %}
+                                                    <a>{{ seat }}</a>                   
+                                                {% endfor %}                             
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {% for seat in value['seats'] %}
+                                                {% if loop.index == 1 %}
+                                                    ${{ loop.length * 8.5 }}           
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
                                     </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Inception</td>
-                                        <td>2 hours 28 minutes</td>
-                                        <td>Sci-Fi/Thriller</td>
-                                        <td>20 November 2019</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td>Interstellar</td>
-                                        <td>2 hours 49 minutes</td>
-                                        <td>Drama/Mystery</td>
-                                        <td>20 November 2019</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" colspan="5"><button type="button" class="btn btn-sm btn-block">View more...</button></th>
-                                    </tr>                                                                                                                                                                  
+                                    {% endfor %}                                                                                                                                                                                
                                 </tbody>
                             </table>
-                            <table border="1" id="{{ theatre_name }}" style="color:white;width:1110px;">
-                                <thead>
-                                    <tr>
-                                        <th scope="row" colspan="5" class="table-primary"><h5>Rented Movies Library</h5></th>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Runtime</th>
-                                        <th scope="col">Genre</th>
-                                        <th scope="col">Date added</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr >
-                                        <th scope="row">1</th>
-                                        <td>Joker</td>
-                                        <td>2 hours 2 minutes</td>
-                                        <td>Drama/Thriller</td>
-                                        <td>20 November 2019</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Inception</td>
-                                        <td>2 hours 28 minutes</td>
-                                        <td>Sci-Fi/Thriller</td>
-                                        <td>20 November 2019</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td>Interstellar</td>
-                                        <td>2 hours 49 minutes</td>
-                                        <td>Drama/Mystery</td>
-                                        <td>20 November 2019</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row" colspan="5"><button type="button" class="btn btn-sm btn-block"><p class="card__title">View more...</p></button></td>
-                                    </tr>
-                                </tbody>
-                                <hr style="margin: 45px auto 45px auto; visibility: hidden;">
-                            </table>
 
-                    
-                            <div class="anchor" id="WL"></div>
-                            <table border="1" id="{{ theatre_name }}" style="color:white;width:1110px;">
-                                    <thead>
-                                        <tr>
-                                            <th scope="row" colspan="5" class="table-primary"><h5>Watchlist</h5></th>
-                                        </tr>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Runtime</th>
-                                            <th scope="col">Genre</th>
-                                            <th scope="col">Date added</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr >
-                                            <th scope="row">1</th>
-                                            <td>Joker</td>
-                                            <td>2 hours 2 minutes</td>
-                                            <td>Drama/Thriller</td>
-                                            <td>20 November 2019</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Inception</td>
-                                            <td>2 hours 28 minutes</td>
-                                            <td>Sci-Fi/Thriller</td>
-                                            <td>20 November 2019</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>Interstellar</td>
-                                            <td>2 hours 49 minutes</td>
-                                            <td>Drama/Mystery</td>
-                                            <td>20 November 2019</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" colspan="5"><button type="button" class="btn btn-sm btn-block">View more...</button></th>
-                                        </tr>                                                                                                             
-                                    </tbody>
-                            </table>
-
-                            <div class="anchor" id="PW"></div>
-                            <table border="1" id="{{ theatre_name }}" style="color:white;width:1110px;">
-                                    <thead>
-                                        <tr>
-                                            <th scope="row" colspan="5" class="table-primary"><h5>Previously Watched</h5></th>
-                                        </tr>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Runtime</th>
-                                            <th scope="col">Genre</th>
-                                            <th scope="col">Date Watched</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr >
-                                            <th scope="row">1</th>
-                                            <td>Joker</td>
-                                            <td>2 hours 2 minutes</td>
-                                            <td>Drama/Thriller</td>
-                                            <td>20 November 2019</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Inception</td>
-                                            <td>2 hours 28 minutes</td>
-                                            <td>Sci-Fi/Thriller</td>
-                                            <td>20 November 2019</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>Interstellar</td>
-                                            <td>2 hours 49 minutes</td>
-                                            <td>Drama/Mystery</td>
-                                            <td>20 November 2019</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row" colspan="5"><button type="button" class="btn btn-sm btn-block">View more...</button></th>
-                                        </tr>                                                                                                                                                                      
-                                    </tbody>
-                            </table>
-                        </div>
-                    </div>                                        
-                </div>
-            </div>
-            <div class="tab-pane fade show" id="tab-3-testing" role="tabpanel" aria-labelledby="1-tab">
-                <div class="row">
-                    <div class="col billing-information">
-                        <div class="anchor" id="billing"></div>
-                        <h3 style=color:white>Billing Information</h3>
-                        <div class="pl-4">
-                                <div class="anchor" id="PH"></div>
-                                <table border="1" id="{{ theatre_name }}" style="color:white;width:1110px;">
-                                        <thead>
-                                            <tr>
-                                                <th scope="row" colspan="5" class="table-primary"><h5>Payment History</h5></th>
-                                            </tr>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Method of Payment</th>
-                                                <th scope="col">Date Purchased</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr >
-                                                <th scope="row">1</th>
-                                                <td>Joker</td>
-                                                <td>$x</td>
-                                                <td>Credit Card</td>
-                                                <td>20 November 2019</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">2</th>
-                                                <td>Inception</td>
-                                                <td>$x</td>
-                                                <td>Credit Card</td>
-                                                <td>20 November 2019</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">3</th>
-                                                <td>Interstellar</td>
-                                                <td>$x</td>
-                                                <td>Credit Card</td>
-                                                <td>20 November 2019</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row" colspan="5"><button type="button" class="btn btn-sm btn-block">View more...</button></th>
-                                            </tr>                                                                                                                                                                  
-                                        </tbody>
-                                    </table>
-<!-- 
-                                <div class="anchor" id="PM">
-                                    <h5 class="text-left mt-1">Payment Methods</h5>
-                                    <hr width="100%">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            place card logo next to the visa ending thing
-                                            maybe just make this a table? idk lol
-                                            <h5>Visa ending in 1234</h5> 
-                                            <p class="text-muted">Expires Jan 2030</p>
-                                        </div>
-                                         <div class="col-lg-6">
-                                            <button type="button" class="btn btn-secondary btn-lg">Edit</button>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <h5>Visa ending in 1231</h5>
-                                            <p class="text-muted">Expires Jan 2020</p>
-                                        </div>
-                                        <div class="col-lg-6">
-                                                <button type="button" class="btn btn-secondary btn-lg">Edit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
-                    </div>                                                                                  
-                </div>
-            </div>
         </div>
                                         
-    </div>
-
-</section> -->
-    <hr class="new1">
-    <!--Delete Account option-->
-    <button type="button" class="sign__btn" data-toggle="modal" data-target="#deletemodal">
-        Terminate Account
-    </button>
-    
-    <!--Delete Account option end -->
-<main class="col py-5">
-    <div class="row position-relative">
-        <div class="col">
-            <div class="tab-content py-3 position-relative">
-                <!-- Content -->
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-12">
+                <hr class="new1">
+                <!--Delete Account option-->
+                <form action="{{ url_for('user.delete_account') }}" method="POST">
+                    <button type="submit" class="sign__btn" onclick="confirm('Are you sure you want to delete this account?')">
+                        Terminate Account
+                    </button>
+                </form>
 
-    </div>
-</main>
-</div>
-</div>
-</div>
+            </div>
         </div>
     </div>
-</section>
+    
 
+</section>
+    
 <!-- Update Contact Details Modal -->
 <div class="modal fade" id="UCDmodal" tabindex="-1" role="dialog" aria-labelledby="UCDModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -470,135 +258,5 @@
     </div>
 </div>
 
-                {% endblock%}
-					<!-- content title -->
-					<!-- <h2 class="content__title">Account Details</h2> -->
-					<!--end content title -->
-                	<!-- content tabs nav -->
-					<!-- <ul class="nav nav-tabs content__tabs" id="content__tabs" role="tablist">
-						<li class="nav-item">
-							<a class="nav-link active" data-toggle="UCDmodal" href="#tab-1-testing" role="tab" aria-controls="tab-1" aria-selected="true">Update Contact Details</a>
-						</li>
-
-						<li class="nav-item">
-							<a class="nav-link" data-toggle="tab" href="#tab-2-testing" role="tab" aria-controls="tab-2" aria-selected="false">Change Password</a>
-                        </li>
-                        
-                        <li class="nav-item">
-							<a class="nav-link" data-toggle="tab" href="#tab-3-testing" role="tab" aria-controls="tab-2" aria-selected="false">Change Display Picture</a>
-						</li> -->
-					<!-- </ul> -->
-                    <!-- end content tabs nav -->
-                    
-                    <!-- <div class="container"> -->
-                        <!-- content tabs -->
-                        <!-- <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab">
-                                <div class="row">
-                                    
-                                </div>
-                            </div>
-                        </!-->
-
-                <div class="modal-body">
-                    <h5 class="modal-title text-white" id="UCDmodaltitle">Update Contact Details</h5>
-                    <!--UCD form-->
-                    <!-- 
-                </div>
-                <div class="modal-footer">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <button type="button" class="sign__btn" data-dismiss="modal">Close</button>
-                        </div>
-                        <div class="col-lg-6" data-dismiss="modal">
-                            {{ UCDform.submit(class="sign__btn") }}
-                        </div>
-                    </div>
-                </div>
-            </!-->
-        </!-->
-    </!=end>
-    <!---Update Change Password modal-->    
-    <!-- <div class="modal fade" id="UPmodal" tabindex="-1" role="dialog" aria-labelledby="UPmodaltitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="UPmodaltitle">Update Change Password</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body"> -->
-                    <!--Change Password form-->
-                    <!-- <form action="#" class="sign__form" method="POST">
-                        {{ UPform.hidden_tag() }}
-                        <div>
-                            <div class="sign__group">
-                                {{ render_field(UPform.password, class="sign__input",placeholder="Password", required=False) }}
-                            </div>
-                            <div class="sign__group">
-                                {{ render_field(UPform.confirmpassword, class="sign__input",placeholder="Confirm Password", required=False) }}
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <div class="col-lg-6" data-dismiss="modal">
-                            {{ UPform.submit() }}
-                        </div>
-                </div> -->
-            <!-- </div>
-        </div>
-    </div>
-    -Update Profile Picture modal -->
-    <!-- <div class="modal fade" id="UPPmodal" tabindex="-1" role="dialog" aria-labelledby="UPPmodaltitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="UPPtitle">Update Profile Picture</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        {{ render_field(UPPform.photo) }}
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </!--> -->
-    <!-- terminate account modal  -->
-    <!-- <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="deletemodaltitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div> -->
-                <!-- <div class="modal-body">
-                    <h5 class="modal-title text-dark" id="deletemodaltitle">Are you sure? This cannot be undone.</h5>
-                </div>
-                <div class="modal-footer">
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
-                        </div>
-                        <div class="col-lg-3" data-dismiss="modal">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Yes,Terminate my account.</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- terminate account modal 
-
-
-
+{% endblock%}
+					

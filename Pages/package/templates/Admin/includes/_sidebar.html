@@ -38,6 +38,17 @@
             </ul>
           </li>
           {% endif %}
+          {% if "Manage users" in current_user.get_administrative_rights() or "Super Admin" in current_user.get_administrative_rights()%} 
+          <li class="nav-item">
+            <a href="{{ url_for('user.user_accounts') }}" class="nav-link">              
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                User
+                <!-- <span class="badge badge-info right"></span> -->
+              </p>
+            </a>
+          </li>
+          {% endif %}
           {% if "Manage admins" in current_user.get_administrative_rights() or "Super Admin" in current_user.get_administrative_rights()%} 
           <li class="nav-item">
             <a href="{{ url_for('user.admin_accounts') }}" class="nav-link">              
@@ -82,7 +93,7 @@
             </a>
           </li>
           {% endif %}
-          {% if "Rental" in current_user.get_administrative_rights() or "Super Admin" in current_user.get_administrative_rights()%}
+          <!-- {% if "Rental" in current_user.get_administrative_rights() or "Super Admin" in current_user.get_administrative_rights()%}
           <li class="nav-item">
             <a href="{{ url_for('rental.admin_rental') }}" class="nav-link">
               <i class="nav-icon 	fas fa-video" ></i>
@@ -92,7 +103,7 @@
               </p>
             </a>
           </li>
-          {% endif %}
+          {% endif %} -->
           {% if "Showtime" in current_user.get_administrative_rights() or "Super Admin" in current_user.get_administrative_rights()%}
           <li class="nav-item">
             <a href="{{ url_for('showtime.admin_showtime') }}" class="nav-link">              
@@ -115,7 +126,7 @@
             </a>
           </li>
           {% endif %}
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a href="{{ url_for('other.admin_calendar') }}" class="nav-link">
               <i class="nav-icon far fa-calendar-alt"></i>              
               <p>
@@ -150,7 +161,7 @@
                   <i class="far fa-circle nav-icon"></i>
                   <p>Read</p>
                 </a>
-              </li>
+              </li> -->
             </ul>          
           </li>
         </ul>

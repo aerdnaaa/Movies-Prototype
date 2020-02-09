@@ -75,21 +75,21 @@
                         <p class="">Date: 
                             <span class="card__category" style="display: inline;">
                                 <a>
-                                    {{ date.strftime("%a, %d %b %Y") }}
+                                    {{ seat_class.date_of_showtime.strftime("%a, %d %b %Y") }}
                                 </a>
                             </span>
                         </p>
                         <p class="">Timeslot: 
                             <span class="card__category" style="display: inline;">
                                 <a>
-                                    {{ timeslot }}
+                                    {{ seat_class.timeslot_of_showtime }}
                                 </a>
                             </span>
                         </p>
                         <p class="">
                             Seats Selected: 
                             <span class="card__category" style="display: inline;">
-                                {% for seat in list_seats %}
+                                {% for seat in list_current_seats %}
                                     <a>{{ seat }}</a>
                                 {% endfor %}
                             </span>
@@ -106,49 +106,20 @@
             
         </div>
         <br>    
-        <div class="row d-flex justify-content-center">         
+        <div class="row d-flex justify-content-center">    
             <div class="col-10">
+                <form action="{{ url_for('showtime.pay', showtime_id=showtime_class.get_id(), seat_class_id=seat_class.id, seats=",".join(list_current_seats) ) }}" method="post">                        
+                    <script
+                      src="https://checkout.stripe.com/checkout.js"
+                      class="stripe-button"
+                      data-key="{{ pub_key }}"
+                      data-description="Movie Payment"
+                      data-amount="{{ price*100 }}"
+                      data-locale="auto">
+                    </script>
+                  </form>     
                 <!-- authorization form -->
-                <form action="" class="sign__form" method="post" enctype="multipart/form-data">
-                    {{form.hidden_tag()}}
-                    <a href="{{ url_for('carousel.home') }}" class="sign__logo">
-                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="">
-                    </a>
-                    {% if current_user.is_authenticated %}
-                    {% else %}
-                    <div class="contact-details" style="display: inline-block;">
-                        <h1 class="section__title">Contact Details</h1>                    
-                        <div class="sign__group">
-                            {{ render_field(form.fullName, class="sign__input", placeholder="Full Name", required=False) }}                            
-                        </div>
-                        <div class="sign__group">                            
-                            {{ render_field(form.email, class="sign__input", placeholder="Email", required=False) }}
-                        </div>
-                        <div class="sign__group">
-                            {{ render_field(form.dateOfBirth, class="sign__input", required=False) }}
-                        </div>
-                        <div class="sign__group">
-                            {{ render_field(form.gender, class="sign__input") }}
-                        </div>
-                    </div>
-                    {% endif %}
-                    <div class="card-details" style="display: inline-block;">
-                        <h1 class="section__title">Card Details</h1> 
-                        <div class="sign__group">
-                            {{ render_field(form.card_number, class="sign__input", placeholder="Card Number", required=False) }}                            
-                        </div>
-                        <div class="sign__group">                            
-                            {{ render_field(form.name_on_card, class="sign__input", required=False) }}
-                        </div>
-                        <div class="sign__group">
-                            {{ render_field(form.dateOfExpiry, class="sign__input", required=False, type="month") }}
-                        </div>
-                        <div class="sign__group">
-                            {{ render_field(form.cvc, class="sign__input", required=False) }}
-                        </div>
-                    </div>
-                    {{ form.submit(class="filter__btn") }}
-                  </form>
+
                 <!-- end authorization form -->
             </div>
         </div>    

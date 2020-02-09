@@ -55,7 +55,11 @@
 									<img src="{{ url_for('static', filename='images/' + value.get_carousel_image() ) }}" alt="" width="150" height="310">			
 								</div>
 								<div class="card__content">
-									<h3 class="card__title"><a href="#">{{ value.get_title() }}</a></h3>						
+                                    {% if value.get_category() == "movies" %}
+                                    <h3 class="card__title"><a href="{{ url_for('movie.movie_detail', movie_id=value.movie_or_poster_id) }}">{{ value.get_title() }}</a></h3>		
+                                    {% else %}
+                                    <h3 class="card__title"><a href="{{ url_for('promotion.promotionDetail', id_of_promo=value.movie_or_poster_id) }}">{{ value.get_title() }}</a></h3>		
+                                    {% endif %}				
 								</div>
 							</div>
 							<!-- end card -->
@@ -78,8 +82,6 @@
                     <!-- section title -->
                     <h2 class="section__title">Movie List</h2>
                     <!-- end section title -->
-
-                
                 </div>
             </div>
         </div>
@@ -97,7 +99,7 @@
                             <span class="filter__item-label">GENRE:</span>
 
                             <div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-genre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <input type="button" value="All Genres">
+                                <input type="button" id="genres" value="All Genres">
                                 <span></span>
                             </div>
 
@@ -112,7 +114,7 @@
                     </div>
                     
                     <!-- filter btn -->
-                    <button class="filter__btn" type="button">apply filter</button>
+                    <button class="filter__btn" type="button" onclick="apply_filter()">apply filter</button>
                     <!-- end filter btn -->
                 </div>
             </div>
@@ -130,7 +132,7 @@
         <div class="row">
             {% for key, movie in Movies_dict.items() %}
             <!-- card -->
-            <div class="col-6 col-sm-4 col-lg-3 col-xl-2">
+            <div class="col-6 col-sm-4 col-lg-3 col-xl-2 movie_block">
                 <div class="card">
                     <div class="card__cover">
                         <img src="{{ url_for('static', filename='images/movie poster/' + movie.get_poster()) }}" alt="" width="175" height="238">
@@ -140,7 +142,7 @@
                     </div>
                     <div class="card__content">
                         <h3 class="card__title"><a href="{{ url_for('movie.movie_detail', movie_id=movie.get_id()) }}">{{ movie.get_movie_name() }}</a></h3>
-                        <span class="card__category">                        
+                        <span class="card__category {{ movie.get_genre_list() }}">                        
                             {% for genre in movie.get_genre_list() %}
                                 <a>{{ genre }}</a>
                             {% endfor  %}
@@ -187,6 +189,26 @@
 </section>
 <!-- end content -->
 <script>
+    function apply_filter() {
+        var genre_filter = document.getElementById("genres").value;
+        var movies = document.getElementsByClassName("movie_block");
+        if (genre_filter != "All Genres") {
+            for (movie of movies) {
+                var genre_list = movie.getElementsByTagName("span")[0].getAttribute("class");
+                if (genre_list.includes(genre_filter)) {
+                    movie.style.display = "";          
+                } else {
+                    movie.style.display = "None";
+                }
+            }
+        } else {
+            for (movie of movies) {
+                movie.style.display = "";
+            }
+        }
+    }
+    
+
 	function load_video(movie_id, movie_name) {    
     let video = document.getElementsByClassName("video")[0];
     let modal_title = document.getElementsByClassName("modal-title")[0];

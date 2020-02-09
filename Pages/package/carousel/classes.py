@@ -6,6 +6,7 @@ class Carousel:
         self.__category = category
         self.__title = title
         self.__carousel_image = carousel_image
+        self.movie_or_poster_id = ""
 
     def get_id(self):
         return self.__id

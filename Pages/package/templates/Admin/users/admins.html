@@ -61,7 +61,7 @@
               {% else %}
               <tr>
                 <td>
-                    {% if Admin_dict[key].get_id() == "A0" %}                    
+                    {% if Admin_dict[key].get_id() == "A0" or Admin_dict[key].get_id() == current_user.get_id() %}                    
                     {% else %}
                     <div class="form-check">
 
@@ -86,7 +86,7 @@
                   </ul>
                 </td>              
                 <td>
-                  {% if Admin_dict[key].get_id() == "A0" %}          
+                  {% if Admin_dict[key].get_id() == "A0" or Admin_dict[key].get_id() == current_user.get_id() %}          
                   <form action="{{ url_for('user.modify_admin', admin_id= Admin_dict[key].get_id()) }}" method="GET">
                     <button type="submit" class="btn btn-primary" disabled>
                       Modify Admin
@@ -122,7 +122,7 @@
 {% block scripts %}
   <script>
     function delete_admin() {
-      confirm("Are you sure you want to delete these few admin accounts?")
+      confirm("Are you sure you want to delete these few admin account(s)?")
       var list_of_to_be_deleted_admins = [];
       var list_of_checkboxes = document.getElementsByClassName("form-check-input");        
       for (var index=1;index<list_of_checkboxes.length;index++){                    
