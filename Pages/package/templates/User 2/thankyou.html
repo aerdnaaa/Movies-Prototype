@@ -43,9 +43,11 @@
                     <button class="submit_booking filter__btn" type="submit">GO HOME</button>
                 </form>
             </div>
-            <div class="col-4  d-flex justify-content-center">
-                <button class="submit_booking filter__btn" onclick="">GENERATE PDF</button>
-            </div>
+            <form action="{{ url_for('showtime.send_pdf', Showtime_seat_class_seats_id=Showtime_seat_class_seats_id) }}">
+                <div class="col-4  d-flex justify-content-center">
+                    <button class="submit_booking filter__btn" onclick="">GENERATE PDF</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

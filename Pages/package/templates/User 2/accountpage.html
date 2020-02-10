@@ -125,12 +125,8 @@
                                                 {% endfor %}                             
                                             </span>
                                         </td>
-                                        <td>
-                                            {% for seat in value['seats'] %}
-                                                {% if loop.index == 1 %}
-                                                    ${{ loop.length * 8.5 }}           
-                                                {% endif %}
-                                            {% endfor %}
+                                        <td>                                    
+                                            $ {{ value['price'] }}
                                         </td>
                                     </tr>
                                     {% endfor %}                                                                                                                                                                                
@@ -259,4 +255,12 @@
 </div>
 
 {% endblock%}
-					
+
+{% block scripts %}
+<script>
+    if ("{{UCDform_valid}}" == "false") {
+        $('#UCDmodal').modal('show');
+    }
+    
+</script>
+{% endblock%}

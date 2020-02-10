@@ -78,6 +78,10 @@ margin: auto;
             {{ render_field(form.promotion_terms_and_condition , class="form-control form-control-lg", required=False) }}
           </div>
           <div class="form-group">
+            {{ form.promotion_promoPrice.label(class="form-control-label") }}
+            {{ render_field(form.promotion_promoPrice , class="form-control form-control-lg", required=False, type="number") }}
+          </div>
+          <div class="form-group">
             {{ form.promotion_image.label(class="form-control-label") }}
             {{ render_field(form.promotion_image , class="form-control-file", required=False) }}
           </div>

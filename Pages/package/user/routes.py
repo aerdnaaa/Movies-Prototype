@@ -86,6 +86,7 @@ def accountpage():
         db["Users"] = userDict
     user_class = userDict[current_user.get_id()]
     print(user_class.get_bought_seats())
+    UCDform_valid = "true"
     if request.method == 'POST' and UCDform.validate():
         flash(f'You have successfully changed your contact details.', 'success')
 
@@ -105,7 +106,10 @@ def accountpage():
         db["Users"] = userDict
         db.close()
         return redirect(url_for('user.accountpage'))
-        
+    elif request.method == "POST" and not UCDform.validate_on_submit():
+        flash(f'Some fields are incorrect.', 'danger')
+        UCDform_valid = "false"
+
     if request.method =='POST' and UPform.validate():
         flash(f'You have successfully changed your password.','success')
         user_password = bcrypt.generate_password_hash(UPform.password.data).decode('utf-8')
@@ -124,7 +128,7 @@ def accountpage():
             db.close()
             
         return redirect(url_for('user.accountpage'))
-    return render_template("User 2/accountpage.html", UCDform=UCDform, UPform=UPform,UPPform=UPPform, title="My Account Page")
+    return render_template("User 2/accountpage.html", UCDform=UCDform, UPform=UPform,UPPform=UPPform, title="My Account Page", UCDform_valid=UCDform_valid)
 
 @user_blueprint.route("/deleteAccount", methods=['POST'])
 @login_required

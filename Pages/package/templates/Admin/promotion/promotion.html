@@ -56,9 +56,11 @@
                 <th scope="col">Promotion Title</th>
                 <th scope="col">Image</th>
                 <th scope="col">Description</th>
+                <th scope="col">Discount Price</th>
                 <th scope="col">Valid Period</th>
-                <th scope="col">Apply to</th>
                 <th scope="col">Terms And Conditions</th>
+                <th scope="col">Apply to</th>
+                
                 <th scope="col">Modify Promotion</th>
               </tr>
             </thead>
@@ -83,10 +85,10 @@
                     {{ Promotion_dict[key].get_description() }}
                   </td>
                   <td>
-                    {{ Promotion_dict[key].get_valid_period() }}
+                    ${{ Promotion_dict[key].get_promoPrice() }}
                   </td>
                   <td>
-                    {{ Promotion_dict[key].get_applicable_to() }}
+                    {{ Promotion_dict[key].get_valid_period() }}
                   </td>
                   <td>
                     <ul>
@@ -94,6 +96,9 @@
                         <li>{{ terms }}</li>
                       {% endfor %}
                     </ul>
+                  </td>
+                  <td>
+                    {{ Promotion_dict[key].get_applicable_to() }}
                   </td>
                   <td>
                     <div class="ml-auto d-flex flex-row">

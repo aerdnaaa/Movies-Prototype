@@ -37,3 +37,6 @@ class ModifyShowtime(FlaskForm):
     showtime_end_date = StringField(label="Showtime End Date", validators=[DataRequired(), validate_end_date])
     hall_number = SelectField(label="Hall Number", choices=[])
     submit = SubmitField("Modify Showtime")
+
+class PromotionForm(FlaskForm):
+    promo_id = SelectField(label="Promotion", choices=[])

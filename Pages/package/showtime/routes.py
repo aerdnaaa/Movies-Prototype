@@ -1,8 +1,8 @@
 from flask import Blueprint
-from flask import render_template, request, redirect, url_for, jsonify, flash
+from flask import render_template, request, redirect, url_for, jsonify, flash, send_file
 from flask_login import current_user, login_required
 from package.showtime.classes import Showtime, SeatClass
-from package.showtime.forms import CreateShowtime, ModifyShowtime
+from package.showtime.forms import CreateShowtime, ModifyShowtime, PromotionForm
 from package.showtime.utilis import return_available_theatres_and_hall, return_available_movie_title, return_timeslots, make_showtime, make_seats_sold
 from package.utilis import check_admin, check_rights, generate_pdf
 from package.user.classes import AnonymousUser
@@ -68,14 +68,24 @@ def bookmovieseats(showtime_id, seat_class_id):
     except:
         Showtime_dict = {}
         db["showtime"] = Showtime_dict    
+    try:
+        Promo_dict = db["promotion"]
+    except:
+        Promo_dict = {}
+        db["promotion"] = Promo_dict
+    form = PromotionForm()
+    choices = [('none', 'None')]
+    for promoid, value in Promo_dict.items():
+        choices.append((promoid, value.get_title()))
+    form.promo_id.choices = choices
     showtime_class = Showtime_dict[showtime_id]    
     seat_class_dict = showtime_class.get_seats_class()
     seat_class = seat_class_dict[seat_class_id]    
     db.close()
-    return render_template("User 2/bookingseats.html", title="Buying Seats", showtime_class=showtime_class, seat_class=seat_class)
+    return render_template("User 2/bookingseats.html", title="Buying Seats", showtime_class=showtime_class, seat_class=seat_class, form=form)
 
-@showtime_blueprint.route("/showtime_theatre/checkout/<showtime_id>/<seat_class_id>/<list_seats>", methods=["GET","POST"])
-def checkout(showtime_id, seat_class_id, list_seats):
+@showtime_blueprint.route("/showtime_theatre/checkout/<showtime_id>/<seat_class_id>/<list_seats>/<promo_id>", methods=["GET","POST"])
+def checkout(showtime_id, seat_class_id, list_seats,promo_id):
     pub_key = stripe_keys['publishable_key']
     db = shelve.open("shelve.db", "c")
     # Showtime
@@ -84,12 +94,24 @@ def checkout(showtime_id, seat_class_id, list_seats):
     except:
         Showtime_dict = {}
         db["showtime"] = Showtime_dict    
+    try:
+        Promo_dict = db["promotion"]
+    except:
+        Promo_dict = {}
+        db["promotion"] = Promo_dict
+    if promo_id != "none":
+        promo_class = Promo_dict[promo_id]
+        promo_price = int(promo_class.get_promoPrice())
+        promo_title = promo_class.get_title()
+    else:
+        promo_price = 0
+        promo_title = "None"
     list_current_seats = list_seats.split(',')
     showtime_class = Showtime_dict[showtime_id]
     seat_class_dict = showtime_class.get_seats_class()    
     seat_class = seat_class_dict[seat_class_id]    
-    price = 8.5 * len(list_current_seats)
-    return render_template("User 2/payment.html", title="Payment", showtime_class=showtime_class, seat_class=seat_class, list_current_seats=list_current_seats, price=price, pub_key=pub_key)
+    price = (8.5-promo_price) * len(list_current_seats)
+    return render_template("User 2/payment.html", title="Payment", showtime_class=showtime_class, seat_class=seat_class, list_current_seats=list_current_seats, price=price, pub_key=pub_key, promo_title=promo_title)
 
 @showtime_blueprint.route("/checkseats/<showtime_id>/<seat_class_id>/<old_list>/<new_list>")
 def check_seats(showtime_id, seat_class_id, old_list, new_list):
@@ -167,28 +189,28 @@ def remove_seats(showtime_id,seat_class_id,current_seats):
     db.close()    
     return redirect(url_for('showtime.bookmovie'))
 
-@showtime_blueprint.route("/charge/<showtime_id>/<seat_class_id>/<seats>", methods=["POST"])
-def pay(showtime_id,seat_class_id,seats):
+@showtime_blueprint.route("/charge/<showtime_id>/<seat_class_id>/<seats>/<net_price>", methods=["POST"])
+def pay(showtime_id,seat_class_id,seats,net_price):
     seats = seats.split(',')
-    amount = len(seats) * 850
+    amount = float(net_price)
     description = f'Showtime_id: {showtime_id} Seat_class_id: {seat_class_id} Movie Tickets for seat(s): {seats}'    
     customer = stripe.Customer.create(email=request.form['stripeEmail'], source=request.form['stripeToken'])
     
     charge = stripe.Charge.create(
         customer = customer.id,
-        amount=amount,
+        amount=int(amount*100),
         currency='sgd',
         description=description
     )
     db = shelve.open('shelve.db', 'c')
     user_dict = db["Users"]
     showtime_dict = db["showtime"]
-    Showtime_seat_class_seats_id = showtime_id + seat_class_id + ",".join(seats)
+    Showtime_seat_class_seats_id = showtime_id + seat_class_id + ".".join(seats)
     if current_user.is_authenticated:
         #? this will add the transaction to their class
         current_user_class = user_dict[current_user.get_id()]
         bought_seats = current_user_class.get_bought_seats()
-        bought_seats[Showtime_seat_class_seats_id] = {'showtime_id':showtime_id, 'seat_class_id':seat_class_id, 'seats':seats, 'showtime_class':showtime_dict[showtime_id], 'date':datetime.date.today().strftime("%d %B %Y")}        
+        bought_seats[Showtime_seat_class_seats_id] = {'showtime_id':showtime_id, 'seat_class_id':seat_class_id, 'seats':seats, 'showtime_class':showtime_dict[showtime_id], 'date':datetime.date.today().strftime("%d %B %Y"), 'price':amount}        
         current_user_class.set_bought_seats(bought_seats)        
         user_dict[current_user_class.get_id()] = current_user_class
     else:
@@ -197,27 +219,32 @@ def pay(showtime_id,seat_class_id,seats):
         #? need email, showtime_id, seat_class_id, seats 
         annonymous_class.email = request.form['stripeEmail']
         seat_dict = annonymous_class.seats
-        seat_dict[Showtime_seat_class_seats_id] = {'showtime_id':showtime_id, 'seat_class_id':seat_class_id, 'seats':seats, 'showtime_class':showtime_dict[showtime_id], 'date':datetime.date.today().strftime("%d %B %Y")}        
+        seat_dict[Showtime_seat_class_seats_id] = {'showtime_id':showtime_id, 'seat_class_id':seat_class_id, 'seats':seats, 'showtime_class':showtime_dict[showtime_id], 'date':datetime.date.today().strftime("%d %B %Y"), 'price':amount}        
         annonymous_class.seats = seat_dict
         user_dict[annonymous_class.id] = annonymous_class        
     db["Users"] = user_dict
     db.close()        
     #? generate_pdf here
-    generate_pdf(request.form['stripeEmail'], Showtime_seat_class_seats_id, {'showtime_id':showtime_id, 'seat_class_id':seat_class_id, 'seats':seats, 'showtime_class':showtime_dict[showtime_id], 'date':datetime.date.today().strftime("%d %B %Y")}        )
+    generate_pdf(request.form['stripeEmail'], Showtime_seat_class_seats_id, {'showtime_id':showtime_id, 'seat_class_id':seat_class_id, 'seats':seats, 'showtime_class':showtime_dict[showtime_id], 'date':datetime.date.today().strftime("%d %B %Y")}, amount)
     make_seats_sold(showtime_id, seat_class_id, seats)    
     #? send email
     recipient = request.form['stripeEmail']
     filename = Showtime_seat_class_seats_id+'.pdf'
     msg = Message("Saw Cinematics e-receipt", sender=app.config.get("MAIL_USERNAME"), recipients=[recipient])
-    with app.open_resource('static\pdf' + filename) as pdf:
+    file_path = "static/pdf/" + filename
+    with app.open_resource(file_path) as pdf:
         msg.attach(filename, 'application/pdf', pdf.read())
     msg.body = f"Dear Sir/Madam \nThis is your receipt. Thank you. \nBest Regards \nSaw Cinematics"
-    mail.send(msg)
-    return redirect(url_for('showtime.thankyoupage', showtime_id=showtime_id, seat_class_id=seat_class_id, bought_seats=seats))
+    # mail.send(msg)
+    return redirect(url_for('showtime.thankyoupage', showtime_id=showtime_id, seat_class_id=seat_class_id, bought_seats=seats, Showtime_seat_class_seats_id=Showtime_seat_class_seats_id))
 
-@showtime_blueprint.route("/thankyou/<showtime_id>/<seat_class_id>/<bought_seats>")
-def thankyoupage(showtime_id,seat_class_id,bought_seats):
-    return render_template("User 2/thankyou.html", title="Thank you", showtime_id=showtime_id, seat_class_id=seat_class_id)
+@showtime_blueprint.route("/thankyou/<showtime_id>/<seat_class_id>/<bought_seats>/<Showtime_seat_class_seats_id>")
+def thankyoupage(showtime_id,seat_class_id,bought_seats, Showtime_seat_class_seats_id):
+    return render_template("User 2/thankyou.html", title="Thank you", showtime_id=showtime_id, seat_class_id=seat_class_id, Showtime_seat_class_seats_id=Showtime_seat_class_seats_id)
+
+@showtime_blueprint.route("/send_pdf/<Showtime_seat_class_seats_id>")
+def send_pdf(Showtime_seat_class_seats_id):
+    return send_file(app.root_path + '/static/pdf/' + Showtime_seat_class_seats_id + '.pdf', attachment_filename=Showtime_seat_class_seats_id + '.pdf')
 
 @showtime_blueprint.route("/admin/showtime")
 @login_required
@@ -230,6 +257,7 @@ def admin_showtime():
     except:
         Showtime_dict = {}
         db["showtime"] = Showtime_dict
+    print(Showtime_dict)
     db.close()
     return render_template("Admin/showtime/showtime.html", title="Showtimes", Showtime_dict=Showtime_dict)
 
@@ -242,10 +270,10 @@ def add_showtime():
     db = shelve.open('shelve.db', 'c')
     try:
         Showtime_dict = db["showtime"]        
-        Showtime.id = list(Showtime_dict.values())[-1].get_id()
+        Showtime.id = list(Showtime_dict.keys())[-1]
     except:
         Showtime_dict = {}
-        db["showtime"] = Showtime_dict
+        db["showtime"] = Showtime_dict    
     #? initialize form choices
     form.theatre_name.choices, form.hall_number.choices  = return_available_theatres_and_hall()
     form.movie_title.choices = return_available_movie_title()
@@ -396,3 +424,10 @@ def modify_hall_number(theatre, start_date, end_date, timeslot):
                         break
     print(list_of_available_halls)
     return jsonify({"hall_list":list_of_available_halls})    
+
+# @showtime_blueprint.route("/admin/delete_showtime")
+# def delete():
+#     db = shelve.open('shelve.db', 'c')
+#     db["showtime"] = {}
+#     db.close()
+#     return ""

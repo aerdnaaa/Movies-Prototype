@@ -253,12 +253,12 @@ function apply_filter() {
             }
         }
     }
+
     // for (var movie of movie_row_list){
     // if ( ! movie.classList.contains(active_date)){
     //     movie.style.display = "none";
     //     }
     // }
-
     change_date(document.getElementsByClassName("nav-link active")[0])
 }
 
@@ -270,13 +270,11 @@ function clean_empty_theatres() {
         contain_movies = false;
         var movies = theatre.getElementsByClassName("movie_row");
         // var skip_first = 1;
-        console.log(theatre)
         for (movie of movies) {
             // if (skip_first == 1) {
             //    skip_first = 0;
             //    continue;
             // }
-            console.log(movie)
             if (movie.style.display == "") {
                 contain_movies = true;
                 break;
@@ -313,7 +311,7 @@ for (var movie of movie_row_list){
 clean_empty_theatres();
 
 
-function change_date(anchor) {    
+function change_date(anchor) {
     for (var movie of movie_row_list){
         if ( ! movie.classList.contains(anchor.id)){
             movie.style.display = "none";            
@@ -322,6 +320,43 @@ function change_date(anchor) {
             movie.style.display = "";
         }
     }
+    var theatre_filter = document.getElementById("theatres").value;
+    var tables = document.getElementsByClassName("theatre_movies");
+    if (theatre_filter != "All Theatres") {
+        for (table of tables) {
+            if (table.id != theatre_filter) {
+                table.style.display = "None";
+            } else {
+                table.style.display = "";
+            }
+        }
+    } else {
+        for (table of tables) {
+            table.style.display = "";
+        }
+    }
+
+    var movie_filter = document.getElementById("movies").value;
+    var movies = document.getElementsByClassName("movie_row");
+    if (movie_filter != "All Movies") {
+        for (movie of movies) {
+            if (movie.id != movie_filter) {
+                movie.style.display = "None";
+            }
+        }
+    }
+
+    var genre_filter = document.getElementById("genres").value;
+    var movies = document.getElementsByClassName("movie_row");
+    if (genre_filter != "All Genres") {
+        for (movie of movies) {
+            var genre_list = movie.getElementsByTagName("small")[0].getAttribute("class");
+            if (!genre_list.includes(genre_filter)) {
+                movie.style.display = "None";          
+            }
+        }
+    }
+    
     clean_empty_theatres();
   }   
   

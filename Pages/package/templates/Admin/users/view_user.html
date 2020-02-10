@@ -60,11 +60,7 @@
                             </span>
                         </td>
                         <td>
-                          {% for seat in value['seats'] %}
-                              {% if loop.index == 1 %}
-                                  ${{ loop.length * 8.5 }}           
-                              {% endif %}
-                          {% endfor %}
+                          ${{ value["price"] }}
                         </td>
                     </tr>
                     {% endfor %}                                                                                                                                                                                

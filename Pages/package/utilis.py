@@ -94,7 +94,7 @@ def set_up_variables():
         db["Seats"] = seat_dict
     db.close()
 
-def generate_pdf(email, receipt_id, data):
+def generate_pdf(email, receipt_id, data, price):
     import time, os
     from reportlab.lib.enums import TA_JUSTIFY
     from reportlab.lib.pagesizes import letter
@@ -114,7 +114,6 @@ def generate_pdf(email, receipt_id, data):
     hall = data['showtime_class'].get_hall_number()
     list_seats = data['seats']
     seats = ",".join(list_seats)
-    price = len(list_seats) * 8.5
     purchase_date = data['date']
 
     formatted_time = time.ctime()

@@ -58,6 +58,10 @@
                 {{ form.promotion_terms_and_condition.label(class="form-control-label") }}
                 {{ render_field(form.promotion_terms_and_condition , class="form-control form-control-lg", required=False) }}
               </div>
+              <div class="form-group">
+                {{ form.promotion_promoPrice.label(class="form-control-label") }}
+                {{ render_field(form.promotion_promoPrice , class="form-control form-control-lg", required=False, type="number") }}
+              </div>
               <div class="form-row">
                 <div class="form-group col">
                   <img src="{{ url_for('static', filename='images/promotion/' + image_source ) }}" alt="Img" width="200px">

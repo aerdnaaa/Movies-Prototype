@@ -35,13 +35,13 @@ def promotionDetail(id_of_promo):
     db = shelve.open("shelve.db", "c")
     Promotion_dict = db["promotion"]
     promo = Promotion_dict[id_of_promo]
-    raw_valid_period = promo.get_valid_period().split(" - ")
+    raw_valid_period = promo.get_valid_period().split(" to ")
     valid_period = []
+    print(raw_valid_period[0])
     for date in raw_valid_period:
         date = date.split("-")
         mth = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         valid_period.append(f"{int(date[2])} {mth[int(date[1]) - 1]} {date[0]}")
-
     valid_period_str = f"{valid_period[0]} - {valid_period[1]}"
 
     return render_template("User 2/promotionDetail.html", promo=promo, period=valid_period_str, title=promo.get_title().capitalize() + " Promo")
@@ -60,7 +60,7 @@ def admin_promotion():
         Promotion_dict = {}
         db["promotion"] = Promotion_dict
     db.close()    
-    return render_template("Admin/promotion/promotion.html", title="Promotion", Promotion_dict=Promotion_dict)
+    return render_template("Admin/promotion/promotion.html", title="Promotion", Promotion_dict=Promotion_dict )
 
 @promotion_blueprint.route("/admin/promotion/add_promotion", methods=["POST","GET"])
 @login_required
@@ -81,9 +81,10 @@ def add_promotion():
         promotion_image = save_picture(form.promotion_image.data, "promotion")
         promotion_description = Markup(form.promotion_description.data)
         promotion_terms_and_conditions = form.promotion_terms_and_condition.data.split("\n")
-        promotion_period = form.promotion_valid_start_date.data + " - " + form.promotion_valid_end_date.data
+        promotion_promoPrice = form.promotion_promoPrice.data
+        promotion_period = form.promotion_valid_start_date.data + " to " + form.promotion_valid_end_date.data
         promotion_applicable_to = form.promotion_applicable_to.data
-        promotion_class = Promotion(promotion_title,promotion_image,promotion_description,promotion_terms_and_conditions,promotion_period,promotion_applicable_to)
+        promotion_class = Promotion(promotion_title,promotion_image,promotion_description,promotion_terms_and_conditions,promotion_period,promotion_applicable_to,promotion_promoPrice)
         promotion_id = promotion_class.get_id()
         Promotion_dict[promotion_id] = promotion_class
         db["promotion"] = Promotion_dict
@@ -96,6 +97,7 @@ def add_promotion():
         form.promotion_title.data = ""        
         form.promotion_description.data = ""
         form.promotion_terms_and_condition.data = ""
+        form.promotion_promoPrice.data = 0
         form.promotion_valid_start_date.data = ""
         form.promotion_valid_end_date.data = ""
         form.promotion_applicable_to.data = ""
@@ -120,11 +122,12 @@ def modify_promotion(promotion_id):
         promotion_image = save_picture(form.promotion_image.data, "promotion")
         promotion_description = form.promotion_description.data
         promotion_terms_and_conditions = form.promotion_terms_and_condition.data.split("\n")
-        promotion_period = form.promotion_valid_start_date.data + " - " + form.promotion_valid_end_date.data
+        promotion_promoPrice = form.promotion_promoPrice.data
+        promotion_period = form.promotion_valid_start_date.data + " to " + form.promotion_valid_end_date.data
         promotion_applicable_to = form.promotion_applicable_to.data
         # editing class, not creating new one as id will newly be generated
         promotion_class = Promotion_dict[promotion_id]
-        promotion_class.set_all_attributes(promotion_title, promotion_image, Markup(promotion_description), promotion_terms_and_conditions, promotion_period, promotion_applicable_to)     
+        promotion_class.set_all_attributes(promotion_title, promotion_image, Markup(promotion_description), promotion_terms_and_conditions,promotion_period, promotion_applicable_to,promotion_promoPrice)     
         Promotion_dict[promotion_id] = promotion_class
         db["promotion"] = Promotion_dict
         db.close()
@@ -137,7 +140,8 @@ def modify_promotion(promotion_id):
         form.promotion_title.data = promotion.get_title()
         form.promotion_description.data = promotion.get_description()
         form.promotion_terms_and_condition.data = "\n".join(promotion.get_terms_and_conditions())
-        start_date, end_date = promotion.get_valid_period().split(" - ")
+        form.promotion_promoPrice.data = promotion.get_promoPrice()
+        start_date, end_date = promotion.get_valid_period().split(" to ")
         form.promotion_valid_start_date.data = start_date
         form.promotion_valid_end_date.data = end_date
         form.promotion_applicable_to.data = promotion.get_applicable_to()
@@ -167,5 +171,6 @@ def delete_promotion():
     db["promotion"] = Promotion_dict
     db["deleted_promotion"] = Deleted_list
     db.close()
+    flash("Promotion has been deleted !", "success")
     return redirect(url_for('promotion.admin_promotion'))
 

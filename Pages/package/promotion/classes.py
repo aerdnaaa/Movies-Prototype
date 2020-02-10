@@ -1,6 +1,6 @@
 class Promotion:
     id = "P0"
-    def __init__(self, title, promotion_image, description, terms_and_conditions, valid_period, applicable_to):
+    def __init__(self, title, promotion_image, description, terms_and_conditions, valid_period, applicable_to, promoPrice):
         Promotion.id = Promotion.id[0] + str(int(Promotion.id[1:])+1)
         self.__id = Promotion.id
         self.__title = title
@@ -10,6 +10,7 @@ class Promotion:
         self.__valid_period = valid_period
         self.__applicable_to = applicable_to       
         self.carousel_status = False 
+        self.__promoPrice = promoPrice
 
     def get_id(self):
         return self.__id
@@ -31,6 +32,9 @@ class Promotion:
 
     def get_applicable_to(self):
         return self.__applicable_to
+    
+    def get_promoPrice(self):
+        return self.__promoPrice
 
     def set_title(self, title):
         self.__title = title
@@ -50,11 +54,15 @@ class Promotion:
     def set_applicable_to(self, applicable_to):
         self.__applicable_to = applicable_to
 
-    def set_all_attributes(self, title, promotion_image, description, terms_and_conditions, valid_period, applicable_to):
+    def set_promoPrice(self, promoPrice):
+        self.__promoPrice = promoPrice
+
+    def set_all_attributes(self, title, promotion_image, description, terms_and_conditions, valid_period, applicable_to, promoPrice):
         self.__title = title
         self.__promotion_image = promotion_image
         self.__description = description
         self.__terms_and_conditions = terms_and_conditions
         self.__valid_period = valid_period
         self.__applicable_to = applicable_to
+        self.__promoPrice = promoPrice
     
