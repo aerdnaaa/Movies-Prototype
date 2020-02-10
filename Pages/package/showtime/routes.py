@@ -6,7 +6,8 @@ from package.showtime.forms import CreateShowtime, ModifyShowtime
 from package.showtime.utilis import return_available_theatres_and_hall, return_available_movie_title, return_timeslots, make_showtime, make_seats_sold
 from package.utilis import check_admin, check_rights, generate_pdf
 from package.user.classes import AnonymousUser
-from package import stripe_keys
+from package import stripe_keys, mail, app
+from flask_mail import Message
 import shelve, datetime, stripe
 
 showtime_blueprint = Blueprint("showtime", __name__)
@@ -183,7 +184,7 @@ def pay(showtime_id,seat_class_id,seats):
     user_dict = db["Users"]
     showtime_dict = db["showtime"]
     Showtime_seat_class_seats_id = showtime_id + seat_class_id + ",".join(seats)
-    if current_user.get_id()[0] == "U":
+    if current_user.is_authenticated:
         #? this will add the transaction to their class
         current_user_class = user_dict[current_user.get_id()]
         bought_seats = current_user_class.get_bought_seats()
@@ -203,7 +204,15 @@ def pay(showtime_id,seat_class_id,seats):
     db.close()        
     #? generate_pdf here
     generate_pdf(request.form['stripeEmail'], Showtime_seat_class_seats_id, {'showtime_id':showtime_id, 'seat_class_id':seat_class_id, 'seats':seats, 'showtime_class':showtime_dict[showtime_id], 'date':datetime.date.today().strftime("%d %B %Y")}        )
-    make_seats_sold(showtime_id, seat_class_id, seats)
+    make_seats_sold(showtime_id, seat_class_id, seats)    
+    #? send email
+    recipient = request.form['stripeEmail']
+    filename = Showtime_seat_class_seats_id+'.pdf'
+    msg = Message("Saw Cinematics e-receipt", sender=app.config.get("MAIL_USERNAME"), recipients=[recipient])
+    with app.open_resource('static\pdf' + filename) as pdf:
+        msg.attach(filename, 'application/pdf', pdf.read())
+    msg.body = f"Dear Sir/Madam \nThis is your receipt. Thank you. \nBest Regards \nSaw Cinematics"
+    mail.send(msg)
     return redirect(url_for('showtime.thankyoupage', showtime_id=showtime_id, seat_class_id=seat_class_id, bought_seats=seats))
 
 @showtime_blueprint.route("/thankyou/<showtime_id>/<seat_class_id>/<bought_seats>")

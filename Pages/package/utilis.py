@@ -4,6 +4,7 @@ from package.user.classes import Admin
 import shelve
 from package import bcrypt, app
 
+
 def check_admin():
     print(f"{current_user.get_id()} tried to access admin pages")
     if current_user.get_id()[0] != "A":
@@ -160,3 +161,4 @@ def generate_pdf(email, receipt_id, data):
     Story.append(Paragraph(ptext, styles["Normal"]))
     Story.append(Spacer(1, 12))
     doc.build(Story)
+
