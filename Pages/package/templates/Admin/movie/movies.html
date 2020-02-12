@@ -49,17 +49,11 @@
                     </td>
                 <th scope="col">No.</th>  
                 <th scope="col">Movie Name</th>
-                <th scope="col">Poster</th>
-                <th scope="col">Description</th>
-                <th scope="col">Genre(s)</th>
-                <th scope="col">Director</th>
-                <th scope="col">Casts</th>
-                <th scope="col">Movie</th>
-                <th scope="col">Trailer</th>                                
-                <th scope="col">Duration</th>
-                <th scope="col">Release Date</th>
-                <th scope="col">Language</th>
-                <th scope="col">Subtitles</th>                
+                <th scope="col">Poster</th>                
+                <th scope="col">Genre(s)</th>                
+                <th scope="col">Trailer</th>                                                
+                <th scope="col">Release Date</th>                
+                <th scope="col">Show Detail</th>                
                 <th scope="col">Modify</th>
               </tr>
             </thead>
@@ -78,11 +72,8 @@
                       {{ Movies_dict[key].get_movie_name() }}
                     </td>
                     <td>
-                      <img src="{{ url_for('static', filename='images/movie poster/' + Movies_dict[key].get_poster() ) }}" alt="{{ Movies_dict[key].get_movie_name() }} Img" width="200px">
-                    </td>
-                    <td>
-                      {{ Movies_dict[key].get_description() }}
-                    </td>
+                      <img src="{{ url_for('static', filename='images/movie poster/' + Movies_dict[key].get_poster() ) }}" alt="{{ Movies_dict[key].get_movie_name() }} Img" width="100px">
+                    </td> 
                     <td>
                       <ul>
                       {% for genre in Movies_dict[key].get_genre_list() %}
@@ -90,32 +81,22 @@
                       {% endfor %}
                       </ul>
                     </td>
-                    <td>
-                      {{ Movies_dict[key].get_director() }}
-                    </td>
-                    <td>
-                      {{ Movies_dict[key].get_casts() }}
-                    </td>
-                    <td>                      
-                      <video src="{{ url_for('static', filename='videos/movie fullvideo/' + Movies_dict[key].get_movie_fullvideo() ) }}" alt="{{ Movies_dict[key].get_movie_name() }} Movie" width="200px" controls></video>
-                    </td>
                     <td>                      
                       <video src="{{ url_for('static', filename='videos/movie trailer/' + Movies_dict[key].get_trailer() ) }}" alt="{{ Movies_dict[key].get_movie_name() }} Trailer" width="200px" controls></video>
-                    </td>
-                    <td>
-                      {{ Movies_dict[key].get_duration() }}
                     </td>
                     <td>
                       {{ Movies_dict[key].get_release_date() }}
                     </td>
                     <td>
-                      {{ Movies_dict[key].get_language() }}
+                      <div class="ml-auto d-flex flex-row">
+                        <form action="{{ url_for('movie.admin_movie_detail', movie_id=Movies_dict[key].get_id()) }}" method="GET">
+                          <button type="submit" class="btn btn-primary">
+                            Show Detail
+                          </button>
+                        </form>
+                      </div>
                     </td>
-                    <td>
-                      {{ Movies_dict[key].get_subtitles() }}
-                    </td>
-                    <td>
-                  
+                    <td>                  
                       <div class="ml-auto d-flex flex-row">
                         <form action="{{ url_for('movie.modify_movie', movie_id=Movies_dict[key].get_id()) }}" method="GET">
                           <button type="submit" class="btn btn-primary">

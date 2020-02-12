@@ -90,51 +90,73 @@
                     <div class="col movies">
                         <div class="anchor" id="Movies"></div>
                         <h3 style=color:white>My Showtime Movies</h3>
-                        <div class="pl-4">
-                            <div class="anchor" id="RML"></div>
-                            <table border="1" id="{{ theatre_name }}" style="color:white;width:1110px;">
-                                <thead>                            
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Runtime</th>
-                                        <th scope="col">Genre</th>
-                                        <th scope="col">Date Bought</th>
-                                        <th scope="col">Seats Bought</th>
-                                        <th scope="col">Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for value in current_user.get_bought_seats().values()%}
-                                    <tr >
-                                        <th scope="row">{{ loop.index }}</th>
-                                        <td>{{ value['showtime_class'].get_movie_class().get_movie_name() }}</td>
-                                        <td>{{ value['showtime_class'].get_movie_class().get_duration() }} minutes</td>
-                                        <td>
-                                            <span class="card__category">                     
-                                                {% for genre in value['showtime_class'].get_movie_class().get_genre_list() %}
-                                                    <a>{{ genre }}</a>
-                                                {% endfor %}
-                                            </span>
-                                        </td>
-                                        <td>{{ value['date'] }}</td>
-                                        <td>
-                                            <span class="card__category">                                                                        
-                                                {% for seat in value['seats'] %}
-                                                    <a>{{ seat }}</a>                   
-                                                {% endfor %}                             
-                                            </span>
-                                        </td>
-                                        <td>                                    
-                                            $ {{ value['price'] }}
-                                        </td>
-                                    </tr>
-                                    {% endfor %}                                                                                                                                                                                
-                                </tbody>
-                            </table>
-
-        </div>
-                                        
+                        <div class="">
+                            {% if current_user.get_bought_seats() == {} %}
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-4 d-flex justify-content-center">
+                                    <h4 style=color:white>You have not book any movies yet.</h4>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center">                                
+                                <div class="col-4">
+                                    <form action="{{ url_for('showtime.bookmovie') }}" method="GET">
+                                        <button type="submit" class="sign__btn" >
+                                            BOOK MOVIE
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            {% else %}
+                                <table border="1" id="{{ theatre_name }}" style="color:white;width:1110px;">
+                                    <thead>                            
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Runtime</th>
+                                            <th scope="col">Genre</th>
+                                            <th scope="col">Date Bought</th>
+                                            <th scope="col">Seats Bought</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>                                    
+                                        {% for key, value in current_user.get_bought_seats().items()%}
+                                        <tr >
+                                            <th scope="row">{{ loop.index }}</th>
+                                            <td>{{ value['showtime_class'].get_movie_class().get_movie_name() }}</td>
+                                            <td>{{ value['showtime_class'].get_movie_class().get_duration() }} minutes</td>
+                                            <td>
+                                                <span class="card__category">                     
+                                                    {% for genre in value['showtime_class'].get_movie_class().get_genre_list() %}
+                                                        <a>{{ genre }}</a>
+                                                    {% endfor %}
+                                                </span>
+                                            </td>
+                                            <td>{{ value['date'] }}</td>
+                                            <td>
+                                                <span class="card__category">                                                                        
+                                                    {% for seat in value['seats'] %}
+                                                        <a>{{ seat }}</a>                   
+                                                    {% endfor %}                             
+                                                </span>
+                                            </td>
+                                            <td>                                    
+                                                $ {{ value['price'] }}
+                                            </td>
+                                            <td>
+                                                <form action="{{ url_for('showtime.send_pdf', Showtime_seat_class_seats_id=key) }}">
+                                                    <button type="submit" class="sign__btn">
+                                                        GET PDF
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}                                                                                                                                                                                
+                                    </tbody>
+                                </table>
+                            {% endif %}
+                        </div>                                        
                     </div>
                 </div>
             </div>

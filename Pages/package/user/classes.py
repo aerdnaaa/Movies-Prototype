@@ -82,7 +82,7 @@ class User(Person, UserMixin):
 
 
 class AnonymousUser():
-    id = "AN0"
+    id = "NU0"
     def __init__(self):
         self.id = AnonymousUser.id
         self.fullname = ""

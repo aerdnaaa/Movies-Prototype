@@ -96,7 +96,7 @@ def set_up_variables():
 
 def generate_pdf(email, receipt_id, data, price):
     import time, os
-    from reportlab.lib.enums import TA_JUSTIFY
+    from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
     from reportlab.lib.pagesizes import letter
     from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
     from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -114,39 +114,50 @@ def generate_pdf(email, receipt_id, data, price):
     hall = data['showtime_class'].get_hall_number()
     list_seats = data['seats']
     seats = ",".join(list_seats)
-    purchase_date = data['date']
-
-    formatted_time = time.ctime()
+    purchase_date = data['date']    
 
     styles=getSampleStyleSheet()
     styles.add(ParagraphStyle(name='Justify', alignment=TA_JUSTIFY))
     
-    ptext = '<font size=20>Saw Theatre</font>'
-    Story.append(Paragraph(ptext, styles["Normal"]))
+    ptext = '<font size=24>Saw Theatre</font>'
+    Story.append(Paragraph(ptext, styles["Justify"]))
     Story.append(Spacer(1, 12))
 
     # im = Image(logo, 2*inch, 2*inch)
     # Story.append(im)
     
-    ptext = '<font size=12>%s</font>' % formatted_time
-    
+    Story.append(Spacer(1, 12))
+    ptext = '<font size=16>Dear Customer:</font>' 
     Story.append(Paragraph(ptext, styles["Normal"]))
-    Story.append(Spacer(1, 12))
+    Story.append(Spacer(1, 15))
     
-    Story.append(Spacer(1, 12))
-    ptext = '<font size=12>Dear Customer:</font>' 
-    Story.append(Paragraph(ptext, styles["Normal"]))
-    Story.append(Spacer(1, 12))
-    
-    ptext = f'''<font size=14>User details</font>\n<font size=12>Email: {email}</font>'''
+    ptext = f'''<font size=14>User details:</font>'''
     Story.append(Paragraph(ptext, styles["Justify"]))
-    Story.append(Spacer(1, 12))
-    
-    ptext = f'<font size=14>Billing Information</font>\n<font size=12>Movie Theatre: {movie_theatre}     Movie: {movie}</font>\n<font size=12>Hall: {hall}     Seat(s) chosen: {seats}</font>\n<font size=12>Price: ${price:.2f}     Date of purchase: {purchase_date}</font>'
+    Story.append(Spacer(1, 8))
+    ptext = f'''<font size=12>Email: </font> <font size=13 color=#ff55a5>{ email }</font>'''
     Story.append(Paragraph(ptext, styles["Justify"]))
-    Story.append(Spacer(1, 12))
+    Story.append(Spacer(1, 24))
+    
+    ptext = f'<font size=14>Billing Information:</font>'
+    Story.append(Paragraph(ptext, styles["Justify"]))
+    Story.append(Spacer(1, 8))
+    ptext = f'<font size=12>Movie Theatre: </font> <font size=13 color=#ff55a5>{movie_theatre}</font>'
+    Story.append(Paragraph(ptext, styles["Justify"]))
+    Story.append(Spacer(1, 8))
+    ptext = f'<font size=12>Movie: </font> <font size=13 color=#ff55a5>{movie}</font>'
+    Story.append(Paragraph(ptext, styles["Justify"]))
+    Story.append(Spacer(1, 8))
+    ptext = f'<font size=12>Hall: </font> <font size=13 color=#ff55a5>{hall}</font>'
+    Story.append(Paragraph(ptext, styles["Justify"]))
+    Story.append(Spacer(1, 8))
+    ptext = f'<font size=12>Seat(s) Chosen: </font> <font size=13 color=#ff55a5>{seats}</font>'
+    Story.append(Paragraph(ptext, styles["Justify"]))
+    Story.append(Spacer(1, 8))
+    ptext = f'<font size=12>Date of purchase: </font> <font size=13 color=#ff55a5>{purchase_date}</font>'
+    Story.append(Paragraph(ptext, styles["Justify"]))
+    Story.append(Spacer(1, 8))
 
-    ptext = f'<font size=14>Receipt ID: {receipt_id}</font>'
+    ptext = f'<font size=12>Receipt ID: </font> <font size=13 color=#ff55a5>{receipt_id}</font>'
     Story.append(Paragraph(ptext, styles["Justify"]))
     Story.append(Spacer(1, 12))
         
@@ -155,7 +166,7 @@ def generate_pdf(email, receipt_id, data, price):
     Story.append(Spacer(1, 12))
     ptext = '<font size=12>Sincerely,</font>'
     Story.append(Paragraph(ptext, styles["Normal"]))
-    Story.append(Spacer(1, 48))
+    Story.append(Spacer(1, 36))
     ptext = '<font size=12>Saw Theatre Pte Ltd</font>'
     Story.append(Paragraph(ptext, styles["Normal"]))
     Story.append(Spacer(1, 12))

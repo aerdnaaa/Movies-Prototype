@@ -53,6 +53,18 @@ def admin_movies():
     db.close()
     return render_template("Admin/movie/movies.html", title="Movies", Movies_dict=Movies_dict)
 
+@movie_blueprint.route("/admin/movie/<movie_id>")
+def admin_movie_detail(movie_id):
+    db = shelve.open('shelve.db', 'c')
+    try:
+        Movies_dict = db["movies"]
+    except:
+        Movies_dict = {}
+        db["movies"] = Movies_dict
+    db.close()
+    movie_class = Movies_dict[movie_id]
+    return render_template("Admin/movie/movie_detail.html", title="Movie Detail", movie_class=movie_class)
+
 @movie_blueprint.route("/admin/movies/add_movie", methods=["POST","GET"])
 @login_required
 def add_movie():

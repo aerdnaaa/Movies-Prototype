@@ -155,15 +155,21 @@ def check_seats(showtime_id, seat_class_id, old_list, new_list):
 
 @showtime_blueprint.route("/get_annonymous_id")
 def get_annonymous_id():
-    db = shelve.open("shelve.db", "c")
-    try:
-        annonymous_id = db["annonymous"]        
-        annonymous_id += 1        
-    except:
-        annonymous_id = 0
-    db["annonymous"] = annonymous_id
+    db = shelve.open("shelve.db", "c")    
+    user_dict = db["Users"]    
+    list_of_annonymous_id = []
+    for key in user_dict:
+        if key[:2] == "UN":
+            list_of_annonymous_id.append(key)
+    if list_of_annonymous_id != []:
+        last_annonymous_id = list_of_annonymous_id[-1]
+        AnonymousUser.id = last_annonymous_id
+    new_annonymous_user = AnonymousUser()
+    user_dict[new_annonymous_user.id] = new_annonymous_user
+    print(user_dict)
+    db["Users"] = user_dict
     db.close()
-    return jsonify(annonymous_id)
+    return jsonify(new_annonymous_user.id)
 
 @showtime_blueprint.route("/showtime_theatre/cancel_seats/<showtime_id>/<seat_class_id>/<current_seats>")
 def remove_seats(showtime_id,seat_class_id,current_seats):
@@ -235,7 +241,7 @@ def pay(showtime_id,seat_class_id,seats,net_price):
     with app.open_resource(file_path) as pdf:
         msg.attach(filename, 'application/pdf', pdf.read())
     msg.body = f"Dear Sir/Madam \nThis is your receipt. Thank you. \nBest Regards \nSaw Cinematics"
-    # mail.send(msg)
+    mail.send(msg)
     return redirect(url_for('showtime.thankyoupage', showtime_id=showtime_id, seat_class_id=seat_class_id, bought_seats=seats, Showtime_seat_class_seats_id=Showtime_seat_class_seats_id))
 
 @showtime_blueprint.route("/thankyou/<showtime_id>/<seat_class_id>/<bought_seats>/<Showtime_seat_class_seats_id>")
@@ -388,8 +394,8 @@ def add_hall_number(theatre, start_date, end_date, timeslot):
                     print("they do overlap")
                     print(str(value.get_hall_number()))
                     list_of_available_halls.remove(str(value.get_hall_number()))
-                    if ValueError:
-                        break
+                    # if ValueError:
+                    #     continue
     print(list_of_available_halls)
     return jsonify({"hall_list":list_of_available_halls})    
 
